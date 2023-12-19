@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+table {
+  border-collapse: collapse;
+  border-radius: 10px;
+}
+
+thead > tr:first-child > th:first-child {
+  border-top-left-radius: 10px;
+  text-align: left;
+}
+
+thead > tr:first-child > th:last-child {
+  border-top-right-radius: 10px;
+}
+
+th {
+  padding: 8px 16px 8px 16px;
+  background-color: white;
+  border-top: none;
+  font-family: "Roboto";
+  font-weight: 600;
+  text-align: center;
+}
+
+td:first-child,
+th:first-child {
+  border-left: none;
+}
+
+tbody > tr:not(:last-child) {
+  border-bottom-width: 1px;
+  border-color: "#E1DFE0";
+}
+
+tbody > tr:last-child > td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+tbody > tr:last-child > td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+td {
+  background: white;
+  vertical-align: middle;
+  line-height: 1.5rem;
+}
+
+td:not(:first-child) {
+  text-align: center;
+  padding: 20px 0px 20px 0px;
+}
+
+td:first-child {
+  padding-left: 16px;
+}
+
+td:last-child {
+  padding-right: 16px;
+}
+
+.custom-bullets li::before {
+  content: "•";
+}
+
+.custom-bullets li:nth-child(odd) {
+  background: #e2e2e2;
+}
+
+.custom-bullets.reversed li:nth-child(odd) {
+  background: #444;
+}
+
+
+.text-shadow > svg {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
