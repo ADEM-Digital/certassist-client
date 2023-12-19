@@ -24,9 +24,9 @@ const TestSettings = () => {
           <Select
             name="selectedDifficulties"
             classNames={{
-              container: (state) => "w-[20vw]",
-              placeholder: (state) => " text-sm font-tables",
-              menuList: (state) => "text-sm font-tables",
+              container: () => "w-[20vw]",
+              placeholder: () => " text-sm font-tables",
+              menuList: () => "text-sm font-tables",
             }}
             onChange={(e) =>
               formik.setFieldValue(

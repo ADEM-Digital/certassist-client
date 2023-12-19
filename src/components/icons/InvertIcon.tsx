@@ -1,4 +1,3 @@
-import React from "react";
 import { IconType } from "../../types/IconTypes";
 
 const InvertIcon = ({ width = 32, height = 28 }: IconType) => {

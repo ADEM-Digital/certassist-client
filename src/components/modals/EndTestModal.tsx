@@ -6,7 +6,6 @@ import {
   TestInstanceContext,
   TestInstanceContextType,
 } from "../../pages/TestInstance/hooks";
-import { useNavigate } from "react-router-dom";
 
 export type DeleteModalProps = {
   title: string;
@@ -24,7 +23,6 @@ export default function EndTestModal({
   const { endTestMutation } = useContext(
     TestInstanceContext as Context<TestInstanceContextType>
   );
-  const navigate = useNavigate()
   const cancelButtonRef = useRef(null);
   const queryClient = useQueryClient();
 

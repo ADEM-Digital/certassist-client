@@ -43,7 +43,6 @@ const TestQuestionSettings = () => {
   const [subtopicsFilter, setSuptopicsFilter] = useState<SubtopicDataType[]>(
     []
   );
-  const [selectedSubtopics, setSelectedSuptopics] = useState<number[]>([]);
 
   const formik: FormikContextType<TestWizardValuesProps> = useFormikContext();
 

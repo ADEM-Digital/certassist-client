@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Tests from "./pages/tests/Tests";
-import TestWizard from "./pages/TestWizard.tsx/TestWizard";
+import TestWizard from "./pages/TestWizard/TestWizard";
 import { QueryClient, QueryClientProvider } from "react-query";
 import TestInstance from "./pages/TestInstance/TestInstance";
 import { ReactQueryDevtools } from 'react-query/devtools'

@@ -1,4 +1,3 @@
-import React from "react";
 import { IconType } from "../../types/IconTypes";
 
 const LockIcon = ({ height = 28, width = 32 }: IconType) => {

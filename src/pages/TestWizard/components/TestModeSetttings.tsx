@@ -118,9 +118,9 @@ const TestModeSetttings = () => {
             defaultValue={questionOptions[0]}
             placeholder={"Select an amount"}
             classNames={{
-              container: (state) => "w-[10vw]",
-              placeholder: (state) => " text-sm font-tables",
-              menuList: (state) => "text-sm font-tables h-[20vh]",
+              container: () => "w-[10vw]",
+              placeholder: () => " text-sm font-tables",
+              menuList: () => "text-sm font-tables h-[20vh]",
             }}
           />
           <p className="font-semibold font-tables text-sm">

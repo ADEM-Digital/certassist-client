@@ -1,4 +1,3 @@
-import React from "react";
 import { IconType } from "../../types/IconTypes";
 
 const PencilIcon = ({width, height, strokeColor}: IconType) => {
