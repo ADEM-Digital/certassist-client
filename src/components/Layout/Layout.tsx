@@ -1,7 +1,9 @@
 import TestIcon from "../icons/TestIcon";
 import { classNames } from "../../utils/utils";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
 
 const sidebarMenu = [
   {
@@ -19,8 +21,15 @@ const sidebarMenu = [
 ];
 
 const Layout = ({}) => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth0();
+
+  if (!isAuthenticated) {
+    navigate("/login");
+  }
+
+  const location = useLocation();
   
-  const location = useLocation()
   return (
     <div>
       {/* Sidebar */}
@@ -40,7 +49,9 @@ const Layout = ({}) => {
               to={option.path}
               key={`sidebar-link-${option.routeName}`}
               className={classNames(
-                location.pathname === option.path ? "bg-gray-100 rounded-md shadow-md" : "",
+                location.pathname === option.path
+                  ? "bg-gray-100 rounded-md shadow-md"
+                  : "",
                 "p-2"
               )}
             >
