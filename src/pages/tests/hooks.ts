@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useState } from "react";
 import { UseQueryResult, useQuery } from "react-query";
@@ -12,8 +13,13 @@ export type TestDataType = {
   selectedSubtopics: string[];
   testMode: "timed" | "tutor" | "untimed";
   questionCount: number;
-  questions: {id: string; answer: string | null; correct: boolean | null; marked: boolean}[];
-  grade?: number,
+  questions: {
+    id: string;
+    answer: string | null;
+    correct: boolean | null;
+    marked: boolean;
+  }[];
+  grade?: number;
   createdAt: string;
   updatedAt: string;
   testName?: string;
@@ -24,13 +30,14 @@ export type TestDataType = {
 };
 
 export const useTests = () => {
-    const [open, setOpen] = useState<boolean>(false)
-    const [selectedTest, setSelectedTest] = useState<TestDataType>()
+  const { user } = useAuth0()
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedTest, setSelectedTest] = useState<TestDataType>();
   const getTests = async () => {
-  
     try {
-        
-      let response = await axios.get(`${import.meta.env.VITE_API_URL}/tests`);
+      let response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/tests?user_id=${user?.sub}`
+      );
 
       return response.data;
     } catch (error) {
@@ -38,9 +45,13 @@ export const useTests = () => {
     }
   };
 
-  const testList: UseQueryResult<TestDataType[]> = useQuery("testList", getTests);
-
-  
+  const testList: UseQueryResult<TestDataType[]> = useQuery(
+    "testList",
+    getTests,
+    {
+      enabled: user?.sub !== undefined
+    }
+  );
 
   return { testList, open, setOpen, selectedTest, setSelectedTest };
 };

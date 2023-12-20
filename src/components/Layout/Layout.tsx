@@ -3,7 +3,7 @@ import { classNames } from "../../utils/utils";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+
 
 const sidebarMenu = [
   {
@@ -29,7 +29,7 @@ const Layout = ({}) => {
   }
 
   const location = useLocation();
-  
+
   return (
     <div>
       {/* Sidebar */}

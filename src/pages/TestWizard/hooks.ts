@@ -5,6 +5,7 @@ import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import moment from "moment";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export type TestWizardValuesProps = {
   selectedDifficulties: OptionType[];
@@ -26,6 +27,7 @@ const steps: StepsType = [
 ];
 
 export const useTestWizard = () => {
+  const {user} = useAuth0()
 
   const [wizardSteps, setWizardSteps] = useState(() => steps);
   const initialValues: TestWizardValuesProps = {
@@ -65,7 +67,9 @@ export const useTestWizard = () => {
         createdAt: moment().format("MM/DD/YYYY"),
         updatedAt: moment().format("MM/DD/YYYY"),
         testStatus: "pending",
-        testTime: Number(testValues.questionCount.value) * 1.5
+        testTime: Number(testValues.questionCount.value) * 1.5,
+        user_id: user?.sub
+       
       });
       console.log(response.data)
       navigate("/");
@@ -77,7 +81,6 @@ export const useTestWizard = () => {
 
   useEffect(() => {
     return () => {
-      console.log("unmounted")
       setWizardSteps(steps)}
   }, [])
 
