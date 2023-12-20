@@ -8,9 +8,10 @@ import SecondaryButton from "../../components/buttons/SecondaryButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import MainButton from "../../components/buttons/MainButton";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const TestWizard = () => {
-  const { wizardSteps, setWizardSteps, initialValues, submitTests } = useTestWizard();
+  const { wizardSteps, setWizardSteps, initialValues, submitTests, userDataQuery } = useTestWizard();
   const navigate = useNavigate();
 
   const handleStepChange = (action: "prev" | "next") => {
@@ -26,6 +27,10 @@ const TestWizard = () => {
     ].status = "active";
     setWizardSteps(newWizardSteps);
   };
+
+  useEffect(() => {
+    console.log(userDataQuery.data)
+  }, [userDataQuery])
 
   return (
     <div className="bg-mainbg-100 w-full h-full overflow-y-auto px-10 pt-20 pb-5">
