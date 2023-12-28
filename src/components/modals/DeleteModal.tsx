@@ -27,10 +27,15 @@ export default function DeleteModal({
   const queryClient = useQueryClient();
 
   const deleteRecord = async () => {
-    console.log(`${import.meta.env.VITE_API_URL}${endPoint}/${id}`)
+    
     try {
       let response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}${endPoint}/${id}`
+        `${import.meta.env.VITE_API_URL}${endPoint}`,
+        {
+          params: {
+            testId: id
+          }
+        }
       );
 
       return response.data;

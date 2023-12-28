@@ -1,9 +1,10 @@
 import { FormikContextType, useFormikContext } from "formik";
 import { TestWizardValuesProps } from "../hooks";
-import { classNames } from "../../../utils/utils";
+import { classNames, sentenceToCaps } from "../../../utils/utils";
+import { SubtopicDataType } from "./TestQuestionSettings";
 
 type TestSubtopicOptionProps = {
-  subtopic: { id: number; topicId: number; name: string };
+  subtopic: SubtopicDataType;
   questionCount: number;
   disabled: boolean;
 };
@@ -16,8 +17,7 @@ const TestSuptopicOption = ({
   const formik: FormikContextType<TestWizardValuesProps> = useFormikContext();
 
   const handleChange = (checked: boolean) => {
-    if (subtopic.id === 0 && checked) return formik.setFieldValue("selectedSubtopics", ['']);
-    console.log(formik.values.selectedSubtopics)
+    if (subtopic._id === 0 && checked) return formik.setFieldValue("selectedSubtopics", ['']);
     let newSubtopics = formik.values.selectedSubtopics;
     if (checked) {
       newSubtopics.push(subtopic.name);
@@ -25,9 +25,13 @@ const TestSuptopicOption = ({
       let foundIndex = newSubtopics.findIndex((subtopicName) => subtopicName === subtopic.name);
       if (foundIndex > -1) newSubtopics.splice(foundIndex, 1);
     }
-    console.log(formik.values)
     formik.setFieldValue("selectedSubtopics", newSubtopics);
   };
+
+  // useEffect(() => {
+  //   console.log("Subtopic Option")
+  //   console.log(formik.values.selectedSubtopics, subtopic.name)
+  // }, [])
 
   return (
     <div className="flex justify-between items-center w-[30vw] h-[7vh] font-body font-light">
@@ -38,7 +42,7 @@ const TestSuptopicOption = ({
           onChange={(e) => handleChange(e.target.checked)}
           type="checkbox"
           name={`subtopics-${subtopic.name}`}
-          value={subtopic.id}
+          value={subtopic._id}
           checked={formik.values.selectedSubtopics.findIndex((subtopicName) => subtopicName === subtopic.name) > -1}
         />
         <label
@@ -53,7 +57,7 @@ const TestSuptopicOption = ({
           )}
         >
           {" "}
-          {subtopic.name}
+          {sentenceToCaps(subtopic.name)}
         </label>
       </div>
       <p className={classNames(disabled ? "text-gray-400" : "text-gray-900")}>

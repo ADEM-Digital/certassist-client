@@ -19,6 +19,7 @@ import TrashIcon from "../../components/icons/TrashIcon";
 import DeleteModal from "../../components/modals/DeleteModal";
 import { useQueryClient } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
+import moment from "moment";
 
 const Tests = () => {
   const { isLoading } = useAuth0();
@@ -35,7 +36,7 @@ const Tests = () => {
     <>
       {isLoading && <p>Is Loading</p>}
       {!isLoading && (
-         <div className="py-5 px-10 flex flex-col gap-2.5">
+         <div className="py-5 px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
          <SectionHeader text={"My Tests"} />
  
          {/* Action buttons */}
@@ -70,10 +71,10 @@ const Tests = () => {
            <tbody className="">
              {testList.data &&
                testList.data?.map((test) => (
-                 <tr className="border-b border-border-100 text-gray-900 text-lg font-light">
+                 <tr key={`test-row-${test._id}`}className="border-b border-border-100 text-gray-900 text-lg font-light">
                    <td className="font-tables text-button-100 font-extrabold">
-                     <Link to={`/test/${test.id}`}>
-                       {test.testName ?? test.id}
+                     <Link to={`/test/${test._id}`}>
+                       {test.testName ?? test._id}
                      </Link>
                    </td>
                    <td className="">
@@ -88,7 +89,7 @@ const Tests = () => {
                        <span>{stringToCaps(test.testMode)}</span>
                      </div>
                    </td>
-                   <td className="">{test?.createdAt}</td>
+                   <td className="">{moment(test?.createdAt).format("MM/DD/YYYY")}</td>
                    <td className="">{test?.questionCount}</td>
                    <td className="">
                      <div className="flex justify-center gap-2 items-center">
@@ -137,7 +138,7 @@ const Tests = () => {
                          leaveFrom="transform opacity-100 scale-100"
                          leaveTo="transform opacity-0 scale-95"
                        >
-                         <Menu.Items className="p-2 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                         <Menu.Items className="p-2 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
                            <Menu.Item>
                              {({ active }) => (
                                <button
@@ -181,14 +182,14 @@ const Tests = () => {
          {selectedTest && (
            <DeleteModal
              title={`Deleting test ${
-               selectedTest?.testName ?? selectedTest?.id
+               selectedTest?.testName ?? selectedTest?._id
              }`}
              text={
                "Are you sure you want to delete this test? This change is permanent and you will lose your data forever."
              }
              endPoint="/tests"
              query="testList"
-             id={selectedTest?.id}
+             id={selectedTest?._id}
              open={open}
              setOpen={setOpen}
            />

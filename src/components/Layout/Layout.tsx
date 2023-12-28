@@ -26,16 +26,16 @@ const Layout = ({}) => {
     try {
       if (user?.sub) {
         let response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/usersData?id=${encodeURIComponent(
-            user?.sub
-          )}`
+          `${import.meta.env.VITE_API_URL}/usersData`, {params: {
+            userId: user.sub
+          }}
         );
 
         if (response.data.length === 0) {
           let response = await axios.post(
             `${import.meta.env.VITE_API_URL}/usersData`,
             {
-              id: user.sub,
+              userId: user.sub,
               usedQuestions: [],
               markedQuestions: [],
               correctQuestions: [],

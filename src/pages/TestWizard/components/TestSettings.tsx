@@ -1,15 +1,19 @@
 import { FormikProps, useFormikContext } from "formik";
-import { useEffect } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { OptionType } from "../../../types/FormTypes";
 import { TestWizardValuesProps } from "../hooks";
+import { UseQueryResult } from "react-query";
+
+type TestSettingsProps = {
+  userDataQuery: UseQueryResult<any, unknown>;
+};
 
 const animatedComponents = makeAnimated();
 
-const TestSettings = () => {
+const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
   const formik: FormikProps<TestWizardValuesProps> = useFormikContext();
-  useEffect(() => console.log(formik), [formik]);
+
   return (
     <div>
       <div className="flex flex-col gap-10">
@@ -81,6 +85,7 @@ const TestSettings = () => {
             </div>
             <div className="flex gap-1.5 items-center">
               <input
+                disabled={!(userDataQuery.data?.usedQuestions?.length > 0) || userDataQuery.data?.usedQuestions === undefined}
                 type="radio"
                 name="status"
                 id="status-used"
@@ -160,7 +165,7 @@ const TestSettings = () => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused"}
+                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
                   type="radio"
                   name="answer-status"
                   id="answer-status-incorrect"
@@ -183,7 +188,7 @@ const TestSettings = () => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused"}
+                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
                   type="radio"
                   name="answer-status"
                   id="answer-status-correct"
@@ -245,7 +250,7 @@ const TestSettings = () => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused"}
+                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
                   type="radio"
                   name="mark-status"
                   id="mark-status-marked"
@@ -268,7 +273,7 @@ const TestSettings = () => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused"}
+                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
                   type="radio"
                   name="mark-status"
                   id="mark-status-unmarked"

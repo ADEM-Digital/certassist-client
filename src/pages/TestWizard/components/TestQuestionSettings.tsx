@@ -3,48 +3,76 @@ import TestTopicOption from "./TestTopicOption";
 import { TestWizardValuesProps } from "../hooks";
 import { useEffect, useState } from "react";
 import TestSuptopicOption from "./TestSuptopicOption";
+import { QuestionDataType } from "../../../types/QuestionTypes";
+import axios from "axios";
+import { ScaleLoader } from "react-spinners";
+import { classNames } from "../../../utils/utils";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const topics = [
-  { id: 1, name: "Anatomy" },
-  { id: 2, name: "Behavioral Sciences" },
-  { id: 3, name: "Biochemistry" },
-  { id: 4, name: "Microbiology" },
-  { id: 5, name: "Immunology" },
-];
-
-type SubtopicDataType = { id: number; topicId: number; name: string };
-const subtopics: SubtopicDataType[] = [
-  { id: 1, topicId: 1, name: "Embryology" },
-  { id: 2, topicId: 1, name: "Histology" },
-  { id: 3, topicId: 1, name: "Neuroanatomy" },
-  { id: 4, topicId: 1, name: "Head and Neck" },
-  { id: 5, topicId: 1, name: "Upper Limb" },
-  { id: 6, topicId: 1, name: "Back" },
-  { id: 7, topicId: 1, name: "Thorax" },
-  { id: 8, topicId: 1, name: "Abdomen" },
-  { id: 9, topicId: 1, name: "Pelvis and Perineum" },
-  { id: 10, topicId: 1, name: "Lower Limb" },
-  { id: 11, topicId: 1, name: "Ethics and Professionalism" },
-  { id: 12, topicId: 2, name: "Psychology" },
-  { id: 13, topicId: 2, name: "Sociology" },
-  { id: 14, topicId: 2, name: "Ethics and Professionalism" },
-  { id: 15, topicId: 3, name: "Bacteria" },
-  { id: 16, topicId: 3, name: "Fungi" },
-  { id: 17, topicId: 3, name: "Viruses" },
-  { id: 18, topicId: 3, name: "Parasites" },
-  { id: 19, topicId: 3, name: "Antimicrobials" },
-  { id: 2, topicId: 4, name: "Cells and Organs of the Immune System" },
-  { id: 2, topicId: 4, name: "Innate Immunity" },
-  { id: 2, topicId: 4, name: "Antigen presentation and processing" },
-  { id: 2, topicId: 4, name: "Humoral Immunity" },
-];
+export type SubtopicDataType = {
+  _id: string | 0;
+  topic: string;
+  name: string;
+  totalQuestions: number;
+};
+export type TopicDataType = {
+  _id: string | 0;
+  name: string;
+  totalQuestions: number;
+};
 
 const TestQuestionSettings = () => {
-  const [subtopicsFilter, setSuptopicsFilter] = useState<SubtopicDataType[]>(
-    []
-  );
+  const { user } = useAuth0();
+  const [subtopicsFilter, setSuptopicsFilter] = useState<SubtopicDataType[]>();
+  const [topics, setTopics] = useState<TopicDataType[]>([]);
+  const [subtopics, setSubtopics] = useState<SubtopicDataType[]>();
+  const [availableQuestions, setAvailableQuestions] = useState<
+    QuestionDataType[]
+  >([]);
 
   const formik: FormikContextType<TestWizardValuesProps> = useFormikContext();
+
+  const getAvailableQuestions = async (testValues: TestWizardValuesProps) => {
+    try {
+      let response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/availablequestions`,
+        {
+          params: {
+            selectedDifficulties: testValues.selectedDifficulties,
+            selectedQuestionStatus: testValues.selectedQuestionStatus,
+            selectedAnswerStatus: testValues.selectedAnswerStatus,
+            selectedMarkStatus: testValues.selectedMarkStatus,
+            userId: user?.sub,
+          },
+        }
+      );
+      return setAvailableQuestions(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getAvailableOptions = async (
+    availableTopics: (string | undefined)[],
+    availableSubtopics: (string | undefined)[]
+  ) => {
+    try {
+      let response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/availableQuestionOptions`,
+        {
+          availableTopics,
+          availableSubtopics,
+          selectedDifficulties: formik.values.selectedDifficulties,
+          selectedQuestionStatus: formik.values.selectedQuestionStatus,
+          userId: user?.sub,
+        }
+      );
+      setTopics(response.data.topicsQuery);
+      setSubtopics(response.data.subtopicsQuery);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     // set state to all subtopics if all topics is selected
@@ -55,83 +83,166 @@ const TestQuestionSettings = () => {
       return setSuptopicsFilter(subtopics);
     }
 
-    let newSelectedSubtopicsFilter = subtopics.filter(
-      (subtopic) =>
-        formik.values.selectedTopics.findIndex(
-          (topicId) => topicId === subtopic.topicId
-        ) > -1
-    );
+    if (subtopics !== undefined) {
+      let newSelectedSubtopicsFilter = subtopics.filter(
+        (subtopic) =>
+          formik.values.selectedTopics.findIndex(
+            (topicId) => topicId === subtopic.topic
+          ) > -1
+      );
 
-    setSuptopicsFilter(newSelectedSubtopicsFilter);
-  }, [formik]);
+      setSuptopicsFilter(newSelectedSubtopicsFilter);
+    }
+  }, [formik, topics, subtopics]);
 
   useEffect(() => {
     // Check selectedSubtopics to see if any of them do no apply to the current selection
+    if (subtopicsFilter !== undefined) {
+      let newSelectedSubtopics = formik.values.selectedSubtopics.filter(
+        (subtopicName) =>
+          subtopicsFilter.findIndex((subtopic) => {
+            return subtopic._id === subtopicName;
+          }) > -1
+      );
 
-    let newSelectedSubtopics = formik.values.selectedSubtopics.filter(
-      (subtopicName) =>
-        subtopicsFilter.findIndex(
-          (subtopic) => subtopic.name === subtopicName
-        ) > -1
-    );
-
-    if (newSelectedSubtopics.length != formik.values.selectedSubtopics.length) {
-      formik.setFieldValue("selectedSubtopics", newSelectedSubtopics);
+      if (
+        newSelectedSubtopics.length != formik.values.selectedSubtopics.length
+      ) {
+        formik.setFieldValue("selectedSubtopics", newSelectedSubtopics);
+      }
     }
   }, [subtopicsFilter]);
+
+  useEffect(() => {
+    getAvailableQuestions(formik.values);
+  }, []);
+
+  useEffect(() => {
+    if (availableQuestions) {
+      let availableTopics = [
+        ...new Set(availableQuestions.map((question) => question.topic)),
+      ];
+      let availableSubtopics = [
+        ...new Set(availableQuestions.map((question) => question.subtopic)),
+      ];
+      if (availableTopics.length > 0 && availableSubtopics.length > 0) {
+        getAvailableOptions(availableTopics, availableSubtopics);
+      }
+    }
+  }, [availableQuestions]);
+
+  useEffect(() => {}, [topics, subtopics]);
 
   return (
     <div className="flex gap-5">
       {/* Topic Container */}
-      <div className="bg-white border-2 border-border-200">
+      <div
+        className={classNames(
+          topics.length === 0 ? "flex flex-col w-[32vw] min-h-[50vh]" : "",
+          "bg-white border-2 border-border-200"
+        )}
+      >
         <div className="flex items-center border-b border-border-200 py-5 px-4">
           <h1 className=" font-tables font-extrabold text-xl">Topics</h1>
         </div>
-        <div className="px-4 py-1">
-          <TestTopicOption
-            topic={{ id: 0, name: "All topics" }}
-            questionCount={806}
-            disabled={false}
-          />
-          {topics &&
-            topics.map((topic) => (
+        <div
+          className={classNames(
+            topics.length === 0
+              ? "flex-1 flex items-center justify-center"
+              : "",
+            "px-4 py-1"
+          )}
+        >
+          {topics.length === 0 && (
+            <ScaleLoader
+              color="#3B77BF"
+              loading={topics.length === 0}
+              aria-label="Loading topics"
+              width={10}
+            />
+          )}
+          {topics.length > 0 && (
+            <>
               <TestTopicOption
-                disabled={
-                  formik.values.selectedTopics.findIndex(
-                    (topicId) => topicId === 0
-                  ) > -1
-                }
-                key={`question-settings-topic-option-${topic.name}-${topic.id}`}
-                topic={topic}
-                questionCount={Math.floor(Math.random() * 806)}
+                topic={{
+                  _id: 0,
+                  name: "All topics",
+                  totalQuestions: availableQuestions.length,
+                }}
+                questionCount={availableQuestions.length}
+                disabled={false}
               />
-            ))}
+              {topics &&
+                topics.map((topic) => (
+                  <TestTopicOption
+                    disabled={
+                      formik.values.selectedTopics.findIndex(
+                        (topicId) => topicId === 0
+                      ) > -1
+                    }
+                    key={`question-settings-topic-option-${topic.name}-${topic._id}`}
+                    topic={topic}
+                    questionCount={topic.totalQuestions}
+                  />
+                ))}
+            </>
+          )}
         </div>
       </div>
       {/* Subtopic Container */}
-      <div className="bg-white border-2 border-border-200">
+      <div
+        className={classNames(
+          topics.length === 0 ? "flex flex-col w-[32vw] min-h-[50vh]" : "",
+          "bg-white border-2 border-border-200"
+        )}
+      >
         <div className="flex items-center border-b border-border-200 py-5 px-4">
           <h1 className=" font-tables font-extrabold text-xl">Subtopics</h1>
         </div>
-        <div className="px-4 py-1">
-          <TestSuptopicOption
-            subtopic={{ id: 0, topicId: 0, name: "All Questions" }}
-            questionCount={806}
-            disabled={false}
-          />
-          {subtopicsFilter.length > 0 &&
-            subtopicsFilter.map((subtopic) => (
+        <div
+          className={classNames(
+            topics.length === 0
+              ? "flex-1 flex items-center justify-center"
+              : "",
+            "px-4 py-1"
+          )}
+        >
+          {!subtopics && (
+            <ScaleLoader
+              color="#3B77BF"
+              loading={!subtopics}
+              aria-label="Loading topics"
+              width={10}
+            />
+          )}
+          {subtopics && subtopics.length > 0 && (
+            <>
               <TestSuptopicOption
-                key={`test-subtopics-option-${subtopic.name}-${subtopic.id}`}
-                subtopic={subtopic}
-                questionCount={Math.floor(Math.random() * 806)}
-                disabled={
-                  formik.values.selectedSubtopics.findIndex(
-                    (subtopicName) => subtopicName === ""
-                  ) > -1
-                }
+                subtopic={{
+                  _id: 0,
+                  topic: "",
+                  name: "All Questions",
+                  totalQuestions: availableQuestions.length,
+                }}
+                questionCount={availableQuestions.length}
+                disabled={false}
               />
-            ))}
+              {subtopicsFilter &&
+                subtopicsFilter.length > 0 &&
+                subtopicsFilter.map((subtopic) => (
+                  <TestSuptopicOption
+                    key={`test-subtopics-option-${subtopic.name}-${subtopic._id}`}
+                    subtopic={subtopic}
+                    questionCount={subtopic.totalQuestions}
+                    disabled={
+                      formik.values.selectedSubtopics.findIndex(
+                        (subtopicName) => subtopicName === ""
+                      ) > -1
+                    }
+                  />
+                ))}
+            </>
+          )}
         </div>
       </div>
     </div>

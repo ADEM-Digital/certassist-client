@@ -4,7 +4,7 @@ import { useState } from "react";
 import { UseQueryResult, useQuery } from "react-query";
 
 export type TestDataType = {
-  id: string;
+  _id: string;
   selectedDifficulties: Array<"easy" | "medium" | "hard">;
   selectedQuestionStatus: "all" | "used" | "unused";
   selectedAnswerStatus: "all" | "incorrect" | "correct";
@@ -30,14 +30,17 @@ export type TestDataType = {
 };
 
 export const useTests = () => {
-  const { user } = useAuth0()
+  const { user } = useAuth0();
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTest, setSelectedTest] = useState<TestDataType>();
+
   const getTests = async () => {
     try {
-      let response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/tests?user_id=${user?.sub}`
-      );
+      let response = await axios.get(`${import.meta.env.VITE_API_URL}/tests`, {
+        params: {
+          userId: user?.sub,
+        },
+      });
 
       return response.data;
     } catch (error) {
@@ -49,7 +52,7 @@ export const useTests = () => {
     "testList",
     getTests,
     {
-      enabled: user?.sub !== undefined
+      enabled: user?.sub !== undefined,
     }
   );
 

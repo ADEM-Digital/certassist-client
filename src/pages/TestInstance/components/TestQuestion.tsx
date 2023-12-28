@@ -50,8 +50,8 @@ const TestQuestion = () => {
           <p>{questionQuery.data?.question}</p>
           {/* Question Answers */}
           <div className="border border-testnav-100 border-b-[5px] p-2 w-fit my-4">
-            {questionQuery &&
-              questionQuery.data?.options.map((option, index) => {
+            {!!questionQuery.data &&
+              questionQuery.data?.options?.map((option, index) => {
                 let optionLetters = [
                   "A.",
                   "B.",
@@ -86,7 +86,7 @@ const TestQuestion = () => {
       </div>
 
       {/* Explanation */}
-      {testQuery.data?.testStatus === "completed" && (
+      {testQuery.data?.testStatus === "completed" && !!questionQuery.data && (
         <TestQuestionExplanation />
       )}
       <TestLabValuesSlideOver />

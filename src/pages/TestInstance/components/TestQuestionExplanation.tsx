@@ -27,14 +27,14 @@ const TestQuestionExplanation = () => {
         selectedAnswer === questionQuery.data?.correct_answer
           ? `You correctly chose ${
               optionLetters[
-                questionQuery.data?.options.findIndex(
+                questionQuery.data?.options?.findIndex(
                   (option) => option === selectedAnswer
                 )
               ]
             }`
           : selectedAnswer !== undefined ? `You incorrectly chose ${
             optionLetters[
-              questionQuery.data?.options.findIndex(
+              questionQuery.data?.options?.findIndex(
                 (option) => option === selectedAnswer
               )
             ]

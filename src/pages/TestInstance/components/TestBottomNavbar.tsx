@@ -8,9 +8,14 @@ import TestButton from "./TestButton";
 import EndTestModal from "../../../components/modals/EndTestModal";
 
 const TestBottomNavbar = () => {
-  const { selectedColor, testQuery, setEndTestModalOpen, endTestModalOpen } = useContext(
-    TestInstanceContext as Context<TestInstanceContextType>
-  );
+  const {
+    selectedColor,
+    testQuery,
+    setEndTestModalOpen,
+    endTestModalOpen,
+    selectedAnswer,
+    updateAnswerMutation,
+  } = useContext(TestInstanceContext as Context<TestInstanceContextType>);
 
   return (
     <div
@@ -31,12 +36,23 @@ const TestBottomNavbar = () => {
 
       {/* Stop */}
       <TestButton
-        onClick={() => {setEndTestModalOpen(true)}}
+        onClick={() => {
+          if (selectedAnswer) {
+            updateAnswerMutation.mutate(selectedAnswer);
+          }
+
+          setEndTestModalOpen(true);
+        }}
         icon={<StopIcon />}
         buttonText="End Block"
       />
 
-      <EndTestModal open={endTestModalOpen} setOpen={setEndTestModalOpen} title="Are you sere you want to end the test?" text="You won't be able to modify the test after clicking 'End Block'."/>
+      <EndTestModal
+        open={endTestModalOpen}
+        setOpen={setEndTestModalOpen}
+        title="Are you sere you want to end the test?"
+        text="You won't be able to modify the test after clicking 'End Block'."
+      />
     </div>
   );
 };

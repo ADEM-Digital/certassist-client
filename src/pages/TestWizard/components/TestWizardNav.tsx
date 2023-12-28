@@ -8,21 +8,26 @@ export type StepsType = {
   status: "active" | "inactive";
 }[];
 type TestWizardNavProps = {
-  steps: StepsType;
-  setWizardSteps: React.Dispatch<React.SetStateAction<StepsType>>;
+  steps: StepsType | undefined;
+  setWizardSteps: React.Dispatch<React.SetStateAction<StepsType | undefined>>;
 };
 
 const TestWizardNav = ({ steps, setWizardSteps }: TestWizardNavProps) => {
   const handleStepsUpdate = (stepNumber: number) => {
-    let newSteps = [...steps];
+    if (steps !== undefined) {
+      let newSteps = [...steps];
 
-    let currentStepIndex = newSteps.findIndex((step) => step.status === "active");
-    newSteps[currentStepIndex].status = "inactive";
-    let newStepIndex = newSteps.findIndex((step) => step.stepNumber === stepNumber);
-    newSteps[newStepIndex].status = "active";
+      let currentStepIndex = newSteps.findIndex(
+        (step) => step.status === "active"
+      );
+      newSteps[currentStepIndex].status = "inactive";
+      let newStepIndex = newSteps.findIndex(
+        (step) => step.stepNumber === stepNumber
+      );
+      newSteps[newStepIndex].status = "active";
 
-    setWizardSteps(newSteps);
-
+      setWizardSteps(newSteps);
+    }
   };
   return (
     <div className="flex gap-2.5">
