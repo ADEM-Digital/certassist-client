@@ -42,6 +42,9 @@ export default {
         body: ["Poppins"],
         tables: ["Roboto"],
       },
+      boxShadow: {
+        card: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+      }
     },
   },
   plugins: [require("@tailwindcss/forms")],
