@@ -20,6 +20,8 @@ const TestWizard = () => {
     submitTests,
     userDataQuery,
     isCreatingTest,
+    availableQuestions,
+    setAvailableQuestions,
   } = useTestWizard();
   const navigate = useNavigate();
 
@@ -64,9 +66,19 @@ const TestWizard = () => {
                 <TestSettings userDataQuery={userDataQuery} />
               )}
               {wizardSteps.find((step) => step.status === "active")
-                ?.stepNumber === 2 && <TestQuestionSettings />}
+                ?.stepNumber === 2 && (
+                <TestQuestionSettings
+                  availableQuestions={availableQuestions}
+                  setAvailableQuestions={setAvailableQuestions}
+                />
+              )}
               {wizardSteps.find((step) => step.status === "active")
-                ?.stepNumber === 3 && <TestModeSetttings />}
+                ?.stepNumber === 3 && (
+                <TestModeSetttings
+                  availableQuestions={availableQuestions}
+                  setAvailableQuestions={setAvailableQuestions}
+                />
+              )}
 
               <div className="flex gap-2.5">
                 <SecondaryButton

@@ -3,11 +3,11 @@ import TestTopicOption from "./TestTopicOption";
 import { TestWizardValuesProps } from "../hooks";
 import { useEffect, useState } from "react";
 import TestSuptopicOption from "./TestSuptopicOption";
-import { QuestionDataType } from "../../../types/QuestionTypes";
 import axios from "axios";
 import { ScaleLoader } from "react-spinners";
 import { classNames } from "../../../utils/utils";
 import { useAuth0 } from "@auth0/auth0-react";
+import { QuestionDataType } from "../../../types/QuestionTypes";
 
 export type SubtopicDataType = {
   _id: string | 0;
@@ -21,29 +21,31 @@ export type TopicDataType = {
   totalQuestions: number;
 };
 
-const TestQuestionSettings = () => {
+type TestQuestionSettingsProps = {
+  availableQuestions: QuestionDataType[];
+  setAvailableQuestions: React.Dispatch<
+    React.SetStateAction<QuestionDataType[]>
+  >;
+};
+
+const TestQuestionSettings = ({availableQuestions, setAvailableQuestions}: TestQuestionSettingsProps) => {
   const { user } = useAuth0();
   const [subtopicsFilter, setSuptopicsFilter] = useState<SubtopicDataType[]>();
   const [topics, setTopics] = useState<TopicDataType[]>([]);
   const [subtopics, setSubtopics] = useState<SubtopicDataType[]>();
-  const [availableQuestions, setAvailableQuestions] = useState<
-    QuestionDataType[]
-  >([]);
 
   const formik: FormikContextType<TestWizardValuesProps> = useFormikContext();
 
   const getAvailableQuestions = async (testValues: TestWizardValuesProps) => {
     try {
-      let response = await axios.get(
+      let response = await axios.post(
         `${import.meta.env.VITE_API_URL}/availablequestions`,
         {
-          params: {
-            selectedDifficulties: testValues.selectedDifficulties,
-            selectedQuestionStatus: testValues.selectedQuestionStatus,
-            selectedAnswerStatus: testValues.selectedAnswerStatus,
-            selectedMarkStatus: testValues.selectedMarkStatus,
-            userId: user?.sub,
-          },
+          selectedDifficulties: testValues.selectedDifficulties,
+          selectedQuestionStatus: testValues.selectedQuestionStatus,
+          selectedAnswerStatus: testValues.selectedAnswerStatus,
+          selectedMarkStatus: testValues.selectedMarkStatus,
+          userId: user?.sub,
         }
       );
       return setAvailableQuestions(response.data);
@@ -64,6 +66,8 @@ const TestQuestionSettings = () => {
           availableSubtopics,
           selectedDifficulties: formik.values.selectedDifficulties,
           selectedQuestionStatus: formik.values.selectedQuestionStatus,
+          selectedAnswerStatus: formik.values.selectedAnswerStatus,
+          selectedMarkStatus: formik.values.selectedMarkStatus,
           userId: user?.sub,
         }
       );
@@ -220,7 +224,7 @@ const TestQuestionSettings = () => {
               <TestSuptopicOption
                 subtopic={{
                   _id: 0,
-                  topic: "",
+                  topic: "all",
                   name: "All Questions",
                   totalQuestions: availableQuestions.length,
                 }}
@@ -236,7 +240,7 @@ const TestQuestionSettings = () => {
                     questionCount={subtopic.totalQuestions}
                     disabled={
                       formik.values.selectedSubtopics.findIndex(
-                        (subtopicName) => subtopicName === ""
+                        (subtopicId) => subtopicId === 0
                       ) > -1
                     }
                   />

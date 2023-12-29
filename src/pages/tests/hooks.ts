@@ -2,10 +2,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useState } from "react";
 import { UseQueryResult, useQuery } from "react-query";
+import { OptionType } from "../../types/FormTypes";
+import { TestAnalysisDataType } from "../../types/TestTypes";
 
 export type TestDataType = {
   _id: string;
-  selectedDifficulties: Array<"easy" | "medium" | "hard">;
+  selectedDifficulties: Array<OptionType>;
   selectedQuestionStatus: "all" | "used" | "unused";
   selectedAnswerStatus: "all" | "incorrect" | "correct";
   selectedMarkStatus: "all" | "marked" | "unmarked";
@@ -16,7 +18,7 @@ export type TestDataType = {
   questions: {
     id: string;
     answer: string | null;
-    correct: boolean | null;
+    correct: 1 | 0 | null;
     marked: boolean;
   }[];
   grade?: number;
@@ -27,6 +29,7 @@ export type TestDataType = {
   startedAt: Date | null;
   testTime: number | null;
   remainingTime: number | null;
+  analysis: TestAnalysisDataType
 };
 
 export const useTests = () => {

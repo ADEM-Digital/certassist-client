@@ -2,6 +2,8 @@ import { FormikContextType, useFormikContext } from "formik";
 import { TestWizardValuesProps } from "../hooks";
 import CreatableSelect from "react-select/creatable";
 import { OptionType } from "../../../types/FormTypes";
+import { QuestionDataType } from "../../../types/QuestionTypes";
+import { availableQuestionOnSelectedTopicsSubtopic } from "../../../utils/utils";
 const questionOptions: OptionType[] = [
   { value: "10", label: "10" },
   { value: "20", label: "20" },
@@ -14,7 +16,17 @@ const questionOptions: OptionType[] = [
   { value: "90", label: "90" },
   { value: "100", label: "100" },
 ];
-const TestModeSetttings = () => {
+
+type TestModeSettingsProps = {
+  availableQuestions: QuestionDataType[];
+  setAvailableQuestions: React.Dispatch<
+    React.SetStateAction<QuestionDataType[]>
+  >;
+};
+
+const TestModeSetttings = ({
+  availableQuestions,
+}: TestModeSettingsProps) => {
   const formik: FormikContextType<TestWizardValuesProps> = useFormikContext();
   return (
     <div className="flex flex-col gap-10">
@@ -97,7 +109,9 @@ const TestModeSetttings = () => {
           placeholder="Enter a name for the test"
           className="bg-transparent border-0 border-b border-border-300  w-[30vw] focus:ring-0"
           value={formik.values.testName}
-          onChange={(e) => formik.setFieldValue("testName", e.currentTarget.value)}
+          onChange={(e) =>
+            formik.setFieldValue("testName", e.currentTarget.value)
+          }
         />
       </div>
 
@@ -111,7 +125,24 @@ const TestModeSetttings = () => {
         </label>
         <div className="flex flex-col gap-5">
           <CreatableSelect
-            value={formik.values.questionCount}
+            value={
+              Number(formik.values.questionCount.value) >
+              availableQuestionOnSelectedTopicsSubtopic(
+                availableQuestions,
+                formik.values.selectedSubtopics
+              )
+                ? {
+                    label: availableQuestionOnSelectedTopicsSubtopic(
+                      availableQuestions,
+                      formik.values.selectedSubtopics
+                    ),
+                    value: availableQuestionOnSelectedTopicsSubtopic(
+                      availableQuestions,
+                      formik.values.selectedSubtopics
+                    ),
+                  }
+                : formik.values.questionCount
+            }
             onChange={(e) => formik.setFieldValue("questionCount", e)}
             isClearable
             options={questionOptions}
@@ -128,7 +159,12 @@ const TestModeSetttings = () => {
           </p>
           <p className="font-light font-tables text-sm">
             Total available questions:{" "}
-            <span className="font-extrabold">806</span>
+            <span className="font-extrabold">
+              {availableQuestionOnSelectedTopicsSubtopic(
+                availableQuestions,
+                formik.values.selectedSubtopics
+              )}
+            </span>
           </p>
         </div>
       </div>

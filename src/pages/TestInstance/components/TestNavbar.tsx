@@ -1,9 +1,9 @@
 import { Context, useContext } from "react";
 import { TestInstanceContext, TestInstanceContextType } from "../hooks";
 import MarkFlagIcon from "../../../components/icons/MarkFlagIcon";
-import LabsIcon from "../../../components/icons/LabsIcon";
-import NoteIcon from "../../../components/icons/NoteIcon";
-import CalcIcon from "../../../components/icons/CalcIcon";
+// import LabsIcon from "../../../components/icons/LabsIcon";
+// import NoteIcon from "../../../components/icons/NoteIcon";
+// import CalcIcon from "../../../components/icons/CalcIcon";
 import InvertIcon from "../../../components/icons/InvertIcon";
 import { classNames } from "../../../utils/utils";
 import TestButton from "./TestButton";
@@ -18,8 +18,8 @@ const TestNavbar = () => {
     setSelectedAnswer,
     updateAnswerMutation,
     updateMarkedStatus,
-    setTestLabValuesOpen,
-    testLabValuesOpen,
+    // setTestLabValuesOpen,
+    // testLabValuesOpen,
     setSelectedColor,
     selectedColor
   } = useContext(TestInstanceContext as Context<TestInstanceContextType>);
@@ -100,13 +100,13 @@ const TestNavbar = () => {
       {/* Right UI */}
       <div className="flex justify-center">
         {/* Labs */}
-        <TestButton onClick={() => setTestLabValuesOpen(!testLabValuesOpen)} icon={<LabsIcon />} buttonText="Lab Values"/>
+        {/* <TestButton onClick={() => setTestLabValuesOpen(!testLabValuesOpen)} icon={<LabsIcon />} buttonText="Lab Values"/> */}
         
         {/* Notes */}
-        <TestButton icon={<NoteIcon />} buttonText="Notes"/>
+        {/* <TestButton icon={<NoteIcon />} buttonText="Notes"/> */}
         
         {/* Calculator */}
-        <TestButton icon={<CalcIcon />} buttonText="Calculator"/>
+        {/* <TestButton icon={<CalcIcon />} buttonText="Calculator"/> */}
         
         {/* Invert */}
         <TestButton onClick={() => setSelectedColor(selectedColor === "main" ? "reversed" : "main")} icon={<InvertIcon />} buttonText="Reverse Color"/>

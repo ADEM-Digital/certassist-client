@@ -6,8 +6,9 @@ import { NavigateFunction } from "react-router-dom";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UseQueryResult, useQuery } from "react-query";
-import { deepCopyObjectArray, parseOptionTypes } from "../../utils/utils";
+import { deepCopyObjectArray } from "../../utils/utils";
 import { UserDataType } from "../../types/UserDataType";
+import { QuestionDataType } from "../../types/QuestionTypes";
 
 export type TestWizardValuesProps = {
   selectedDifficulties: OptionType[];
@@ -32,6 +33,9 @@ export const useTestWizard = () => {
   // @ts-ignore
   const [wizardSteps, setWizardSteps] = useState<StepsType | undefined>(deepCopyObjectArray(initialSteps));
   const [isCreatingTest, setIsCreatingTest] = useState<boolean>(false);
+  const [availableQuestions, setAvailableQuestions] = useState<
+    QuestionDataType[]
+  >([]);
 
   const initialValues: TestWizardValuesProps = {
     selectedDifficulties: [],
@@ -51,10 +55,9 @@ export const useTestWizard = () => {
         `${import.meta.env.VITE_API_URL}/questions/ids`,
         {
           ...testValues,
-          selectedDifficulties: parseOptionTypes(
-            testValues.selectedDifficulties
-          ),
+          
           questionCount: Number(testValues.questionCount.value),
+          userId: user?.sub
         }
       );
 
@@ -151,6 +154,8 @@ export const useTestWizard = () => {
     submitTests,
     userDataQuery,
     isCreatingTest,
-    setIsCreatingTest
+    setIsCreatingTest,
+    availableQuestions,
+    setAvailableQuestions
   };
 };

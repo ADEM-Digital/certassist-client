@@ -77,7 +77,7 @@ const Tests = () => {
                     className="border-b border-border-100 text-gray-900 text-lg font-light"
                   >
                     <td className="font-tables text-button-100 font-extrabold">
-                      <Link to={`/test/${test._id}`}>
+                      <Link to={test.testStatus === "pending" ? `/test/${test._id}` : `/tests/analysis/${test._id}`}>
                         {test.testName ?? test._id}
                       </Link>
                     </td>
@@ -112,27 +112,30 @@ const Tests = () => {
                     <td className="">
                       <span
                         className={classNames(
-                          test.grade && test.grade < 70
+                          test.grade !== undefined  && test.grade < 70
                             ? "bg-grades-low text-white"
                             : "",
-                          test.grade && test.grade >= 70 && test.grade < 80
+                          test.grade !== undefined  && test.grade >= 70 && test.grade < 80
                             ? "bg-grades-average text-gray-900"
                             : "",
-                          test.grade && test.grade >= 80
+                          test.grade !== undefined  && test.grade >= 80
                             ? "bg-grades-good text-white"
                             : "",
-                          test.grade === undefined
+                          test.grade !== undefined  === undefined
                             ? " bg-button-100 text-white"
                             : "",
                           "py-1.5 px-2.5 font-extrabold rounded-[3px]"
                         )}
                       >
-                        {test.grade ? `${test.grade}%` : "-"}
+                        {test.grade !== undefined ? `${test.grade.toFixed(0)}%` : "-"}
                       </span>
                     </td>
                     <td className="flex justify-center items-center gap-2 align-middle">
-                      <button onClick={() => navigate(`/tests/analysis/${test._id}`)}>
-                        <AnalysisIcon />
+                      <button
+                        disabled={test.testStatus !== "completed"}
+                        onClick={() => navigate(`/tests/analysis/${test._id}`)}
+                      >
+                        <AnalysisIcon strokeColor={ test.testStatus !== "completed" ? "#D9D9D9" : undefined}/>
                       </button>
 
                       <Menu
