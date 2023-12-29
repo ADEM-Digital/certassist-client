@@ -2,6 +2,7 @@ import { FormikContextType, useFormikContext } from "formik";
 import { TestWizardValuesProps } from "../hooks";
 import { classNames, sentenceToCaps } from "../../../utils/utils";
 import { SubtopicDataType } from "./TestQuestionSettings";
+import { useEffect } from "react";
 
 type TestSubtopicOptionProps = {
   subtopic: SubtopicDataType;
@@ -17,21 +18,21 @@ const TestSuptopicOption = ({
   const formik: FormikContextType<TestWizardValuesProps> = useFormikContext();
 
   const handleChange = (checked: boolean) => {
-    if (subtopic._id === 0 && checked) return formik.setFieldValue("selectedSubtopics", ['']);
+    if (subtopic._id === 0 && checked) return formik.setFieldValue("selectedSubtopics", [0]);
     let newSubtopics = formik.values.selectedSubtopics;
     if (checked) {
-      newSubtopics.push(subtopic.name);
+      newSubtopics.push(subtopic._id);
     } else {
-      let foundIndex = newSubtopics.findIndex((subtopicName) => subtopicName === subtopic.name);
+      let foundIndex = newSubtopics.findIndex((subtopicId) => subtopicId === subtopic._id);
       if (foundIndex > -1) newSubtopics.splice(foundIndex, 1);
     }
     formik.setFieldValue("selectedSubtopics", newSubtopics);
   };
 
-  // useEffect(() => {
-  //   console.log("Subtopic Option")
-  //   console.log(formik.values.selectedSubtopics, subtopic.name)
-  // }, [])
+  useEffect(() => {
+    console.log("Subtopic Option")
+    console.log(formik.values)
+  }, [formik])
 
   return (
     <div className="flex justify-between items-center w-[30vw] h-[7vh] font-body font-light">
@@ -43,10 +44,10 @@ const TestSuptopicOption = ({
           type="checkbox"
           name={`subtopics-${subtopic.name}`}
           value={subtopic._id}
-          checked={formik.values.selectedSubtopics.findIndex((subtopicName) => subtopicName === subtopic.name) > -1}
+          checked={formik.values.selectedSubtopics.findIndex((subtopicId) => subtopicId === subtopic._id) > -1}
         />
         <label
-          htmlFor={`subtopics-${subtopic.name}`}
+          htmlFor={`subtopics-${subtopic.name}-${subtopic._id}`}
           className={classNames(
             disabled ? "text-gray-400" : "text-gray-900",
             formik.values.selectedSubtopics.findIndex(

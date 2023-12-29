@@ -4,6 +4,7 @@ import makeAnimated from "react-select/animated";
 import { OptionType } from "../../../types/FormTypes";
 import { TestWizardValuesProps } from "../hooks";
 import { UseQueryResult } from "react-query";
+import { useEffect } from "react";
 
 type TestSettingsProps = {
   userDataQuery: UseQueryResult<any, unknown>;
@@ -14,6 +15,28 @@ const animatedComponents = makeAnimated();
 const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
   const formik: FormikProps<TestWizardValuesProps> = useFormikContext();
 
+  useEffect(() => {
+    console.log(formik.values.selectedDifficulties)
+    if (formik.values.selectedDifficulties.length === 0) {
+      formik.setFieldValue("selectedDifficulties", [
+        { value: "all", label: "All" },
+      ]);
+    } else if (
+      formik.values.selectedDifficulties.length > 1 &&
+      formik.values.selectedDifficulties.findIndex(
+        (diff) => diff.value === "all"
+      ) > -1
+    ) {
+      formik.setFieldValue(
+        "selectedDifficulties",
+        formik.values.selectedDifficulties.filter(
+          (diff) => diff.value !== "all"
+        )
+      );
+    }
+  }, [formik]);
+
+ 
   return (
     <div>
       <div className="flex flex-col gap-10">
@@ -32,18 +55,23 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
               placeholder: () => " text-sm font-tables",
               menuList: () => "text-sm font-tables",
             }}
-            onChange={(e) =>
+            onChange={(value, meta) => {
+          
+              if (meta.option?.value === "all") {
+                return formik.setFieldValue("selectedDifficulties", [{label: "All", value: "all"}])
+              }
+
               formik.setFieldValue(
                 "selectedDifficulties",
-                e as OptionType[],
+                value as OptionType[],
                 false
-              )
-            }
+              );
+            }}
             closeMenuOnSelect={false}
             components={animatedComponents}
-            defaultValue={null}
             isMulti
             options={[
+              { value: "all", label: "All" },
               { value: "easy", label: "Easy" },
               { value: "medium", label: "Medium" },
               { value: "hard", label: "Hard" },
@@ -85,7 +113,11 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
             </div>
             <div className="flex gap-1.5 items-center">
               <input
-                disabled={!(userDataQuery.data?.usedQuestions?.length > 0) || userDataQuery.data?.usedQuestions === undefined}
+                disabled={
+                  userDataQuery.data && userDataQuery.data[0].usedQuestions
+                    ? userDataQuery.data[0].usedQuestions.length === 0
+                    : false
+                }
                 type="radio"
                 name="status"
                 id="status-used"
@@ -112,13 +144,15 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
                 name="status"
                 id="status-unused"
                 value="unused"
-                onChange={(e) =>
+                onChange={(e) => {
+                  formik.setFieldValue("selectedAnswerStatus", "all");
+                  formik.setFieldValue("selectedMarkStatus", "all");
                   formik.setFieldValue(
                     "selectedQuestionStatus",
                     e.currentTarget.value,
                     false
-                  )
-                }
+                  );
+                }}
                 checked={formik.values.selectedQuestionStatus === "unused"}
               />
               <label
@@ -142,7 +176,6 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
             <div className="flex justify-between items-center gap-5">
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused"}
                   type="radio"
                   name="answer-status"
                   id="answer-status-all"
@@ -165,7 +198,13 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
+                  disabled={
+                    formik.values?.selectedQuestionStatus === "unused" ||
+                    (userDataQuery.data &&
+                    userDataQuery?.data[0]?.incorrectQuestions
+                      ? userDataQuery?.data[0]?.incorrectQuestions.length === 0
+                      : false)
+                  }
                   type="radio"
                   name="answer-status"
                   id="answer-status-incorrect"
@@ -188,7 +227,13 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
+                  disabled={
+                    formik.values?.selectedQuestionStatus === "unused" ||
+                    (userDataQuery.data &&
+                    userDataQuery.data[0]?.correctQuestions
+                      ? userDataQuery.data[0].correctQuestions.length === 0
+                      : false)
+                  }
                   type="radio"
                   name="answer-status"
                   id="answer-status-correct"
@@ -227,7 +272,6 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
             <div className="flex justify-between items-center gap-5">
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused"}
                   type="radio"
                   name="mark-status"
                   id="mark-status-all"
@@ -250,7 +294,13 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
+                  disabled={
+                    formik.values?.selectedQuestionStatus === "unused" ||
+                    (userDataQuery.data &&
+                    userDataQuery.data[0]?.markedQuestions
+                      ? userDataQuery.data[0].markedQuestions.length === 0
+                      : false)
+                  }
                   type="radio"
                   name="mark-status"
                   id="mark-status-marked"
@@ -273,7 +323,13 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <input
-                  disabled={formik.values?.selectedQuestionStatus === "unused" || userDataQuery.data?.usedQuestions === undefined}
+                  disabled={
+                    formik.values?.selectedQuestionStatus === "unused" ||
+                    (userDataQuery.data &&
+                    userDataQuery.data[0]?.markedQuestions
+                      ? userDataQuery.data[0].markedQuestions.length === 0
+                      : false)
+                  }
                   type="radio"
                   name="mark-status"
                   id="mark-status-unmarked"

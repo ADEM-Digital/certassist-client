@@ -151,7 +151,7 @@ export const useTestInstance = (testId: string | undefined) => {
         }
       );
 
-      navigate("/");
+      navigate(`/tests/analysis/${testId}`);
       return response.data
     } catch (error) {
       console.log(error);
