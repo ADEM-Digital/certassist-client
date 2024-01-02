@@ -10,10 +10,24 @@ export type DifficultyPerformanceType = {
     difficulty: "easy" | "medium" | "hard";
     performance: number
 }
+
+export type GeneralPerformanceType = {
+  _id: string;
+  totalQuestions: number;
+  correctAnswers: number;
+  topic?: string;
+  subtopic:  string;
+  performance: number;
+}
+
+
+
 export type DashboardDataType = {
     userData: UserDataType,
     questionCount: number,
-    difficultyPerformanceResult: DifficultyPerformanceType[]
+    difficultyPerformanceResult: DifficultyPerformanceType[],
+    topicPerformanceResult: GeneralPerformanceType[],
+    subtopicPerformanceResult: GeneralPerformanceType[],
 } 
 export const useDashboard = () => {
   const { user } = useAuth0();

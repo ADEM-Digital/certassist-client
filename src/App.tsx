@@ -30,7 +30,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
         </Routes>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </>
   );
