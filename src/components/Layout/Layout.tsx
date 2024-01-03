@@ -6,13 +6,20 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect } from "react";
 import axios from "axios";
+import DashboardIcon from "../icons/DashboardIcon";
 
 const sidebarMenu = [
   {
     path: "/",
-    routeName: "tests",
-    icon: <TestIcon height={40} width={40} />,
+    routeName: "dashboard",
+    icon: <DashboardIcon />,
     selected: true,
+  },
+  {
+    path: "/tests",
+    routeName: "tests",
+    icon: <TestIcon width={40} height={40} />,
+    selected: false,
   },
 ];
 

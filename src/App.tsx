@@ -5,9 +5,9 @@ import TestWizard from "./pages/TestWizard/TestWizard";
 import { QueryClient, QueryClientProvider } from "react-query";
 import TestInstance from "./pages/TestInstance/TestInstance";
 import { ReactQueryDevtools } from "react-query/devtools";
-
 import Login from "./pages/Login/Login";
 import TestInstanceAnalysis from "./pages/TestInstanceAnalysis/TestInstanceAnalysis";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 
 const queryClient = new QueryClient();
@@ -19,7 +19,8 @@ function App() {
         <Routes>
           <>
             <Route path="/" element={<Layout />}>
-              <Route path="/" element={<Tests />} />
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/tests" element={<Tests />} />
               <Route path="/tests/new" element={<TestWizard />} />
               <Route path="/tests/analysis/:id" element={<TestInstanceAnalysis />} />
             </Route>

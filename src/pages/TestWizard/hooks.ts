@@ -106,7 +106,7 @@ export const useTestWizard = () => {
 
       console.log(response.data);
       setIsCreatingTest(false);
-      navigate("/");
+      navigate("/tests");
     } catch (error) {
       setIsCreatingTest(false);
       console.log(error);
