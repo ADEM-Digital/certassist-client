@@ -5,7 +5,6 @@ import TestWizard from "./pages/TestWizard/TestWizard";
 import { QueryClient, QueryClientProvider } from "react-query";
 import TestInstance from "./pages/TestInstance/TestInstance";
 import { ReactQueryDevtools } from "react-query/devtools";
-
 import Login from "./pages/Login/Login";
 import TestInstanceAnalysis from "./pages/TestInstanceAnalysis/TestInstanceAnalysis";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -30,7 +29,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
         </Routes>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
   );
