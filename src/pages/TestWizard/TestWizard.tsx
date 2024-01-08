@@ -44,7 +44,7 @@ const TestWizard = () => {
     }
   };
 
-  useEffect(() => {}, [userDataQuery]);
+
 
   return (
     <div

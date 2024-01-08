@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import TestSuptopicOption from "./TestSuptopicOption";
 import axios from "axios";
 import { ScaleLoader } from "react-spinners";
-import { classNames } from "../../../utils/utils";
+import { availableQuestionsOnSelectedTopic, classNames } from "../../../utils/utils";
 import { useAuth0 } from "@auth0/auth0-react";
 import { QuestionDataType } from "../../../types/QuestionTypes";
 
@@ -109,9 +109,16 @@ const TestQuestionSettings = ({availableQuestions, setAvailableQuestions}: TestQ
           }) > -1
       );
 
+      if (formik.values.selectedSubtopics.includes(0)) {
+        newSelectedSubtopics.push(0)
+      }
+
+      
       if (
         newSelectedSubtopics.length != formik.values.selectedSubtopics.length
       ) {
+        console.log(newSelectedSubtopics)
+        console.log(formik.values.selectedSubtopics);
         formik.setFieldValue("selectedSubtopics", newSelectedSubtopics);
       }
     }
@@ -226,9 +233,9 @@ const TestQuestionSettings = ({availableQuestions, setAvailableQuestions}: TestQ
                   _id: 0,
                   topic: "all",
                   name: "All Questions",
-                  totalQuestions: availableQuestions.length,
+                  totalQuestions: availableQuestionsOnSelectedTopic(availableQuestions, formik.values.selectedTopics),
                 }}
-                questionCount={availableQuestions.length}
+                questionCount={availableQuestionsOnSelectedTopic(availableQuestions, formik.values.selectedTopics)}
                 disabled={false}
               />
               {subtopicsFilter &&

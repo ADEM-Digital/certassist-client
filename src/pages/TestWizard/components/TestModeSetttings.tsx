@@ -126,18 +126,21 @@ const TestModeSetttings = ({
         <div className="flex flex-col gap-5">
           <CreatableSelect
             value={
-              Number(formik.values.questionCount.value) >
+              formik.values.questionCount && Number(formik.values.questionCount.value) >
               availableQuestionOnSelectedTopicsSubtopic(
                 availableQuestions,
+                formik.values.selectedTopics,
                 formik.values.selectedSubtopics
               )
                 ? {
                     label: availableQuestionOnSelectedTopicsSubtopic(
                       availableQuestions,
+                      formik.values.selectedTopics,
                       formik.values.selectedSubtopics
                     ),
                     value: availableQuestionOnSelectedTopicsSubtopic(
                       availableQuestions,
+                      formik.values.selectedTopics,
                       formik.values.selectedSubtopics
                     ),
                   }
@@ -162,6 +165,7 @@ const TestModeSetttings = ({
             <span className="font-extrabold">
               {availableQuestionOnSelectedTopicsSubtopic(
                 availableQuestions,
+                formik.values.selectedTopics,
                 formik.values.selectedSubtopics
               )}
             </span>

@@ -2,7 +2,7 @@ import { FormikContextType, useFormikContext } from "formik";
 import { TestWizardValuesProps } from "../hooks";
 import { classNames, sentenceToCaps } from "../../../utils/utils";
 import { SubtopicDataType } from "./TestQuestionSettings";
-import { useEffect } from "react";
+
 
 type TestSubtopicOptionProps = {
   subtopic: SubtopicDataType;
@@ -28,11 +28,6 @@ const TestSuptopicOption = ({
     }
     formik.setFieldValue("selectedSubtopics", newSubtopics);
   };
-
-  useEffect(() => {
-    console.log("Subtopic Option")
-    console.log(formik.values)
-  }, [formik])
 
   return (
     <div className="flex justify-between items-center w-[30vw] h-[7vh] font-body font-light">

@@ -56,6 +56,19 @@ const Layout = ({}) => {
       console.log(error);
     }
   };
+
+  const checkSubscription = async () => {
+    try {
+      let response = await axios.get(`${import.meta.env.VITE_API_URL}/check-subscription/${user?.email}`);
+
+      if(response.data && response.data.length < 1) {
+        navigate("/pricing");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth0();
   
@@ -63,12 +76,17 @@ const Layout = ({}) => {
     navigate("/login");
   }
 
+  
+
   const location = useLocation();
 
   useEffect(() => {
     if (user?.sub) {
       checkUserData();
+      checkSubscription();
     }
+
+
   }, [user]);
 
   return (
