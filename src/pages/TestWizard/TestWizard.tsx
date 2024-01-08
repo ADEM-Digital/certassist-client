@@ -8,7 +8,6 @@ import SecondaryButton from "../../components/buttons/SecondaryButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import MainButton from "../../components/buttons/MainButton";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { ScaleLoader } from "react-spinners";
 import { classNames } from "../../utils/utils";
 
