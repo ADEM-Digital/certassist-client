@@ -29,7 +29,7 @@ export type TestDataType = {
   startedAt: Date | null;
   testTime: number | null;
   remainingTime: number | null;
-  analysis: TestAnalysisDataType
+  analysis: TestAnalysisDataType;
 };
 
 export const useTests = () => {

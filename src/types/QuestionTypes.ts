@@ -6,4 +6,5 @@ export type QuestionDataType = {
   explanation?: string;
   topic?: string;
   subtopic?: string;
+  incorrect_explanations?: string[];
 };

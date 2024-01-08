@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import Login from "./pages/Login/Login";
 import TestInstanceAnalysis from "./pages/TestInstanceAnalysis/TestInstanceAnalysis";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import PricingSelection from "./pages/PricingSelection/PricingSelection";
 
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ function App() {
               <Route path="/tests/analysis/:id" element={<TestInstanceAnalysis />} />
             </Route>
             <Route path="/test/:id" element={<TestInstance />} />
+            <Route path="/pricing" element={<PricingSelection />} />
           </>
 
           <Route path="/login" element={<Login />} />

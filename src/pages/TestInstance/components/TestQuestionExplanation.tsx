@@ -23,26 +23,40 @@ const TestQuestionExplanation = () => {
   return (
     <div className="flex flex-col gap-2 mt-2">
       <h1>
-        {!!questionQuery.data ? (
-        selectedAnswer === questionQuery.data?.correct_answer
-          ? `You correctly chose ${
-              optionLetters[
-                questionQuery.data?.options?.findIndex(
-                  (option) => option === selectedAnswer
-                )
-              ]
-            }`
-          : selectedAnswer !== undefined ? `You incorrectly chose ${
-            optionLetters[
-              questionQuery.data?.options?.findIndex(
-                (option) => option === selectedAnswer
-              )
-            ]
-          }.`: "You didn't choose an answer."): ""}
+        {!!questionQuery.data
+          ? selectedAnswer === questionQuery.data?.correct_answer
+            ? `You correctly chose ${
+                optionLetters[
+                  questionQuery.data?.options?.findIndex(
+                    (option) => option === selectedAnswer
+                  )
+                ]
+              }`
+            : selectedAnswer !== undefined
+            ? `You incorrectly chose ${
+                optionLetters[
+                  questionQuery.data?.options?.findIndex(
+                    (option) => option === selectedAnswer
+                  )
+                ]
+              }.`
+            : "You didn't choose an answer."
+          : ""}
       </h1>
-      <div className={classNames(!!questionQuery.data ? (selectedAnswer === questionQuery.data.correct_answer ? " border-grades-good" : " border-grades-low") : "" , "pl-2 border-l-4")}>
+      <div
+        className={classNames(
+          " border-grades-good",
+          "pl-2 border-l-4"
+        )}
+      >
         {questionQuery.data?.explanation}
       </div>
+      {questionQuery.data?.incorrect_explanations &&
+        questionQuery.data?.incorrect_explanations.map((explanation) => (
+          <div className={classNames(" border-grades-low", "pl-2 border-l-4")}>
+            <span dangerouslySetInnerHTML={{__html: explanation}}></span>
+          </div>
+        ))}
     </div>
   );
 };

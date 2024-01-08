@@ -54,13 +54,20 @@ export function testCorrectIncorrectCount(test: TestDataType) {
 
 export function availableQuestionOnSelectedTopicsSubtopic(
   availableQuestions: QuestionDataType[],
+  selectedTopics: (string | 0)[],
   selectedSubTopics: (string | 0)[]
 ) {
+  let newAvailableQuestions = availableQuestions;
+  // Filter by topics
+  if (!selectedTopics.includes(0)) {
+    newAvailableQuestions = newAvailableQuestions.filter((question) => question.topic ? selectedTopics.includes(question.topic) : false);
+  }
+
   // Filter only by subtopics. Available subtopics are already filtered by selected topics so theres no need to filter by topic again.
   if (selectedSubTopics.findIndex((subtopic) => subtopic === 0) > -1)
-    return availableQuestions.length;
+    return newAvailableQuestions.length;
 
-  return availableQuestions.filter(
+  return newAvailableQuestions.filter(
     (question) =>
       selectedSubTopics.findIndex(
         (subtopic) => subtopic === question.subtopic
@@ -91,6 +98,19 @@ export function parseUserDataToStats(userData: UserDataType | undefined) {
     percentageCorrect,
     percentageIncorrect,
     correctCount,
-    incorrectCount
+    incorrectCount,
+  };
+}
+
+export function availableQuestionsOnSelectedTopic(
+  questions: QuestionDataType[],
+  selectedTopics: (string | 0)[]
+) {
+  if (selectedTopics.length === 0 || selectedTopics.includes(0)) {
+    return questions.length;
+  } else {
+    return questions.filter((question) =>
+      question.topic ? selectedTopics.includes(question.topic) : false
+    ).length;
   }
 }
