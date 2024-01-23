@@ -20,7 +20,7 @@ const OverallPerformanceBySuptopic = ({DashboardDataQuery} : OverallPerformanceB
               <tr>
                 <th className="w-[12.5%]">Topic</th>
                 <th className="w-[12.5%] text-center">Percentage</th>
-                <th className="text-left">Performance</th>
+                <th className="hidden lg:table-cell text-left">Performance</th>
               </tr>
             </thead>
             <tbody>
@@ -56,7 +56,7 @@ const OverallPerformanceBySuptopic = ({DashboardDataQuery} : OverallPerformanceB
                         </div>
                       )}
                     </td>
-                    <td className="">
+                    <td className="hidden lg:table-cell">
                       {subtopic && (
                         <progress
                           className={classNames(

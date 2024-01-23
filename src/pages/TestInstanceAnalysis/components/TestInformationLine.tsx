@@ -4,7 +4,7 @@ type TestInformationLineProps = {
 }
 const TestInformationLine = ({description, value} : TestInformationLineProps) => {
   return (
-    <div className=" font-body text-[0.8vw] flex gap-1 items-center text-center justify-between">
+    <div className=" font-body text-xs flex gap-1 items-center text-center justify-between">
       <div className="font-body flex gap-1 items-center text-center">
         <p className=" font-light leading-normal">{description}</p>
       </div>

@@ -1,4 +1,5 @@
 export type QuestionDataType = {
+  _id?: string;
   id: string;
   question: string;
   options: string[];
@@ -7,4 +8,5 @@ export type QuestionDataType = {
   topic?: string;
   subtopic?: string;
   incorrect_explanations?: string[];
+  imageUrl?: string;
 };

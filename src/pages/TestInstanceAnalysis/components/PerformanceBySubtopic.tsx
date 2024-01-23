@@ -18,8 +18,8 @@ const PerformanceBySubtopic = ({ testQuery }: PerformanceByTopicProps) => {
               <tr>
                 <th className="w-[12.5%]">Subtopic</th>
                 <th className="w-[12.5%]">Percentage</th>
-                <th className="text-left">Performance</th>
-                <th className="w-[12.5%]">Questions</th>
+                <th className="hidden md:table-cell text-left">Performance</th>
+                <th className="hidden md:table-cell w-[12.5%]">Questions</th>
               </tr>
             </thead>
             <tbody>
@@ -63,13 +63,13 @@ const PerformanceBySubtopic = ({ testQuery }: PerformanceByTopicProps) => {
                               ? "progress-green"
                               : "",
 
-                            "w-full h-[30.87px]"
+                            "hidden md:table-cell w-full h-[30.87px]"
                           )}
                           value={topic.score}
                         />
                       )}
                     </td>
-                    <td>
+                    <td className="hidden md:table-cell">
                       {topic && (
                         <span>
                           {topic?.correctCount}/

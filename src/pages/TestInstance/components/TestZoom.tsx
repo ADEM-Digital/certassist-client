@@ -37,7 +37,7 @@ const TestZoom = () => {
           A
         </button>
       </div>
-      Text Zoom
+      <span className="hidden lg:block">Text Zoom</span>
     </div>
   );
 };
