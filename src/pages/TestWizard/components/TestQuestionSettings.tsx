@@ -145,12 +145,12 @@ const TestQuestionSettings = ({availableQuestions, setAvailableQuestions}: TestQ
   useEffect(() => {}, [topics, subtopics]);
 
   return (
-    <div className="flex gap-5">
+    <div className="flex flex-col md:flex-row gap-5">
       {/* Topic Container */}
       <div
         className={classNames(
-          topics.length === 0 ? "flex flex-col w-[32vw] min-h-[50vh]" : "",
-          "bg-white border-2 border-border-200"
+          topics.length === 0 ? "flex flex-col  min-h-[50vh]" : "",
+          "bg-white border-2 border-border-200 w-[90vw] md:w-[32vw]"
         )}
       >
         <div className="flex items-center border-b border-border-200 py-5 px-4">
@@ -203,8 +203,8 @@ const TestQuestionSettings = ({availableQuestions, setAvailableQuestions}: TestQ
       {/* Subtopic Container */}
       <div
         className={classNames(
-          topics.length === 0 ? "flex flex-col w-[32vw] min-h-[50vh]" : "",
-          "bg-white border-2 border-border-200"
+          topics.length === 0 ? "flex flex-col min-h-[50vh]" : "",
+          "bg-white border-2 border-border-200 w-[90vw] md:w-[32vw]"
         )}
       >
         <div className="flex items-center border-b border-border-200 py-5 px-4">

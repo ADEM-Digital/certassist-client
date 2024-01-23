@@ -8,6 +8,7 @@ import InvertIcon from "../../../components/icons/InvertIcon";
 import { classNames } from "../../../utils/utils";
 import TestButton from "./TestButton";
 import TestZoom from "./TestZoom";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 const TestNavbar = () => {
   const {
@@ -21,12 +22,24 @@ const TestNavbar = () => {
     // setTestLabValuesOpen,
     // testLabValuesOpen,
     setSelectedColor,
-    selectedColor
+    selectedColor,
+    isMobileSidebarOpen,
+    setIsMobileSidebarOpen,
   } = useContext(TestInstanceContext as Context<TestInstanceContextType>);
   return (
-    <div className={classNames(selectedColor === "main" ? "bg-testnav-100" : "bg-testnav-300","absolute top-0 left-0 w-[94vw] flex items-center justify-between ml-[6vw] h-[6.5vh]  text-white px-2.5 pt-[3px] pb-1")}>
+    <div
+      className={classNames(
+        selectedColor === "main" ? "bg-testnav-100" : "bg-testnav-300",
+        "absolute top-0 left-0 w-full md:w-[94vw] flex items-center justify-between ml-0 md:ml-[6vw] min-h-[35px] h-[6.5vh]  text-white px-2.5 pt-[3px] pb-1"
+      )}
+    >
       {/* Left UI */}
-      <div className="flex gap-2.5">
+      <div className="flex gap-2.5 items-center">
+        {/* Mobile hamburguer icon */}
+        <button onClick={() => setIsMobileSidebarOpen(true)}>
+          <Bars3Icon className="w-6 h-6 text-white" />
+        </button>
+
         {/* Current Question component */}
         <div className="flex flex-col justify-center py-[3px] px-[5px] whitespace-nowrap border-t border-l border-[#5872C4]">
           <p className=" text-sm text-center select-none">{`Item: ${
@@ -98,19 +111,25 @@ const TestNavbar = () => {
       </div>
 
       {/* Right UI */}
-      <div className="flex justify-center">
+      <div className="hidden md:flex justify-center">
         {/* Labs */}
         {/* <TestButton onClick={() => setTestLabValuesOpen(!testLabValuesOpen)} icon={<LabsIcon />} buttonText="Lab Values"/> */}
-        
+
         {/* Notes */}
         {/* <TestButton icon={<NoteIcon />} buttonText="Notes"/> */}
-        
+
         {/* Calculator */}
         {/* <TestButton icon={<CalcIcon />} buttonText="Calculator"/> */}
-        
+
         {/* Invert */}
-        <TestButton onClick={() => setSelectedColor(selectedColor === "main" ? "reversed" : "main")} icon={<InvertIcon />} buttonText="Reverse Color"/>
-        
+        <TestButton
+          onClick={() =>
+            setSelectedColor(selectedColor === "main" ? "reversed" : "main")
+          }
+          icon={<InvertIcon />}
+          buttonText="Reverse Color"
+        />
+
         {/* Zoom */}
         <TestZoom />
       </div>

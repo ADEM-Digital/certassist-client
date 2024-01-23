@@ -6,6 +6,7 @@ import { classNames } from "../../../utils/utils";
 import TestBottomNavbarBlockTime from "./TestBottomNavbarBlockTime";
 import TestButton from "./TestButton";
 import EndTestModal from "../../../components/modals/EndTestModal";
+import TestBottomNavbarQuestionId from "./TestBottomNavbarQuestionId";
 
 const TestBottomNavbar = () => {
   const {
@@ -21,13 +22,17 @@ const TestBottomNavbar = () => {
     <div
       className={classNames(
         selectedColor === "main" ? "bg-testnav-100" : "bg-testnav-300",
-        "absolute bottom-0 left-0 w-[94vw] bg-testnav-100 h-[6vh] ml-[6vw] flex items-center justify-between text-white px-2.5 pt-[5px] pb-[3px] z-0"
+        "absolute bottom-0 left-0 w-full md:w-[94vw] bg-testnav-100 min-h-[35px] h-[6vh] ml-0 md:ml-[6vw] flex items-center justify-between text-white px-2.5 pt-[5px] pb-[3px] z-0"
       )}
     >
-      {/* Block time */}
+      <div className="flex gap-2">
       {testQuery.data?.testStatus !== "completed" && (
         <TestBottomNavbarBlockTime />
       )}
+        <TestBottomNavbarQuestionId />
+      </div>
+      {/* Block time */}
+      
 
       {/* Lock */}
       {testQuery.data?.testStatus !== "completed" && (

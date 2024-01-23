@@ -11,7 +11,7 @@ const OverallPerformanceByTopic = ({
 
     const topicsPerformance = DashboardDataQuery.data?.topicPerformanceResult
   return (
-    <div className="bg-white rounded p-10 flex flex-col gap-5 shadow-card w-[40vw]">
+    <div className="bg-white rounded p-10 flex flex-col gap-5 shadow-card w-full md:w-[40vw]">
       <SectionHeader text="Overall Performance by Difficulty" size="text-2xl" />
       <div>
         {topicsPerformance && (
@@ -20,7 +20,7 @@ const OverallPerformanceByTopic = ({
               <tr>
                 <th className="w-[12.5%]">Topic</th>
                 <th className="w-[12.5%] text-center">Percentage</th>
-                <th className="text-left">Performance</th>
+                <th className="hidden lg:table-cell text-left">Performance</th>
               </tr>
             </thead>
             <tbody>
@@ -54,7 +54,7 @@ const OverallPerformanceByTopic = ({
                         </div>
                       )}
                     </td>
-                    <td className="">
+                    <td className="hidden lg:table-cell">
                       {topic && (
                         <progress
                           className={classNames(

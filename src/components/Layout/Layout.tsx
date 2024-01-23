@@ -4,9 +4,11 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import DashboardIcon from "../icons/DashboardIcon";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import MobileSideBar from "./MobileSideBar";
 
 const sidebarMenu = [
   {
@@ -23,19 +25,20 @@ const sidebarMenu = [
   },
 ];
 
-
-
 const Layout = ({}) => {
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false)
   const { user, logout } = useAuth0();
 
-  
   const checkUserData = async () => {
     try {
       if (user?.sub) {
         let response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/usersData`, {params: {
-            userId: user.sub
-          }}
+          `${import.meta.env.VITE_API_URL}/usersData`,
+          {
+            params: {
+              userId: user.sub,
+            },
+          }
         );
 
         if (response.data.length === 0) {
@@ -59,24 +62,24 @@ const Layout = ({}) => {
 
   const checkSubscription = async () => {
     try {
-      let response = await axios.get(`${import.meta.env.VITE_API_URL}/check-subscription/${user?.email}`);
+      let response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/check-subscription/${user?.email}`
+      );
 
-      if(response.data && response.data.length < 1) {
+      if (response.data && response.data.length < 1) {
         navigate("/pricing");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth0();
-  
+
   if (!isAuthenticated) {
     navigate("/login");
   }
-
-  
 
   const location = useLocation();
 
@@ -85,14 +88,14 @@ const Layout = ({}) => {
       checkUserData();
       checkSubscription();
     }
-
-
   }, [user]);
 
   return (
     <div>
+      {/* Mobile sidebar */}
+      <MobileSideBar mobileMenuOpen={isMobileSidebarOpen} setMobileMenuOpen={setIsMobileSidebarOpen} navigation={sidebarMenu}/>
       {/* Sidebar */}
-      <div className="flex flex-col items-center w-[5vw] h-[calc(100vh-7vh)] border-r border-border-100 absolute top-0 left-0 mt-[7vh] py-2">
+      <div className="hidden md:flex flex-col items-center w-[70px] h-[calc(100vh-7vh)] border-r border-border-100 absolute top-0 left-0 mt-[60px] py-2">
         {/* <Logo classes="w-3/4"/> */}
 
         {sidebarMenu &&
@@ -120,7 +123,11 @@ const Layout = ({}) => {
       </div>
 
       {/* Navbar */}
-      <div className="flex items-center justify-between w-full h-[7vh] border-b border-border-100 absolute top-0 bg-white">
+      <div className="flex items-center justify-between w-full min-h-[50px] h-[7vh] border-b border-border-100 absolute top-0 bg-white">
+        <button className="md:hidden p-2 z-50" onClick={() => setIsMobileSidebarOpen(true)}>
+          <Bars3Icon className="w-6 h-6 text-gray-500" />
+        </button>
+
         <div className="pl-2 py-2 flex items-center gap-1">
           <Logo width={30} />
           <p className=" font-body font-medium text-gray-900 text-xl">
@@ -150,28 +157,27 @@ const Layout = ({}) => {
               leaveTo="transform opacity-0 scale-95"
             >
               <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            
-                  <Menu.Item>
-             
-                      <button
-                        onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-                        className={classNames(
-                         
-                          "block px-4 py-2 text-sm text-gray-700"
-                        )}
-                      >
-                        Log Out
-                      </button>
-               
-                  </Menu.Item>
-            
+                <Menu.Item>
+                  <button
+                    onClick={() =>
+                      logout({
+                        logoutParams: { returnTo: window.location.origin },
+                      })
+                    }
+                    className={classNames(
+                      "block px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    Log Out
+                  </button>
+                </Menu.Item>
               </Menu.Items>
             </Transition>
           </Menu>
         </div>
       </div>
       {/* Main Content */}
-      <main className="bg-mainbg-100 mt-[7vh] ml-[5vw] h-[calc(100vh-7vh)] w-[calc(100vw-5vw)]">
+      <main className="bg-mainbg-100 mt-[50px] ml-0 md:ml-[70px] h-[calc(100vh-7vh)] md:w-[calc(100vw-5vw)]">
         <Outlet />
       </main>
     </div>

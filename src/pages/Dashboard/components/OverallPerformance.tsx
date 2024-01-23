@@ -31,10 +31,10 @@ const OverallPerformance = ({
     setParsedUserData(parseUserDataToStats(DashboardDataQuery.data?.userData));
   }, [DashboardDataQuery.data]);
   return (
-    <div className="bg-white rounded p-10 flex flex-col gap-5 shadow-card w-[40vw]">
+    <div className="bg-white rounded p-10 flex flex-col gap-5 shadow-card w-full md:w-[40vw]">
       <SectionHeader text="Overall Performance" size="text-2xl" />
-      <div className="flex gap-32">
-        <div className="h-[15vw]">
+      <div className="flex gap-4 lg:gap-32">
+        <div className="h-[30vw] md:h-[15vw]">
           {parsedUserData && (
             <Doughnut
               ref={chart}
@@ -104,8 +104,8 @@ const OverallPerformance = ({
             />
           )}
         </div>
-        <div className="flex-1 h-full flex flex-col justify-around">
-          <div className=" font-body text-[0.8vw] flex gap-1 items-center text-center justify-between">
+        <div className="md:flex-1 h-full flex flex-col justify-around">
+          <div className=" font-body text-xs flex gap-1 items-center text-center justify-between">
             <div className="font-body flex gap-1 items-center text-center">
               <div className=" w-4 h-4 bg-grades-good rounded-sm"></div>
               <p className=" font-normal leading-normal">
@@ -119,7 +119,7 @@ const OverallPerformance = ({
               {50}%
             </p> */}
           </div>
-          <div className=" font-body text-[0.8vw] flex gap-1 items-center text-center justify-between">
+          <div className=" font-body text-xs flex gap-1 items-center text-center justify-between">
             <div className="font-body flex gap-1 items-center text-center">
               <div className=" w-4 h-4 bg-grades-low rounded-sm"></div>
               <p className=" font-normal leading-normal">

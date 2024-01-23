@@ -54,7 +54,7 @@ const OverallPerformanceByDifficulty = ({
     }
   }, [DashboardDataQuery.data]);
   return (
-    <div className="bg-white rounded p-10 flex flex-col gap-5 shadow-card flex-1">
+    <div className="bg-white rounded p-10 flex flex-col gap-5 shadow-card md:flex-1 h-[40vh] md:h-full">
       <SectionHeader text="Overall Performance by Difficulty" size="text-2xl" />
       {difficultyPerformaceEasy &&
         difficultyPerformaceMedium &&
@@ -82,7 +82,7 @@ const OverallPerformanceByDifficulty = ({
               ],
               labels: ["Easy", "Medium", "Hard"],
             }}
-            height={"100"}
+            height={window.innerWidth < 1024 ? "200" : "100"}
             options={{
               responsive: true,
               maintainAspectRatio: true,

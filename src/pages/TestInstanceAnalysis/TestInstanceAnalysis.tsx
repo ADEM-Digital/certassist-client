@@ -14,7 +14,7 @@ const TestInstanceAnalysis = () => {
   const { testQuery } = useTestInstanceAnalysis(id);
 
   return (
-    <div className="py-5 px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
+    <div className="w-full py-5 px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
       <header className="flex justify-between">
         <div>
           <SectionHeader text="Test performance" />
@@ -28,7 +28,7 @@ const TestInstanceAnalysis = () => {
       </header>
 
       <div className="flex flex-col gap-4">
-        <div className="flex gap-4">
+        <div className=" flex flex-col-reverse md:flex-row gap-4">
           {/* Overall Performance */}
           <OverallPerformance testQuery={testQuery} />
 

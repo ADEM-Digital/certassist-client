@@ -22,7 +22,7 @@ const TestBottomNavbarBlockTime = () => {
     return () => clearInterval(intervalId);
   }, [timeLeft]);
   return (
-    <div className="flex flex-col justify-center py-[3px] px-[5px] whitespace-nowrap border-t border-l border-[#5872C4] h-full">
+    <div className="flex flex-col justify-center py-[3px] px-[5px] whitespace-nowrap border-t border-l border-[#5872C4] h-full w-[200px]">
       <p className=" text-sm text-center select-none">
         Block Time Remaining:{" "}
         {`${String(moment.duration(timeLeft, "seconds").minutes()).padStart(

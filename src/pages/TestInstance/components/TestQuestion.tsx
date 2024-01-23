@@ -38,16 +38,36 @@ const TestQuestion = () => {
         selectedColor === "main"
           ? "bg-testbg-100"
           : "bg-testbg-200 text-inverted-100",
-        "flex flex-col my-[6vh] ml-[6vw] w-[94vw] h-[88vh]  border-l border-border-300 pt-5 px-8 pb-4 font-sans overflow-y-auto"
+        "flex flex-col my-[6vh] ml-0 md:ml-[6vw] w-full md:w-[94vw] h-[88vh]  border-l border-border-300 pt-5 px-8 pb-4 font-sans overflow-y-auto"
       )}
     >
-      <div className={classNames(selectedZoom === "zoom3" ? "flex-col" : "", "flex")}>
+      <div
+        className={classNames(
+          selectedZoom === "zoom3" ? "flex-col" : "",
+          "flex flex-col md:flex-row md:gap-8"
+        )}
+      >
         {/* Question Content */}
         <div
-          className={classNames(selectedZoom === "zoom3" ? "w-full" : "w-1/2")}
+          className={classNames(
+            selectedZoom === "zoom3" ? "w-full" : "w-full md:w-1/2"
+          )}
         >
           {/* Question text */}
           <p>{questionQuery.data?.question}</p>
+
+          {/* Mobile image media */}
+          {questionQuery.data?.imageUrl && (
+            <div
+              className={classNames(
+                selectedZoom === "zoom3"
+                  ? "w-full "
+                  : "flex-1 ", "flex md:hidden justify-center my-6"
+              )}
+            >
+              <img src={questionQuery.data.imageUrl} className="w-auto h-auto max-h-full max-w-full object-contain"alt="" />
+            </div>
+          )}
           {/* Question Answers */}
           <div className="border border-testnav-100 border-b-[5px] p-2 w-fit my-4">
             {!!questionQuery.data &&
@@ -80,9 +100,13 @@ const TestQuestion = () => {
         {/* Question Media */}
         <div
           className={classNames(
-            selectedZoom === "zoom3" ? "w-full" : " flex-1"
+            selectedZoom === "zoom3"
+              ? "w-full"
+              : "hidden md:flex-1  md:flex justify-center items-start"
           )}
-        ></div>
+        >
+          <img src={questionQuery.data?.imageUrl} className="w-auto h-auto max-h-full max-w-full object-contain" alt="" />
+        </div>
       </div>
 
       {/* Explanation */}

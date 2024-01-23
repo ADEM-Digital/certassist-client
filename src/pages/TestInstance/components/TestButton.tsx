@@ -10,7 +10,7 @@ const TestButton = ({icon, buttonText, onClick}: TestButtonProps) => {
     onClick={onClick}
     className="px-[8px] mx-[6.5px] flex flex-col items-center text-shadow justify-center text-sm">
       {icon}
-      {buttonText}
+      <span className="hidden lg:block">{buttonText}</span>
     </button>
   );
 };

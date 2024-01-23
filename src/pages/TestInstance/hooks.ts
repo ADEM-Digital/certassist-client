@@ -32,7 +32,9 @@ export type TestInstanceContextType = {
   setSelectedColor: React.Dispatch<React.SetStateAction<"main" | "reversed">>;
   endTestMutation: UseMutationResult<void, unknown, void, unknown>;
   endTestModalOpen: boolean;
-  setEndTestModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setEndTestModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isMobileSidebarOpen: boolean;
+  setIsMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const TestInstanceContext = createContext<
@@ -41,6 +43,7 @@ export const TestInstanceContext = createContext<
 
 export const useTestInstance = (testId: string | undefined) => {
   const navigate = useNavigate();
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>();
   const [testEndTime, setTestEndTime] = useState<number>();
@@ -249,6 +252,8 @@ export const useTestInstance = (testId: string | undefined) => {
     setSelectedColor,
     endTestMutation,
     endTestModalOpen,
-    setEndTestModalOpen
+    setEndTestModalOpen,
+    isMobileSidebarOpen,
+    setIsMobileSidebarOpen
   };
 };

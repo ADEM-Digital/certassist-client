@@ -37,7 +37,7 @@ const Tests = () => {
     <>
       {isLoading && <p>Is Loading</p>}
       {!isLoading && (
-        <div className="py-5 px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
+        <div className="py-5 px-5 md:px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
           <SectionHeader text={"My Tests"} />
 
           {/* Action buttons */}
@@ -60,10 +60,10 @@ const Tests = () => {
               <tr className="border-b border-border-100">
                 <th className="">Name</th>
                 <th className="">Mode</th>
-                <th className="">Date Created</th>
-                <th className="">Questions</th>
+                <th className="hidden md:table-cell">Date Created</th>
+                <th className="hidden md:table-cell">Questions</th>
                 <th className="">Status</th>
-                <th className="">Results</th>
+                <th className="hidden md:table-cell">Results</th>
                 <th className="">
                   <span className="hidden">Options</span>
                 </th>
@@ -90,13 +90,13 @@ const Tests = () => {
                         {test.testMode === "untimed" && (
                           <EmptyClockIcon strokeColor="#ffbb26" />
                         )}
-                        <span>{stringToCaps(test.testMode)}</span>
+                        <span className="hidden md:table-cell">{stringToCaps(test.testMode)}</span>
                       </div>
                     </td>
-                    <td className="">
+                    <td className="hidden md:table-cell">
                       {moment(test?.createdAt).format("MM/DD/YYYY")}
                     </td>
-                    <td className="">{test?.questionCount}</td>
+                    <td className="hidden md:table-cell">{test?.questionCount}</td>
                     <td className="">
                       <div className="flex justify-center gap-2 items-center">
                         <StatusIcon
@@ -106,10 +106,10 @@ const Tests = () => {
                               : "#ffbb26"
                           }
                         />
-                        <span>{stringToCaps(test.testStatus)}</span>
+                        <span className="hidden md:table-cell">{stringToCaps(test.testStatus)}</span>
                       </div>
                     </td>
-                    <td className="">
+                    <td className="hidden md:table-cell">
                       <span
                         className={classNames(
                           test.grade !== undefined  && test.grade < 70

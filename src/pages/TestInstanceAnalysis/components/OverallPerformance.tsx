@@ -33,13 +33,13 @@ const OverallPerformance = ({ testQuery }: OverallPerformanceProps) => {
   }, [chartInstance]);
 
   return (
-    <div className="bg-white rounded p-5 flex flex-col gap-5 shadow-card w-[50vw]">
+    <div className="bg-white rounded p-5 flex flex-col gap-5 shadow-card w-full md:w-[50vw]">
       <SectionHeader text="Overall Performance" size="text-2xl" />
       <div className="flex-1 flex items-center justify-center gap-16">
         {/* Number stats */}
         <div className="flex flex-col gap-16 w-[10vw]">
           {/* Correct stats */}
-          <div className=" font-body text-[0.8vw] flex gap-1 items-center text-center justify-between">
+          <div className=" font-body text-sm flex gap-1 items-center text-center justify-between">
             <div className="font-body flex gap-1 items-center text-center">
               <div className=" w-4 h-4 bg-grades-good rounded-sm"></div>
               <p className=" font-normal leading-normal">Correct</p>
@@ -51,7 +51,7 @@ const OverallPerformance = ({ testQuery }: OverallPerformanceProps) => {
             </p>
           </div>
           {/* Incorrect stats */}
-          <div className=" font-body text-[0.8vw] flex gap-1 items-center text-center justify-between">
+          <div className=" font-body text-sm flex gap-1 items-center text-center justify-between">
             <div className="font-body flex gap-1 items-center text-center">
               <div className=" w-4 h-4 bg-grades-low rounded-sm"></div>
               <p className=" font-normal leading-normal">Incorrect</p>
@@ -64,7 +64,7 @@ const OverallPerformance = ({ testQuery }: OverallPerformanceProps) => {
           </div>
         </div>
         {/* Graph */}
-        <div className="h-[15vw]">
+        <div className="ml-6 h-[15vw] md:ml-0">
           {!!testQuery.data && (
             <Doughnut
               ref={chartInstance}

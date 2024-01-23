@@ -18,8 +18,8 @@ const PerformanceByTopic = ({ testQuery }: PerformanceByTopicProps) => {
               <tr>
                 <th className="w-[12.5%]">Topic</th>
                 <th className="w-[12.5%] text-center">Percentage</th>
-                <th className="text-left">Performance</th>
-                <th className="w-[12.5%]">Questions</th>
+                <th className="hidden md:table-cell text-left">Performance</th>
+                <th className="hidden md:table-cell w-[12.5%]">Questions</th>
               </tr>
             </thead>
             <tbody>
@@ -51,7 +51,7 @@ const PerformanceByTopic = ({ testQuery }: PerformanceByTopicProps) => {
                         </div>
                       )}
                     </td>
-                    <td className="">
+                    <td className="hidden md:table-cell">
                       {topic && (
                         <progress
                           className={classNames(
@@ -69,7 +69,7 @@ const PerformanceByTopic = ({ testQuery }: PerformanceByTopicProps) => {
                         />
                       )}
                     </td>
-                    <td>
+                    <td className="hidden md:table-cell">
                       {topic && (
                         <span>
                           {topic?.correctCount}/
