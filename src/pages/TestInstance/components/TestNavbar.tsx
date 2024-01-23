@@ -23,7 +23,6 @@ const TestNavbar = () => {
     // testLabValuesOpen,
     setSelectedColor,
     selectedColor,
-    isMobileSidebarOpen,
     setIsMobileSidebarOpen,
   } = useContext(TestInstanceContext as Context<TestInstanceContextType>);
   return (
