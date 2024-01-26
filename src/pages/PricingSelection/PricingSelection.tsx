@@ -4,14 +4,13 @@ import Logo from "../../components/logo/Logo";
 import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
-import { ArrowRightOnRectangleIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightOnRectangleIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useAuth0 } from "@auth0/auth0-react";
-// const navigation = [
-//     { name: 'Product', href: '#' },
-//     { name: 'Features', href: '#' },
-//     { name: 'Marketplace', href: '#' },
-//     { name: 'Company', href: '#' },
-//   ]
+
 const tiers = [
   {
     name: "Monthly",
@@ -59,12 +58,13 @@ const tiers = [
   },
 ];
 
-const handleBuyPlan = async (priceId: string) => {
+const handleBuyPlan = async (priceId: string, isTrial?: boolean) => {
   try {
     let response: AxiosResponse<any> = await axios.post(
       `${import.meta.env.VITE_API_URL}/create-subscription-checkout-session`,
       {
         priceId,
+        isTrial,
       }
     );
 
@@ -86,7 +86,7 @@ export default function PricingSelection() {
           className="flex items-center justify-between p-6 lg:px-8"
           aria-label="Global"
         >
-          <div className="flex lg:flex-1">
+          <div className="flex lg:flex-1 md:hidden">
             <Logo width={30} />
           </div>
           <div className="flex lg:hidden">
@@ -108,10 +108,13 @@ export default function PricingSelection() {
           </div> */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <button
-              onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+              onClick={() =>
+                logout({ logoutParams: { returnTo: window.location.origin } })
+              }
               className="flex items-center gap-1 text-sm font-semibold leading-6 text-gray-900"
             >
-              <span>Log out</span> <ArrowRightOnRectangleIcon className="w-4 h-4 stroke-2"/>
+              <span>Log out</span>{" "}
+              <ArrowRightOnRectangleIcon className="w-4 h-4 stroke-2" />
             </button>
           </div>
         </nav>
@@ -124,14 +127,7 @@ export default function PricingSelection() {
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
-              </a>
+             
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -155,21 +151,25 @@ export default function PricingSelection() {
                   ))}
                 </div> */}
                 <div className="py-6">
-                  <a
-                    href="#"
+                  <button
+                    onClick={() =>
+                      logout({
+                        logoutParams: { returnTo: window.location.origin },
+                      })
+                    }
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Log in
-                  </a>
+                    Log out
+                  </button>
                 </div>
               </div>
             </div>
           </Dialog.Panel>
         </Dialog>
       </header>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <div className="flex justify-center py-2 items-center gap-1">
+      <div className="flex justify-center flex-col items-center mx-auto max-w-7xl px-6 lg:px-8 mt-10 md:mt-0">
+        <div className="flex justify-center flex-col max-w-4xl text-center">
+          <div className="hidden md:flex justify-center py-2 items-center gap-1">
             <Logo width={60} />
             <p className=" font-body font-medium text-gray-900 text-3xl">
               CertAssist
@@ -178,6 +178,18 @@ export default function PricingSelection() {
           <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Pricing plans
           </p>
+          <button
+            onClick={() => handleBuyPlan(tiers[0].priceId, true)}
+            aria-describedby={tiers[0].id}
+            className={classNames(
+              true
+                ? "bg-button-100 text-white shadow-sm hover:bg-button-100/80"
+                : "text-button-100 ring-1 ring-inset ring-button-100/50 hover:ring-button-100",
+              "mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-button-100"
+            )}
+          >
+            Buy plan
+          </button>
         </div>
         {/* <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
           Distinctio et nulla eum soluta et neque labore quibusdam. Saepe et quasi iusto modi velit ut non voluptas in.
