@@ -9,6 +9,7 @@ import Login from "./pages/Login/Login";
 import TestInstanceAnalysis from "./pages/TestInstanceAnalysis/TestInstanceAnalysis";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import PricingSelection from "./pages/PricingSelection/PricingSelection";
+import Settings from "./pages/Settings/Settings";
 
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ function App() {
               <Route path="/tests" element={<Tests />} />
               <Route path="/tests/new" element={<TestWizard />} />
               <Route path="/tests/analysis/:id" element={<TestInstanceAnalysis />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
             <Route path="/test/:id" element={<TestInstance />} />
             <Route path="/pricing" element={<PricingSelection />} />
