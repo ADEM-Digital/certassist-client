@@ -9,6 +9,7 @@ import axios from "axios";
 import DashboardIcon from "../icons/DashboardIcon";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import MobileSideBar from "./MobileSideBar";
+import CogIcon from "../icons/CogIcon";
 
 const sidebarMenu = [
   {
@@ -21,6 +22,12 @@ const sidebarMenu = [
     path: "/tests",
     routeName: "tests",
     icon: <TestIcon width={40} height={40} />,
+    selected: false,
+  },
+  {
+    path: "/settings",
+    routeName: "settings",
+    icon: <CogIcon width={40} height={40} />,
     selected: false,
   },
 ];
