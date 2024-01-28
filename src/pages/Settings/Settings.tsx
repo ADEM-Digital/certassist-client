@@ -13,7 +13,7 @@ const sidebarMenu = [
 
 
 const Settings = () => {
-    const {selectedSetting, setSelectedSetting, handleManageSubscription} = useSettings();
+    const {selectedSetting, handleManageSubscription} = useSettings();
   return (
     <div className="py-5 px-5 md:px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
         <SectionHeader text="Settings"/>
