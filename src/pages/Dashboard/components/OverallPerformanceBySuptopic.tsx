@@ -2,7 +2,6 @@ import { UseQueryResult } from "react-query";
 import SectionHeader from "../../../components/headers/SectionHeader";
 import { DashboardDataType } from "../hooks";
 import { classNames, sentenceToCaps } from "../../../utils/utils";
-import { useEffect } from "react";
 import NoDataOverlay from "./NoDataOverlay";
 
 const dummy_subtopic_performance = [
