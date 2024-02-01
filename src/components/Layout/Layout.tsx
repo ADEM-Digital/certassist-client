@@ -130,7 +130,7 @@ const Layout = ({}) => {
       </div>
 
       {/* Navbar */}
-      <div className="flex items-center justify-between w-full min-h-[50px] h-[7vh] border-b border-border-100 absolute top-0 bg-white">
+      <div className="flex items-center justify-between w-full min-h-[50px] h-[7vh] border-b border-border-100 absolute top-0 bg-white z-50">
         <button className="md:hidden p-2 z-50" onClick={() => setIsMobileSidebarOpen(true)}>
           <Bars3Icon className="w-6 h-6 text-gray-500" />
         </button>
@@ -184,7 +184,7 @@ const Layout = ({}) => {
         </div>
       </div>
       {/* Main Content */}
-      <main className="bg-mainbg-100 mt-[50px] ml-0 md:ml-[70px] h-[calc(100vh-7vh)] md:w-[calc(100vw-5vw)]">
+      <main className="bg-mainbg-100 mt-[50px] ml-0 md:ml-[70px] h-[calc(100vh-7vh)] md:w-[calc(100vw-70px)]">
         <Outlet />
       </main>
     </div>

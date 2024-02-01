@@ -5,6 +5,7 @@ import Chart, { CategoryScale } from "chart.js/auto";
 import { parseUserDataToStats } from "../../../utils/utils";
 import { UseQueryResult } from "react-query";
 import { DashboardDataType } from "../hooks";
+import NoDataOverlay from "./NoDataOverlay";
 
 Chart.register(CategoryScale);
 
@@ -27,12 +28,18 @@ const OverallPerformance = ({
   >();
 
   useEffect(() => {
-    console.log(DashboardDataQuery.data?.userData)
     setParsedUserData(parseUserDataToStats(DashboardDataQuery.data?.userData));
   }, [DashboardDataQuery.data]);
+
   return (
-    <div className="bg-white rounded p-10 flex flex-col gap-5 shadow-card w-full md:w-[40vw]">
+    <div className="relative bg-white rounded p-10 flex flex-col gap-5 shadow-card w-full md:w-[40vw] z-[1]">
       <SectionHeader text="Overall Performance" size="text-2xl" />
+      {/* Insert overlay div when user has no test data */}
+      {parsedUserData?.percentageCorrect === "NaN" &&
+        parsedUserData.percentageIncorrect === "NaN" && (
+          <NoDataOverlay />
+        )}
+
       <div className="flex gap-4 lg:gap-32">
         <div className="h-[30vw] md:h-[15vw]">
           {parsedUserData && (
@@ -44,8 +51,12 @@ const OverallPerformance = ({
                   {
                     label: "Test Performance",
                     data: [
-                      parsedUserData?.percentageCorrect,
-                      parsedUserData?.percentageIncorrect,
+                      parsedUserData.percentageCorrect !== "NaN"
+                        ? parsedUserData?.percentageCorrect
+                        : "0",
+                      parsedUserData.percentageIncorrect !== "NaN"
+                        ? parsedUserData?.percentageIncorrect
+                        : "100",
                     ],
                     backgroundColor: ["#00a670", "#CC3F4B"],
                     hoverOffset: 4,
@@ -88,7 +99,9 @@ const OverallPerformance = ({
                     ctx.textBaseline = "middle";
 
                     let text = `${
-                        parsedUserData?.percentageCorrect
+                        parsedUserData?.percentageCorrect !== "NaN"
+                          ? parsedUserData.percentageCorrect
+                          : "0"
                       }%`, // Your dynamic value goes here
                       textX = Math.round(
                         (width - ctx.measureText(text).width) / 2
@@ -109,10 +122,8 @@ const OverallPerformance = ({
             <div className="font-body flex gap-1 items-center text-center">
               <div className=" w-4 h-4 bg-grades-good rounded-sm"></div>
               <p className=" font-normal leading-normal">
-                {
-                  parsedUserData?.correctCount
-                }
-                  <span className=" font-light"> answered correctly.</span>
+                {parsedUserData?.correctCount}
+                <span className=" font-light"> answered correctly.</span>
               </p>
             </div>
             {/* <p className=" font-extrabold leading-normal">
@@ -124,7 +135,7 @@ const OverallPerformance = ({
               <div className=" w-4 h-4 bg-grades-low rounded-sm"></div>
               <p className=" font-normal leading-normal">
                 {parsedUserData?.incorrectCount}
-                  <span className=" font-light"> answered incorrectly.</span>
+                <span className=" font-light"> answered incorrectly.</span>
               </p>
             </div>
           </div>
@@ -133,9 +144,7 @@ const OverallPerformance = ({
             <p className="font-body font-light text-sm">
               You have used{" "}
               <span className=" font-extrabold">
-                {
-                  parsedUserData?.totalQuestions
-                }
+                {parsedUserData?.totalQuestions}
               </span>{" "}
               of{" "}
               <span className=" font-extrabold">
