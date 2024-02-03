@@ -8,6 +8,7 @@ import { classNames } from "../../utils/utils";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
+import SupportSidebarForm from "./components/SupportSidebarForm";
 
 const TestInstance = () => {
   const { id } = useParams();
@@ -32,6 +33,8 @@ const TestInstance = () => {
             : "bg-testbg-200"
         )}
       >
+        {/* Support Sidebar */}
+        <SupportSidebarForm />
         {/* Sidebar */}
         <TestSidebar />
         {/* Navbar */}
@@ -40,6 +43,7 @@ const TestInstance = () => {
         <TestQuestion />
         {/* Bottom Test Navbar */}
         <TestBottomNavbar />
+        
       </div>
     </TestInstanceContext.Provider>
   );
