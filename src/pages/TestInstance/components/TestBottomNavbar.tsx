@@ -7,11 +7,13 @@ import TestBottomNavbarBlockTime from "./TestBottomNavbarBlockTime";
 import TestButton from "./TestButton";
 import EndTestModal from "../../../components/modals/EndTestModal";
 import TestBottomNavbarQuestionId from "./TestBottomNavbarQuestionId";
+import ColoredSupportIcon from "../../../components/icons/ColoredSupportIcon";
 
 const TestBottomNavbar = () => {
   const {
     selectedColor,
     testQuery,
+    setIsSupportSidebarOpen,
     setEndTestModalOpen,
     endTestModalOpen,
     selectedAnswer,
@@ -26,31 +28,40 @@ const TestBottomNavbar = () => {
       )}
     >
       <div className="flex gap-2">
-      {testQuery.data?.testStatus !== "completed" && (
-        <TestBottomNavbarBlockTime />
-      )}
+        {testQuery.data?.testStatus !== "completed" && (
+          <TestBottomNavbarBlockTime />
+        )}
         <TestBottomNavbarQuestionId />
       </div>
       {/* Block time */}
-      
 
       {/* Lock */}
       {testQuery.data?.testStatus !== "completed" && (
         <TestButton icon={<LockIcon />} buttonText="Lock" />
       )}
 
-      {/* Stop */}
-      <TestButton
+      {/* Right section */}
+      <div className="flex">
+        {/* Support */}
+        <TestButton 
         onClick={() => {
-          if (selectedAnswer) {
-            updateAnswerMutation.mutate(selectedAnswer);
-          }
+          console.log("clicked")
+          setIsSupportSidebarOpen(true)}}
+        icon={<ColoredSupportIcon width={28} height={28}/>} buttonText="Support" />
 
-          setEndTestModalOpen(true);
-        }}
-        icon={<StopIcon />}
-        buttonText="End Block"
-      />
+        {/* Stop */}
+        <TestButton
+          onClick={() => {
+            if (selectedAnswer) {
+              updateAnswerMutation.mutate(selectedAnswer);
+            }
+
+            setEndTestModalOpen(true);
+          }}
+          icon={<StopIcon />}
+          buttonText="End Block"
+        />
+      </div>
 
       <EndTestModal
         open={endTestModalOpen}

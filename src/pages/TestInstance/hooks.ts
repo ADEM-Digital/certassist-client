@@ -35,6 +35,8 @@ export type TestInstanceContextType = {
   setEndTestModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isMobileSidebarOpen: boolean;
   setIsMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isSupportSidebarOpen: boolean;
+  setIsSupportSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const TestInstanceContext = createContext<
@@ -43,11 +45,14 @@ export const TestInstanceContext = createContext<
 
 export const useTestInstance = (testId: string | undefined) => {
   const navigate = useNavigate();
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false)
+
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
+    useState<boolean>(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>();
   const [testEndTime, setTestEndTime] = useState<number>();
   const [testLabValuesOpen, setTestLabValuesOpen] = useState(false);
+  const [isSupportSidebarOpen, setIsSupportSidebarOpen] = useState(false);
   const [selectedZoom, setSelectedZoom] = useState<"zoom1" | "zoom2" | "zoom3">(
     "zoom1"
   );
@@ -83,7 +88,7 @@ export const useTestInstance = (testId: string | undefined) => {
             },
           }
         );
-        
+
         return response.data;
       }
     } catch (error) {
@@ -155,7 +160,7 @@ export const useTestInstance = (testId: string | undefined) => {
       );
 
       navigate(`/tests/analysis/${testId}`);
-      return response.data
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -254,6 +259,20 @@ export const useTestInstance = (testId: string | undefined) => {
     endTestModalOpen,
     setEndTestModalOpen,
     isMobileSidebarOpen,
-    setIsMobileSidebarOpen
+    setIsMobileSidebarOpen,
+    isSupportSidebarOpen,
+    setIsSupportSidebarOpen,
   };
+};
+
+export const useSupportForm = () => {
+  const [isFileSelected, setIsFileSelected] = useState(false);
+  const [selectedFilename, setSelectedFilename] = useState<string>("");
+  const initialFormValues = {
+    problemType: "",
+    description: "",
+    image: null,
+  };
+
+  return { initialFormValues, isFileSelected, setIsFileSelected, selectedFilename, setSelectedFilename };
 };
