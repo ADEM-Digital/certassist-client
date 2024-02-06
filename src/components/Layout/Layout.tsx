@@ -59,6 +59,7 @@ const Layout = ({}) => {
               incorrectQuestions: [],
             }
           );
+          console.log("Created user data")
           console.log(response.data);
         }
       }

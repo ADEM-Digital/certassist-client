@@ -16,11 +16,11 @@ const tiers = [
     name: "Monthly",
     id: "monthly",
     priceId: `${import.meta.env.VITE_USMLE_MONTHLY}`,
-    priceMonthly: "$6",
+    priceMonthly: "$49.99",
     description: "Basic one moth access",
     features: [
       "Qbank",
-      "Up to 1,745 questions",
+      "More than to 2,200 questions",
       "Basic analytics",
       "48-hour support response time",
     ],
@@ -30,11 +30,11 @@ const tiers = [
     name: "3-Month",
     id: "quarterly",
     priceId: `${import.meta.env.VITE_USMLE_QUARTERLY}`,
-    priceMonthly: "$16",
+    priceMonthly: "$134.99",
     description: "Basic three month access",
     features: [
       "Qbank access",
-      "Up to 1,745 questions",
+      "More than to 2,200 questions",
       "Basic analytics",
       "24-hour support response time",
       "10% discount on base price",
@@ -45,14 +45,14 @@ const tiers = [
     name: "6-Month",
     id: "halfyear",
     priceId: `${import.meta.env.VITE_USMLE_HALFYEAR}`,
-    priceMonthly: "$30",
+    priceMonthly: "$239.99",
     description: "Basic six month access",
     features: [
       "Qbank access",
-      "Up to 1,745 questions",
+      "More than to 2,200 questions",
       "Basic analytics",
       "24-hour support response time",
-      "15% discount on base price",
+      "20% discount on base price",
     ],
     mostPopular: false,
   },
@@ -188,7 +188,7 @@ export default function PricingSelection() {
               "mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-button-100"
             )}
           >
-            Buy plan
+            Start a 7-day trial
           </button>
         </div>
         {/* <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
