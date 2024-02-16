@@ -1,21 +1,26 @@
 import moment from "moment";
 import { Context, useContext, useEffect, useState } from "react";
 import { TestInstanceContext, TestInstanceContextType } from "../hooks";
+import TestTimeoutModal from "../../../components/modals/TestTimeoutModal";
 
 const TestBottomNavbarBlockTime = () => {
   const { testEndTime } = useContext(
     TestInstanceContext as Context<TestInstanceContextType>
   );
   const [timeLeft, setTimeLeft] = useState(0);
+  const [isTimeoutModalOpen, setIsTimeoutModalOpen] = useState(false);
 
   useEffect(() => {
     setTimeLeft(moment(testEndTime).diff(moment.now(), "seconds"));
   }, [testEndTime]);
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    if (timeLeft < 0) {
+      setIsTimeoutModalOpen(true);
+    }
+    let intervalId: number;
 
-    const intervalId = setInterval(() => {
+    intervalId = setInterval(() => {
       setTimeLeft(timeLeft - 1);
     }, 1000);
 
@@ -33,6 +38,16 @@ const TestBottomNavbarBlockTime = () => {
           "0"
         )}`}
       </p>
+      {isTimeoutModalOpen && (
+        <TestTimeoutModal
+          open={isTimeoutModalOpen}
+          setOpen={setIsTimeoutModalOpen}
+          title={"The alloted time for this test has run out"}
+          text={
+            "The time limit has run out for this test. The test will proceed to close."
+          }
+        />
+      )}
     </div>
   );
 };

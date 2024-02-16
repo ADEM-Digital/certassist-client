@@ -39,7 +39,7 @@ const TestModeSetttings = ({
           Test Mode
         </label>
         <div className="flex justify-between items-center gap-5">
-          <div className="flex gap-1.5 items-center">
+          {/* <div className="flex gap-1.5 items-center">
             <input
               type="radio"
               name="test-mode"
@@ -56,9 +56,10 @@ const TestModeSetttings = ({
             >
               Tutor
             </label>
-          </div>
+          </div> */}
           <div className="flex gap-1.5 items-center">
             <input
+            
               type="radio"
               name="test-mode"
               id="test-mode-timed"
@@ -66,7 +67,8 @@ const TestModeSetttings = ({
               onChange={(e) =>
                 formik.setFieldValue("testMode", e.currentTarget.value, false)
               }
-              checked={formik.values.testMode === "timed"}
+              // checked={formik.values.testMode === "timed"}
+              checked={true}
             />
             <label
               htmlFor="test-mode-timed"
@@ -75,8 +77,9 @@ const TestModeSetttings = ({
               Timed
             </label>
           </div>
-          <div className="flex gap-1.5 items-center">
+          {/* <div className="flex gap-1.5 items-center">
             <input
+              disabled
               type="radio"
               name="test-mode"
               id="test-mode-untimed"
@@ -92,7 +95,7 @@ const TestModeSetttings = ({
             >
               Untimed
             </label>
-          </div>
+          </div> */}
         </div>
       </div>
 

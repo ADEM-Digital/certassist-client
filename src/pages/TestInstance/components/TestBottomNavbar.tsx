@@ -37,17 +37,22 @@ const TestBottomNavbar = () => {
 
       {/* Lock */}
       {testQuery.data?.testStatus !== "completed" && (
-        <TestButton icon={<LockIcon />} buttonText="Lock" />
+        <TestButton icon={<LockIcon />} buttonText="Lock" classes="opacity-0"/>
       )}
 
       {/* Right section */}
       <div className="flex">
         {/* Support */}
-        <TestButton 
-        onClick={() => {
-          console.log("clicked")
-          setIsSupportSidebarOpen(true)}}
-        icon={<ColoredSupportIcon width={28} height={28}/>} buttonText="Support" />
+        {testQuery.data?.testStatus === "completed" && (
+          <TestButton
+            onClick={() => {
+              console.log("clicked");
+              setIsSupportSidebarOpen(true);
+            }}
+            icon={<ColoredSupportIcon width={28} height={28} />}
+            buttonText="Support"
+          />
+        )}
 
         {/* Stop */}
         <TestButton

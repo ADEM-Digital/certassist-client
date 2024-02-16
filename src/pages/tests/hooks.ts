@@ -32,16 +32,26 @@ export type TestDataType = {
   analysis: TestAnalysisDataType;
 };
 
+export type TestList = {
+  tests: TestDataType[];
+  total: number;
+  pages: number;
+  currentPage: number;
+};
+
 export const useTests = () => {
   const { user } = useAuth0();
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTest, setSelectedTest] = useState<TestDataType>();
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const getTests = async () => {
+  const getTests = async ({ queryKey }: { queryKey: string[] }) => {
+    const [, currentPage] = queryKey;
     try {
       let response = await axios.get(`${import.meta.env.VITE_API_URL}/tests`, {
         params: {
           userId: user?.sub,
+          page: currentPage,
         },
       });
 
@@ -51,13 +61,22 @@ export const useTests = () => {
     }
   };
 
-  const testList: UseQueryResult<TestDataType[]> = useQuery(
-    "testList",
+  const testList: UseQueryResult<TestList> = useQuery(
+    ["testList", currentPage],
+    // @ts-ignore
     getTests,
     {
       enabled: user?.sub !== undefined,
     }
   );
 
-  return { testList, open, setOpen, selectedTest, setSelectedTest };
+  return {
+    testList,
+    open,
+    setOpen,
+    selectedTest,
+    setSelectedTest,
+    currentPage,
+    setCurrentPage,
+  };
 };

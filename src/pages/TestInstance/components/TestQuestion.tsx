@@ -4,6 +4,7 @@ import TestQuestionOption from "./TestQuestionOption";
 import TestLabValuesSlideOver from "./TestLabValuesSlideOver";
 import { classNames } from "../../../utils/utils";
 import TestQuestionExplanation from "./TestQuestionExplanation";
+import { ScaleLoader } from "react-spinners";
 
 const TestQuestion = () => {
   const {
@@ -29,6 +30,9 @@ const TestQuestion = () => {
     }
   }, [testQuery]);
 
+  useEffect(() => {
+    console.log(questionQuery.isFetching);
+  }, [questionQuery.isFetching]);
   return (
     <div
       className={classNames(
@@ -43,70 +47,90 @@ const TestQuestion = () => {
     >
       <div
         className={classNames(
+          questionQuery.isFetching ? "items-center justify-center h-full" : "",
           selectedZoom === "zoom3" ? "flex-col" : "",
           "flex flex-col md:flex-row md:gap-8"
         )}
       >
-        {/* Question Content */}
-        <div
-          className={classNames(
-            selectedZoom === "zoom3" ? "w-full" : "w-full md:w-1/2"
-          )}
-        >
-          {/* Question text */}
-          <p>{questionQuery.data?.question}</p>
+        {questionQuery.isFetching && (
+          <ScaleLoader
+            color="#3B77BF"
+            loading={questionQuery.isFetching}
+            aria-label="Loading topics"
+            width={10}
+          />
+        )}
+        {!questionQuery.isFetching && (
+          <>
+            {/* Question Content */}
+            <div
+              className={classNames(
+                selectedZoom === "zoom3" ? "w-full" : "w-full md:w-1/2"
+              )}
+            >
+              {/* Question text */}
+              <p>{questionQuery.data?.question}</p>
 
-          {/* Mobile image media */}
-          {questionQuery.data?.imageUrl && (
+              {/* Mobile image media */}
+              {questionQuery.data?.imageUrl && (
+                <div
+                  className={classNames(
+                    selectedZoom === "zoom3" ? "w-full " : "flex-1 ",
+                    "flex md:hidden justify-center my-6"
+                  )}
+                >
+                  <img
+                    src={questionQuery.data.imageUrl}
+                    className="w-auto h-auto max-h-full max-w-full object-contain"
+                    alt=""
+                  />
+                </div>
+              )}
+              {/* Question Answers */}
+              <div className="border border-testnav-100 border-b-[5px] p-2 w-fit my-4">
+                {!!questionQuery.data &&
+                  questionQuery.data?.options?.map((option, index) => {
+                    let optionLetters = [
+                      "A.",
+                      "B.",
+                      "C.",
+                      "D.",
+                      "E.",
+                      "F.",
+                      "G.",
+                      "H.",
+                      "I.",
+                      "J.",
+                      "K.",
+                      "L.",
+                    ];
+                    return (
+                      <TestQuestionOption
+                        answerState={{ selectedAnswer, setSelectedAnswer }}
+                        key={`question-option-${index}`}
+                        optionLetter={optionLetters[index]}
+                        optionText={option}
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+            {/* Question Media */}
             <div
               className={classNames(
                 selectedZoom === "zoom3"
-                  ? "w-full "
-                  : "flex-1 ", "flex md:hidden justify-center my-6"
+                  ? "w-full"
+                  : "hidden md:flex-1  md:flex justify-center items-start"
               )}
             >
-              <img src={questionQuery.data.imageUrl} className="w-auto h-auto max-h-full max-w-full object-contain"alt="" />
+              <img
+                src={questionQuery.data?.imageUrl}
+                className="w-auto h-auto max-h-full max-w-full object-contain"
+                alt=""
+              />
             </div>
-          )}
-          {/* Question Answers */}
-          <div className="border border-testnav-100 border-b-[5px] p-2 w-fit my-4">
-            {!!questionQuery.data &&
-              questionQuery.data?.options?.map((option, index) => {
-                let optionLetters = [
-                  "A.",
-                  "B.",
-                  "C.",
-                  "D.",
-                  "E.",
-                  "F.",
-                  "G.",
-                  "H.",
-                  "I.",
-                  "J.",
-                  "K.",
-                  "L.",
-                ];
-                return (
-                  <TestQuestionOption
-                    answerState={{ selectedAnswer, setSelectedAnswer }}
-                    key={`question-option-${index}`}
-                    optionLetter={optionLetters[index]}
-                    optionText={option}
-                  />
-                );
-              })}
-          </div>
-        </div>
-        {/* Question Media */}
-        <div
-          className={classNames(
-            selectedZoom === "zoom3"
-              ? "w-full"
-              : "hidden md:flex-1  md:flex justify-center items-start"
-          )}
-        >
-          <img src={questionQuery.data?.imageUrl} className="w-auto h-auto max-h-full max-w-full object-contain" alt="" />
-        </div>
+          </>
+        )}
       </div>
 
       {/* Explanation */}

@@ -1,5 +1,4 @@
 import React from "react";
-import PencilIcon from "../../../components/icons/PencilIcon";
 import { classNames } from "../../../utils/utils";
 
 export type StepsType = {
@@ -39,17 +38,17 @@ const TestWizardNav = ({ steps, setWizardSteps }: TestWizardNavProps) => {
           >
             <button
               onClick={() => handleStepsUpdate(step.stepNumber)}
-              className="flex gap-2.5 items-center"
+              className={classNames(step.status === "active" ? "bg-button-100 text-white" : "bg-[#D9D9D9]", "flex gap-2.5 items-center  px-2.5 py-1.5 rounded ")}
             >
               <span
                 className={classNames(
                   step.status === "active"
-                    ? "bg-button-100 text-white"
-                    : "bg-[#D9D9D9] text-gray-900",
+                    ? "bg-white text-button-100"
+                    : "bg-black/10 text-gray-900",
                   "flex justify-center items-center rounded-full w-[41px] h-[41px]  p-0 "
                 )}
               >
-                {step.status === "active" ? step.stepNumber : <PencilIcon />}
+                {step.stepNumber }
               </span>
               <span className="font-tables text-lg font-extrabold">
                 {step.stepText}

@@ -1,10 +1,8 @@
 import {
   CircleStackIcon,
-  EllipsisHorizontalIcon,
-  FunnelIcon,
+  EllipsisHorizontalIcon
 } from "@heroicons/react/24/outline";
 import MainButton from "../../components/buttons/MainButton";
-import SecondaryButton from "../../components/buttons/SecondaryButton";
 import SectionHeader from "../../components/headers/SectionHeader";
 import ClockIcon from "../../components/icons/ClockIcon";
 import StatusIcon from "../../components/icons/StatusIcon";
@@ -21,12 +19,21 @@ import { useQueryClient } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 import moment from "moment";
 import AnalysisIcon from "../../components/icons/AnalysisIcon";
+import { Pagination } from "./components/Pagination";
 
 const Tests = () => {
   const { isLoading } = useAuth0();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { testList, open, setOpen, selectedTest, setSelectedTest } = useTests();
+  const {
+    testList,
+    open,
+    setOpen,
+    selectedTest,
+    setSelectedTest,
+    currentPage,
+    setCurrentPage,
+  } = useTests();
 
   useEffect(() => {
     queryClient.removeQueries("testActiveQuestion");
@@ -42,11 +49,11 @@ const Tests = () => {
 
           {/* Action buttons */}
           <div className="flex flex-row-reverse gap-2.5">
-            <SecondaryButton
+            {/* <SecondaryButton
               buttonText="FILTERS"
               icon={<FunnelIcon className="w-4 h-4 stroke-2" />}
               iconDirection="right"
-            />
+            /> */}
 
             <MainButton
               buttonText="CREATE TEST"
@@ -71,13 +78,19 @@ const Tests = () => {
             </thead>
             <tbody className="">
               {testList.data &&
-                testList.data?.map((test) => (
+                testList.data.tests?.map((test) => (
                   <tr
                     key={`test-row-${test._id}`}
                     className="border-b border-border-100 text-gray-900 text-lg font-light"
                   >
                     <td className="font-tables text-button-100 font-extrabold">
-                      <Link to={test.testStatus === "pending" ? `/test/${test._id}` : `/tests/analysis/${test._id}`}>
+                      <Link
+                        to={
+                          test.testStatus === "pending"
+                            ? `/test/${test._id}`
+                            : `/tests/analysis/${test._id}`
+                        }
+                      >
                         {test.testName ?? test._id}
                       </Link>
                     </td>
@@ -90,13 +103,17 @@ const Tests = () => {
                         {test.testMode === "untimed" && (
                           <EmptyClockIcon strokeColor="#ffbb26" />
                         )}
-                        <span className="hidden md:table-cell">{stringToCaps(test.testMode)}</span>
+                        <span className="hidden md:table-cell">
+                          {stringToCaps(test.testMode)}
+                        </span>
                       </div>
                     </td>
                     <td className="hidden md:table-cell">
                       {moment(test?.createdAt).format("MM/DD/YYYY")}
                     </td>
-                    <td className="hidden md:table-cell">{test?.questionCount}</td>
+                    <td className="hidden md:table-cell">
+                      {test?.questionCount}
+                    </td>
                     <td className="">
                       <div className="flex justify-center gap-2 items-center">
                         <StatusIcon
@@ -106,28 +123,34 @@ const Tests = () => {
                               : "#ffbb26"
                           }
                         />
-                        <span className="hidden md:table-cell">{stringToCaps(test.testStatus)}</span>
+                        <span className="hidden md:table-cell">
+                          {stringToCaps(test.testStatus)}
+                        </span>
                       </div>
                     </td>
                     <td className="hidden md:table-cell">
                       <span
                         className={classNames(
-                          test.grade !== undefined  && test.grade < 70
+                          test.grade !== undefined && test.grade < 70
                             ? "bg-grades-low text-white"
                             : "",
-                          test.grade !== undefined  && test.grade >= 70 && test.grade < 80
+                          test.grade !== undefined &&
+                            test.grade >= 70 &&
+                            test.grade < 80
                             ? "bg-grades-average text-gray-900"
                             : "",
-                          test.grade !== undefined  && test.grade >= 80
+                          test.grade !== undefined && test.grade >= 80
                             ? "bg-grades-good text-white"
                             : "",
-                          test.grade !== undefined  === undefined
+                          (test.grade !== undefined) === undefined
                             ? " bg-button-100 text-white"
                             : "",
                           "py-1.5 px-2.5 font-extrabold rounded-[3px]"
                         )}
                       >
-                        {test.grade !== undefined ? `${test.grade.toFixed(0)}%` : "-"}
+                        {test.grade !== undefined
+                          ? `${test.grade.toFixed(0)}%`
+                          : "-"}
                       </span>
                     </td>
                     <td className="flex justify-center items-center gap-2 align-middle">
@@ -135,7 +158,13 @@ const Tests = () => {
                         disabled={test.testStatus !== "completed"}
                         onClick={() => navigate(`/tests/analysis/${test._id}`)}
                       >
-                        <AnalysisIcon strokeColor={ test.testStatus !== "completed" ? "#D9D9D9" : undefined}/>
+                        <AnalysisIcon
+                          strokeColor={
+                            test.testStatus !== "completed"
+                              ? "#D9D9D9"
+                              : undefined
+                          }
+                        />
                       </button>
 
                       <Menu
@@ -181,7 +210,7 @@ const Tests = () => {
                 ))}
 
               {/* Display when the table is empty */}
-              {testList.data?.length === 0 && (
+              {testList.data?.tests.length === 0 && (
                 <tr className="bg-white">
                   <td colSpan={7}>
                     <div className="flex flex-col justify-center items-center h-[calc(100vh-295px)] text-gray-400">
@@ -196,6 +225,7 @@ const Tests = () => {
               )}
             </tbody>
           </table>
+          <Pagination testList={testList} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           {selectedTest && (
             <DeleteModal
               title={`Deleting test ${
