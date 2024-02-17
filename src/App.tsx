@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Tests from "./pages/tests/Tests";
 import TestWizard from "./pages/TestWizard/TestWizard";
@@ -10,31 +10,113 @@ import TestInstanceAnalysis from "./pages/TestInstanceAnalysis/TestInstanceAnaly
 import Dashboard from "./pages/Dashboard/Dashboard";
 import PricingSelection from "./pages/PricingSelection/PricingSelection";
 import Settings from "./pages/Settings/Settings";
+import { TourProvider } from "@reactour/tour";
 
+import { dashboardTourSteps } from "./tourSteps";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios, { AxiosResponse } from "axios";
+import { UserDataType } from "./types/UserDataType";
+import HOCTourComponent from "./components/tour/HOCTourComponent";
 
 const queryClient = new QueryClient();
 
 function App() {
+  const { user } = useAuth0();
+  const location = useLocation();
+
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <Routes>
-          <>
-            <Route path="/" element={<Layout />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/tests" element={<Tests />} />
-              <Route path="/tests/new" element={<TestWizard />} />
-              <Route path="/tests/analysis/:id" element={<TestInstanceAnalysis />} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
-            <Route path="/test/:id" element={<TestInstance />} />
-            <Route path="/pricing" element={<PricingSelection />} />
-          </>
+      <TourProvider
+        padding={{
+          popover: 0,
+          wrapper: 0
+        }}
+        styles={{
+          popover: (base) => (
+            {
+              ...base,
+              background: "none",
+              boxShadow: "none"
+            }
+          )
+        }}
+        steps={dashboardTourSteps}
+        ContentComponent={HOCTourComponent}
+        onClickHighlighted={(e) => {
+          e.stopPropagation();
+        }}
+        disableInteraction
+        onClickMask={() => console.log("click mask")}
+        onClickClose={async ({ setIsOpen }) => {
+          try {
+            if (user?.sub) {
+              let response: AxiosResponse<UserDataType[]> = await axios.get(
+                `${import.meta.env.VITE_API_URL}/usersData`,
+                {
+                  params: {
+                    userId: user.sub,
+                  },
+                }
+              );
 
-          <Route path="/login" element={<Login />} />
-        </Routes>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+              if (response.status === 200) {
+                let requestPath: string = "";
+                let requestOptions: {
+                  userDataId: string | undefined;
+                  dashboardTutorial?: boolean;
+                  testsTutorial?: boolean;
+                } = {
+                  userDataId: response.data[0]._id,
+                };
+
+                if (location.pathname === "/") {
+                  requestPath = `${
+                    import.meta.env.VITE_API_URL
+                  }/usersData/dashboardTutorial`;
+
+                  requestOptions.dashboardTutorial = true;
+                } else if (location.pathname === "/tests") {
+                  requestPath = `${
+                    import.meta.env.VITE_API_URL
+                  }/usersData/testsTutorial`;
+                  requestOptions.testsTutorial = true;
+                }
+                if (requestPath.length > 0) {
+                  let updateResponse: AxiosResponse<UserDataType> =
+                    await axios.put(requestPath, requestOptions);
+
+                  console.log(updateResponse.data);
+                  setIsOpen(false);
+                }
+              }
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <Routes>
+            <>
+              <Route path="/" element={<Layout />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/tests" element={<Tests />} />
+                <Route path="/tests/new" element={<TestWizard />} />
+                <Route
+                  path="/tests/analysis/:id"
+                  element={<TestInstanceAnalysis />}
+                />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
+              <Route path="/test/:id" element={<TestInstance />} />
+              <Route path="/pricing" element={<PricingSelection />} />
+            </>
+
+            <Route path="/login" element={<Login />} />
+          </Routes>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </TourProvider>
     </>
   );
 }

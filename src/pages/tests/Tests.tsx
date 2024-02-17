@@ -1,6 +1,6 @@
 import {
   CircleStackIcon,
-  EllipsisHorizontalIcon
+  EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 import MainButton from "../../components/buttons/MainButton";
 import SectionHeader from "../../components/headers/SectionHeader";
@@ -44,7 +44,7 @@ const Tests = () => {
     <>
       {isLoading && <p>Is Loading</p>}
       {!isLoading && (
-        <div className="py-5 px-5 md:px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
+        <div className="tests-container py-5 px-5 md:px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
           <SectionHeader text={"My Tests"} />
 
           {/* Action buttons */}
@@ -55,10 +55,12 @@ const Tests = () => {
               iconDirection="right"
             /> */}
 
-            <MainButton
-              buttonText="CREATE TEST"
-              onClick={() => navigate("/tests/new")}
-            />
+            <div className="create-test-button">
+              <MainButton
+                buttonText="CREATE TEST"
+                onClick={() => navigate("/tests/new")}
+              />
+            </div>
           </div>
 
           {/* Table to display test */}
@@ -225,7 +227,11 @@ const Tests = () => {
               )}
             </tbody>
           </table>
-          <Pagination testList={testList} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          <Pagination
+            testList={testList}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
           {selectedTest && (
             <DeleteModal
               title={`Deleting test ${
