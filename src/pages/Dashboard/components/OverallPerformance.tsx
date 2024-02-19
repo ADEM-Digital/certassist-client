@@ -32,7 +32,7 @@ const OverallPerformance = ({
   }, [DashboardDataQuery.data]);
 
   return (
-    <div className="relative bg-white rounded p-10 flex flex-col gap-5 shadow-card w-full md:w-[40vw] z-[1]">
+    <div className="overall-performance relative bg-white rounded p-10 flex flex-col gap-5 shadow-card w-full md:w-[40vw] z-[1]">
       <SectionHeader text="Overall Performance" size="text-2xl" />
       {/* Insert overlay div when user has no test data */}
       {parsedUserData?.percentageCorrect === "NaN" &&

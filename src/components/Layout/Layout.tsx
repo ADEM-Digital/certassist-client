@@ -5,11 +5,15 @@ import Logo from "../logo/Logo";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import DashboardIcon from "../icons/DashboardIcon";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import MobileSideBar from "./MobileSideBar";
 import CogIcon from "../icons/CogIcon";
+import { useTour } from "@reactour/tour";
+import { dashboardTourSteps, testsTourSteps } from "../../tourSteps";
+import { UserDataType } from "../../types/UserDataType";
+import { useQuery } from "react-query";
 
 const sidebarMenu = [
   {
@@ -33,13 +37,15 @@ const sidebarMenu = [
 ];
 
 const Layout = ({}) => {
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false)
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
+    useState<boolean>(false);
+
   const { user, logout } = useAuth0();
 
   const checkUserData = async () => {
     try {
       if (user?.sub) {
-        let response = await axios.get(
+        let response: AxiosResponse<UserDataType[]> = await axios.get(
           `${import.meta.env.VITE_API_URL}/usersData`,
           {
             params: {
@@ -59,14 +65,28 @@ const Layout = ({}) => {
               incorrectQuestions: [],
             }
           );
-          console.log("Created user data")
+
+          console.log("Created user data");
           console.log(response.data);
+          return {
+            userId: user.sub,
+            usedQuestions: [],
+            markedQuestions: [],
+            correctQuestions: [],
+            incorrectQuestions: [],
+          };
+        } else {
+          return response.data[0];
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const userData = useQuery("userData", checkUserData, {
+    enabled: user ? true : false,
+  });
 
   const checkSubscription = async () => {
     try {
@@ -98,12 +118,50 @@ const Layout = ({}) => {
     }
   }, [user]);
 
+  const { setIsOpen, setSteps, setCurrentStep } = useTour();
+
+  useEffect(() => {
+    if (user) {
+      setCurrentStep(0);
+      if (location.pathname === "/tests") {
+        if (setSteps) setSteps(testsTourSteps);
+      } else {
+        if (setSteps) setSteps(dashboardTourSteps);
+      }
+
+      if (location.pathname === "/login") {
+        setIsOpen(false);
+      } else {
+        if (location.pathname === "/") {
+          if (userData.data && !userData.data.dashboardTutorial) {
+            setIsOpen(true);
+          } else {
+            setIsOpen(false);
+          }
+        } else if (location.pathname === "/tests") {
+          if (userData.data && !userData.data.testsTutorial) {
+            setIsOpen(true);
+          } else {
+            setIsOpen(false);
+          }
+        }
+      }
+    }
+  }, [user, userData.data, location.pathname, setCurrentStep, setSteps, setIsOpen]);
+
+  useEffect(() => {
+    console.log(userData);
+  }, [userData.data]);
   return (
     <div>
       {/* Mobile sidebar */}
-      <MobileSideBar mobileMenuOpen={isMobileSidebarOpen} setMobileMenuOpen={setIsMobileSidebarOpen} navigation={sidebarMenu}/>
+      <MobileSideBar
+        mobileMenuOpen={isMobileSidebarOpen}
+        setMobileMenuOpen={setIsMobileSidebarOpen}
+        navigation={sidebarMenu}
+      />
       {/* Sidebar */}
-      <div className="hidden md:flex flex-col items-center w-[70px] h-[calc(100vh-7vh)] border-r border-border-100 absolute top-0 left-0 mt-[60px] py-2">
+      <div className="desktop-sidebar hidden md:flex flex-col items-center w-[70px] h-[calc(100vh-7vh)] border-r border-border-100 absolute top-0 left-0 mt-[60px] py-2">
         {/* <Logo classes="w-3/4"/> */}
 
         {sidebarMenu &&
@@ -132,7 +190,10 @@ const Layout = ({}) => {
 
       {/* Navbar */}
       <div className="flex items-center justify-between w-full min-h-[50px] h-[7vh] border-b border-border-100 absolute top-0 bg-white z-50">
-        <button className="md:hidden p-2 z-50" onClick={() => setIsMobileSidebarOpen(true)}>
+        <button
+          className="md:hidden p-2 z-50"
+          onClick={() => setIsMobileSidebarOpen(true)}
+        >
           <Bars3Icon className="w-6 h-6 text-gray-500" />
         </button>
 
@@ -142,7 +203,7 @@ const Layout = ({}) => {
             CertAssist
           </p>
         </div>
-        <div className="mr-3 p-0.5 rounded-full border-2 border-button-100">
+        <div className="logout-button mr-3 p-0.5 rounded-full border-2 border-button-100">
           <Menu as="div" className="relative">
             <div>
               <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">

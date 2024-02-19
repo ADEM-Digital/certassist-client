@@ -37,11 +37,16 @@ const OverallPerformanceBySuptopic = ({
 }: OverallPerformanceBySubTopicProps) => {
   const subtopicsPerformance =
     DashboardDataQuery.data?.subtopicPerformanceResult;
-  
+
   return (
     <div className="relative bg-white rounded p-10 flex flex-col gap-5 shadow-card flex-1">
-      <SectionHeader text="Overall Performance by Subtopic" size="text-2xl" />
-      {subtopicsPerformance && subtopicsPerformance?.length < 1 && <NoDataOverlay />}
+      <div className="performance-subtopic">
+        <SectionHeader text="Overall Performance by Subtopic" size="text-2xl" />
+      </div>
+
+      {subtopicsPerformance && subtopicsPerformance?.length < 1 && (
+        <NoDataOverlay />
+      )}
       <div>
         {subtopicsPerformance && (
           <table className="w-full">
@@ -109,7 +114,8 @@ const OverallPerformanceBySuptopic = ({
                     </td>
                   </tr>
                 ))}
-              {subtopicsPerformance && subtopicsPerformance?.length < 1 &&
+              {subtopicsPerformance &&
+                subtopicsPerformance?.length < 1 &&
                 dummy_subtopic_performance.map((subtopic) => (
                   <tr key={`performance-topic-${subtopic?.subtopic}`}>
                     <td className="font-tables text-button-100 font-extrabold">

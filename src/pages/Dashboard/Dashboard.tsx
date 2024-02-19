@@ -7,12 +7,14 @@ import OverallPerformanceByDifficulty from "./components/OverallPerformanceByDif
 import OverallPerformanceByTopic from "./components/OverallPerformanceByTopic";
 import OverallPerformanceBySuptopic from "./components/OverallPerformanceBySuptopic";
 
+
 const Dashboard = () => {
   const { DashboardDataQuery } = useDashboard();
   return (
     <>
-      {DashboardDataQuery && (
-        <div className="py-5 px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
+      {DashboardDataQuery.isFetched && (
+        
+        <div className="main-container py-5 px-10 flex h-full flex-col gap-2.5 overflow-y-auto">
           <SectionHeader text="Dashboard" />
           <div className="flex flex-col md:flex-row gap-2.5">
             <OverallPerformance DashboardDataQuery={DashboardDataQuery} />
@@ -23,6 +25,7 @@ const Dashboard = () => {
             <OverallPerformanceBySuptopic DashboardDataQuery={DashboardDataQuery}/>
           </div>
         </div>
+
       )}
     </>
   );

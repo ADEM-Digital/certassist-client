@@ -82,7 +82,7 @@ const OverallPerformanceByDifficulty = ({
 
   
   return (
-    <div className="relative bg-white rounded p-10 flex flex-col gap-5 shadow-card md:flex-1 h-[40vh] md:h-full">
+    <div className="performance-difficulty relative bg-white rounded p-10 flex flex-col gap-5 shadow-card md:flex-1 h-[40vh] md:h-full">
       <SectionHeader text="Overall Performance by Difficulty" size="text-2xl" />
       {!difficultyPerformaceEasy &&
         !difficultyPerformaceMedium &&

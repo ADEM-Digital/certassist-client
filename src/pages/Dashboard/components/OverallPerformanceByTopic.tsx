@@ -41,7 +41,10 @@ const OverallPerformanceByTopic = ({
   }, [topicsPerformance]);
   return (
     <div className="relative bg-white rounded p-10 flex flex-col gap-5 shadow-card w-full md:w-[40vw]">
-      <SectionHeader text="Overall Performance by Topic" size="text-2xl" />
+      <div className="performance-topic">
+        <SectionHeader text="Overall Performance by Topic" size="text-2xl" />
+      </div>
+
       {topicsPerformance && topicsPerformance.length < 1 && <NoDataOverlay />}
       <div>
         {topicsPerformance && (
@@ -109,7 +112,8 @@ const OverallPerformanceByTopic = ({
                   </tr>
                 ))}
 
-              {topicsPerformance && topicsPerformance.length < 1 &&
+              {topicsPerformance &&
+                topicsPerformance.length < 1 &&
                 dummyPerformance.map((topic) => (
                   <tr key={`performance-topic-${topic?.topic}`}>
                     <td className="font-tables text-button-100 font-extrabold">
