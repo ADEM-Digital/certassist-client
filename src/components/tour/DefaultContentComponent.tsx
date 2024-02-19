@@ -1,18 +1,11 @@
-import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { PopoverContentProps } from "@reactour/tour";
-import { ComponentType } from "react";
 import TourNavigation from "./components/TourNavigation";
-const steps = [
-  { name: "Step 1", href: "#", status: "complete" },
-  { name: "Step 2", href: "#", status: "current" },
-  { name: "Step 3", href: "#", status: "upcoming" },
-  { name: "Step 4", href: "#", status: "upcoming" },
-];
 
 const DefaultContentComponent:
   | React.ComponentType<PopoverContentProps>
   | undefined = (props) => {
-  const isLastStep = props.currentStep === props.steps.length - 1;
+
   const content = props.steps[props.currentStep].content;
   return (
     <div className=" transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all  sm:p-6">
@@ -31,9 +24,8 @@ const DefaultContentComponent:
 
         <div className="mt-3 text-center sm:mt-5">
           <div className="mt-2">
-            <p className="text-md text-gray-500">{typeof content === 'function'
-        ? content({ ...props})
-        : content}</p>
+            {/* @ts-ignore */}
+            <p className="text-md text-gray-500">{typeof content === 'function' ? content({ ...props}) : content}</p>
           </div>
         </div>
       </div>

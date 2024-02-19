@@ -24,6 +24,7 @@ function App() {
   const { user } = useAuth0();
   const location = useLocation();
 
+
   return (
     <>
       <TourProvider
@@ -87,6 +88,9 @@ function App() {
 
                   console.log(updateResponse.data);
                   setIsOpen(false);
+                  queryClient.invalidateQueries("userData");
+                  queryClient.refetchQueries("userData");
+                  
                 }
               }
             }

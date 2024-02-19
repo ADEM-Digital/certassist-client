@@ -13,6 +13,7 @@ import CogIcon from "../icons/CogIcon";
 import { useTour } from "@reactour/tour";
 import { dashboardTourSteps, testsTourSteps } from "../../tourSteps";
 import { UserDataType } from "../../types/UserDataType";
+import { useQuery } from "react-query";
 
 const sidebarMenu = [
   {
@@ -38,7 +39,7 @@ const sidebarMenu = [
 const Layout = ({}) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
     useState<boolean>(false);
-  const [userData, setUserData] = useState<UserDataType | undefined>();
+
   const { user, logout } = useAuth0();
 
   const checkUserData = async () => {
@@ -64,23 +65,28 @@ const Layout = ({}) => {
               incorrectQuestions: [],
             }
           );
-          setUserData({
+
+          console.log("Created user data");
+          console.log(response.data);
+          return {
             userId: user.sub,
             usedQuestions: [],
             markedQuestions: [],
             correctQuestions: [],
             incorrectQuestions: [],
-          });
-          console.log("Created user data");
-          console.log(response.data);
+          };
         } else {
-          setUserData(response.data[0]);
+          return response.data[0];
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const userData = useQuery("userData", checkUserData, {
+    enabled: user ? true : false,
+  });
 
   const checkSubscription = async () => {
     try {
@@ -118,7 +124,7 @@ const Layout = ({}) => {
     if (user) {
       setCurrentStep(0);
       if (location.pathname === "/tests") {
-        if (setSteps) setSteps(testsTourSteps)
+        if (setSteps) setSteps(testsTourSteps);
       } else {
         if (setSteps) setSteps(dashboardTourSteps);
       }
@@ -127,25 +133,25 @@ const Layout = ({}) => {
         setIsOpen(false);
       } else {
         if (location.pathname === "/") {
-          if (userData && !userData.dashboardTutorial) {
+          if (userData.data && !userData.data.dashboardTutorial) {
             setIsOpen(true);
           } else {
-            setIsOpen(false)
+            setIsOpen(false);
           }
         } else if (location.pathname === "/tests") {
-          if (userData && !userData.testsTutorial) {
+          if (userData.data && !userData.data.testsTutorial) {
             setIsOpen(true);
           } else {
-            setIsOpen(false)
+            setIsOpen(false);
           }
         }
       }
     }
-  }, [user, userData, location.pathname, setCurrentStep, setSteps, setIsOpen]);
+  }, [user, userData.data, location.pathname, setCurrentStep, setSteps, setIsOpen]);
 
   useEffect(() => {
     console.log(userData);
-  }, [userData]);
+  }, [userData.data]);
   return (
     <div>
       {/* Mobile sidebar */}
