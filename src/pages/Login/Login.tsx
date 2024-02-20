@@ -5,8 +5,8 @@ import { useEffect } from "react";
 const Login = () => {
   const { loginWithRedirect } = useAuth0();
   useEffect(() => {
-    console.log(window.location.origin)
-  })
+    console.log(window.location.origin);
+  });
   return (
     <div className="flex min-h-[100vh] flex-1">
       <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
@@ -21,20 +21,20 @@ const Login = () => {
             <h2 className="mt-4 text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Sign in to your account
             </h2>
-            {/* <p className="mt-2 text-sm leading-6 text-gray-500">
+            <p className="mt-2 text-sm leading-6 text-gray-500">
               Not a member?{" "}
-              <a
-                href="#"
-                className="font-semibold text-indigo-600 hover:text-indigo-500"
+              <button
+                onClick={() => loginWithRedirect()}
+                className="font-semibold text-blue-600 hover:text-blue-500"
               >
-                Start a 14 day free trial
-              </a>
-            </p> */}
+                Create an account
+              </button>
+            </p>
           </div>
 
           <div className="mt-10">
             <button
-            onClick={() => loginWithRedirect()}
+              onClick={() => loginWithRedirect()}
               type="submit"
               className="flex w-full justify-center rounded-md bg-button-100 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-button-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-button-100"
             >

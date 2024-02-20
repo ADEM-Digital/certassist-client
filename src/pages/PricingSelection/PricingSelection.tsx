@@ -16,7 +16,7 @@ const tiers = [
     name: "Monthly",
     id: "monthly",
     priceId: `${import.meta.env.VITE_USMLE_MONTHLY}`,
-    priceMonthly: "$49.99",
+    priceMonthly: "$29.99",
     description: "Basic one moth access",
     features: [
       "Qbank",
@@ -30,7 +30,7 @@ const tiers = [
     name: "3-Month",
     id: "quarterly",
     priceId: `${import.meta.env.VITE_USMLE_QUARTERLY}`,
-    priceMonthly: "$134.99",
+    priceMonthly: "$79.99",
     description: "Basic three month access",
     features: [
       "Qbank access",
@@ -45,7 +45,7 @@ const tiers = [
     name: "6-Month",
     id: "halfyear",
     priceId: `${import.meta.env.VITE_USMLE_HALFYEAR}`,
-    priceMonthly: "$239.99",
+    priceMonthly: "$149.99",
     description: "Basic six month access",
     features: [
       "Qbank access",
