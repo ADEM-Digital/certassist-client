@@ -35,7 +35,7 @@ const TestNavbar = () => {
       {/* Left UI */}
       <div className="flex gap-2.5 items-center">
         {/* Mobile hamburguer icon */}
-        <button onClick={() => setIsMobileSidebarOpen(true)}>
+        <button className="block md:hidden" onClick={() => setIsMobileSidebarOpen(true)}>
           <Bars3Icon className="w-6 h-6 text-white" />
         </button>
 
