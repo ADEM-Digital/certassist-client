@@ -129,7 +129,7 @@ const Layout = ({}) => {
         if (setSteps) setSteps(dashboardTourSteps);
       }
 
-      if (location.pathname === "/login") {
+      if (location.pathname === "/login" || location.pathname === "/pricing") {
         setIsOpen(false);
       } else {
         if (location.pathname === "/") {
