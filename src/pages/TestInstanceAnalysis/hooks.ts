@@ -25,6 +25,10 @@ export const useTestInstanceAnalysis = (testId: string | undefined) => {
     }
   }, [testQuery.data]);
 
+  useEffect(() => {
+    return () => testQuery.remove();
+  }, [])
+
   return {
     testQuery,
   };
