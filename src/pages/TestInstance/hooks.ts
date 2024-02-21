@@ -238,6 +238,10 @@ export const useTestInstance = (testId: string | undefined) => {
     updateStartTime();
   }, [testQuery.data, testQuery.isSuccess]);
 
+  useEffect(() => {
+    return () => testQuery.remove();
+  }, [])
+
   return {
     testQuery,
     questionQuery,
