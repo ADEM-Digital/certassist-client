@@ -7,13 +7,14 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import DashboardIcon from "../icons/DashboardIcon";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, ChevronUpDownIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import MobileSideBar from "./MobileSideBar";
 import CogIcon from "../icons/CogIcon";
 import { useTour } from "@reactour/tour";
 import { dashboardTourSteps, testsTourSteps } from "../../tourSteps";
 import { UserDataType } from "../../types/UserDataType";
 import { useQuery } from "react-query";
+import GeneralSupportSidebarForm from "./components/GeneralSupportSidebarForm";
 
 const sidebarMenu = [
   {
@@ -39,6 +40,7 @@ const sidebarMenu = [
 const Layout = ({}) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
     useState<boolean>(false);
+  const [isGeneralSupportSidebarOpen, setIsGeneralSupportSidebarOpen] = useState<boolean>(false)
 
   const { user, logout } = useAuth0();
 
@@ -147,7 +149,14 @@ const Layout = ({}) => {
         }
       }
     }
-  }, [user, userData.data, location.pathname, setCurrentStep, setSteps, setIsOpen]);
+  }, [
+    user,
+    userData.data,
+    location.pathname,
+    setCurrentStep,
+    setSteps,
+    setIsOpen,
+  ]);
 
   useEffect(() => {
     console.log(userData);
@@ -161,7 +170,7 @@ const Layout = ({}) => {
         navigation={sidebarMenu}
       />
       {/* Sidebar */}
-      <div className="desktop-sidebar hidden md:flex flex-col items-center w-[70px] h-[calc(100vh-7vh)] border-r border-border-100 absolute top-0 left-0 mt-[60px] py-2">
+      <div className="desktop-sidebar hidden md:flex flex-col items-center w-[70px] h-[calc(100vh-7vh)] border-r border-border-100 absolute top-0 left-0 mt-[7vh] py-2">
         {/* <Logo classes="w-3/4"/> */}
 
         {sidebarMenu &&
@@ -203,17 +212,41 @@ const Layout = ({}) => {
             CertAssist
           </p>
         </div>
-        <div className="logout-button mr-3 p-0.5 rounded-full border-2 border-button-100">
-          <Menu as="div" className="relative">
+        <div className="mr-3 flex gap-4 items-center">
+          <button
+            onClick={() => setIsGeneralSupportSidebarOpen(true)}
+            type="button"
+            className="flex gap-1 items-center relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            <span className="absolute -inset-1.5" />
+            <span className="sr-only">Help form</span>
+            <QuestionMarkCircleIcon className="h-6 w-6" aria-hidden="true" />
+            <p className=" font-tables text-sm">Help</p>
+          </button>
+          <Menu as="div" className="logout-button relative">
             <div>
-              <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">Open user menu</span>
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src={user?.picture}
-                  alt=""
-                />
+              <Menu.Button className="group w-full rounded-md bg-gray-100 px-3.5 py-1 text-left text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100 shadow-md">
+                <span className="flex w-full items-center justify-between">
+                  <span className="flex min-w-0 items-center justify-between space-x-3">
+                    <img
+                      className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
+                      src={user?.picture}
+                      alt=""
+                    />
+                    <span className="flex min-w-0 flex-1 flex-col">
+                      <span className="truncate text-sm font-medium text-gray-900">
+                        {user?.name}
+                      </span>
+                      <span className="truncate text-sm text-gray-500">
+                        {user?.email}
+                      </span>
+                    </span>
+                  </span>
+                  <ChevronUpDownIcon
+                    className="h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
+                </span>
               </Menu.Button>
             </div>
             <Transition
@@ -246,9 +279,10 @@ const Layout = ({}) => {
         </div>
       </div>
       {/* Main Content */}
-      <main className="bg-mainbg-100 mt-[50px] ml-0 md:ml-[70px] h-[calc(100vh-7vh)] md:w-[calc(100vw-70px)]">
+      <main className="bg-mainbg-100 mt-[7vh] ml-0 md:ml-[70px] h-[calc(100vh-7vh)] md:w-[calc(100vw-70px)]">
         <Outlet />
       </main>
+      <GeneralSupportSidebarForm isGeneralSupportSidebarOpen={isGeneralSupportSidebarOpen} setIsGeneralSupportSidebarOpen={setIsGeneralSupportSidebarOpen}/>
     </div>
   );
 };

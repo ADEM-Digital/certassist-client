@@ -123,32 +123,32 @@ export const dashboardTourSteps: StepType[] = [
       }),
     },
   },
-  {
-    selector: ".performance-topic",
-    content: "This card will aggregate your results by topic.",
-    styles: {
-      maskArea: () => ({}),
-      popover: (base) => ({
-        ...base,
-        maxWidth: "min-content",
-        background: "none",
-        boxShadow: "none",
-      }),
-    },
-  },
-  {
-    selector: ".performance-subtopic",
-    content: "This card will aggregate your results by subtopic.",
-    styles: {
-      maskArea: () => ({}),
-      popover: (base) => ({
-        ...base,
-        maxWidth: "min-content",
-        background: "none",
-        boxShadow: "none",
-      }),
-    },
-  },
+  // {
+  //   selector: ".performance-topic",
+  //   content: "This card will aggregate your results by topic.",
+  //   styles: {
+  //     maskArea: () => ({}),
+  //     popover: (base) => ({
+  //       ...base,
+  //       maxWidth: "min-content",
+  //       background: "none",
+  //       boxShadow: "none",
+  //     }),
+  //   },
+  // },
+  // {
+  //   selector: ".performance-subtopic",
+  //   content: "This card will aggregate your results by subtopic.",
+  //   styles: {
+  //     maskArea: () => ({}),
+  //     popover: (base) => ({
+  //       ...base,
+  //       maxWidth: "min-content",
+  //       background: "none",
+  //       boxShadow: "none",
+  //     }),
+  //   },
+  // },
 ];
 
 export const testsTourSteps: StepType[] = [

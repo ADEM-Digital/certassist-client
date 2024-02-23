@@ -71,8 +71,8 @@ const TestBottomNavbar = () => {
       <EndTestModal
         open={endTestModalOpen}
         setOpen={setEndTestModalOpen}
-        title="Are you sere you want to end the test?"
-        text="You won't be able to modify the test after clicking 'End Block'."
+        title={testQuery.data?.testStatus !== "completed" ? "Are you sure you want to end the test?" : "Are you sure you want to end the review?"}
+        text={testQuery.data?.testStatus !== "completed" ? "You won't be able to modify the test after clicking 'End Block'." : "The test review interface will close and redirect you to the test results summary."}
       />
     </div>
   );

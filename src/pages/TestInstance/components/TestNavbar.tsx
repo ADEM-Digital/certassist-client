@@ -77,7 +77,7 @@ const TestNavbar = () => {
               }
             }}
           >
-            <img src="/images/test-ui/NavLeft.png" alt="" className="h-[2vh]" />
+            <img src="/images/test-ui/NavLeft.png" alt="" className={classNames(currentQuestionIndex === 0 ? "grayscale": "", "h-[2vh]")} />
           </button>
 
           <p className=" text-sm font-sans">Previous</p>
@@ -101,7 +101,7 @@ const TestNavbar = () => {
             <img
               src="/images/test-ui/NavRight.png"
               alt=""
-              className="h-[2vh]"
+              className={classNames(testQuery.data && currentQuestionIndex === testQuery.data?.questionCount - 1 ? "grayscale" : "", "h-[2vh]")}
             />
           </button>
 
