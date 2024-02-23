@@ -7,7 +7,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import DashboardIcon from "../icons/DashboardIcon";
-import { Bars3Icon, BellIcon, ChevronUpDownIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, ChevronUpDownIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import MobileSideBar from "./MobileSideBar";
 import CogIcon from "../icons/CogIcon";
 import { useTour } from "@reactour/tour";
