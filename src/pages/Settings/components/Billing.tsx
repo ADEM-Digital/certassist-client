@@ -12,7 +12,7 @@ const Billing = ({ handleManageSubscription }: BillingPropsType) => {
         <SectionHeader text="Manage subscription" size="22" />
       </div>
       <p className="mb-4">
-        Update your current subscription settings in the Stripe external portal.
+        Update your current subscription settings in the Stripe portal.
       </p>
       <MainButton buttonText="Manage Subscription" onClick={() => handleManageSubscription()}/>
     </div>

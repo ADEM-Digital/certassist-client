@@ -22,7 +22,7 @@ const tiers = [
       "Qbank",
       "More than to 2,200 questions",
       "Basic analytics",
-      "48-hour support response time",
+      "24-hour support response time",
     ],
     mostPopular: false,
   },
@@ -36,7 +36,7 @@ const tiers = [
       "Qbank access",
       "More than to 2,200 questions",
       "Basic analytics",
-      "24-hour support response time",
+      "3-hour support response time",
       "10% discount on base price",
     ],
     mostPopular: true,
@@ -51,20 +51,21 @@ const tiers = [
       "Qbank access",
       "More than to 2,200 questions",
       "Basic analytics",
-      "24-hour support response time",
+      "3-hour support response time",
       "20% discount on base price",
     ],
     mostPopular: false,
   },
 ];
 
-const handleBuyPlan = async (priceId: string, isTrial?: boolean) => {
+const handleBuyPlan = async (priceId: string, isTrial?: boolean, email?: string) => {
   try {
     let response: AxiosResponse<any> = await axios.post(
       `${import.meta.env.VITE_API_URL}/create-subscription-checkout-session`,
       {
         priceId,
         isTrial,
+        email
       }
     );
 
@@ -78,7 +79,7 @@ const handleBuyPlan = async (priceId: string, isTrial?: boolean) => {
 
 export default function PricingSelection() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { logout } = useAuth0();
+  const { user, logout } = useAuth0();
   return (
     <div className="bg-white py-10 sm:py-10">
       <header className="absolute inset-x-0 top-0 z-50">
@@ -179,7 +180,7 @@ export default function PricingSelection() {
             Pricing plans
           </p>
           <button
-            onClick={() => handleBuyPlan(tiers[0].priceId, true)}
+            onClick={() => handleBuyPlan(tiers[0].priceId, true, user?.email)}
             aria-describedby={tiers[0].id}
             className={classNames(
               true
@@ -250,7 +251,7 @@ export default function PricingSelection() {
                 </ul>
               </div>
               <button
-                onClick={() => handleBuyPlan(tier.priceId)}
+                onClick={() => handleBuyPlan(tier.priceId, false, user?.email)}
                 aria-describedby={tier.id}
                 className={classNames(
                   tier.mostPopular

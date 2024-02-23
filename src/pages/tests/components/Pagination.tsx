@@ -47,7 +47,7 @@ export const Pagination = ({
             </span>{" "}
             to{" "}
             <span className="font-bold">
-              {testList.data ? testList.data?.currentPage * 10 : ""}
+              {testList.data && testList.data?.currentPage * 10 < testList.data.total ? testList.data?.currentPage * 10 : testList.data && testList.data.total}
             </span>{" "}
             of <span className="font-bold">{testList.data?.total}</span>{" "}
             results
