@@ -29,7 +29,7 @@ const TestNavbar = () => {
     <div
       className={classNames(
         selectedColor === "main" ? "bg-testnav-100" : "bg-testnav-300",
-        "absolute top-0 left-0 w-full md:w-[94vw] flex items-center justify-between ml-0 md:ml-[6vw] min-h-[35px] h-[6.5vh]  text-white px-2.5 pt-[3px] pb-1"
+        "fixed top-0 left-0 w-full md:w-[94vw] flex items-center justify-between ml-0 md:ml-[6vw] min-h-[35px] h-[6.5vh]  text-white px-2.5 pt-[3px] pb-1"
       )}
     >
       {/* Left UI */}
