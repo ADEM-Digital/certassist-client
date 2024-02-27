@@ -233,7 +233,7 @@ const Layout = ({}) => {
                       src={user?.picture}
                       alt=""
                     />
-                    <span className="flex min-w-0 flex-1 flex-col">
+                    <span className=" hidden md:flex min-w-0 flex-1 flex-col">
                       <span className="truncate text-sm font-medium text-gray-900">
                         {user?.name}
                       </span>
