@@ -24,7 +24,7 @@ const TestBottomNavbar = () => {
     <div
       className={classNames(
         selectedColor === "main" ? "bg-testnav-100" : "bg-testnav-300",
-        "absolute bottom-0 left-0 w-full md:w-[94vw] bg-testnav-100 min-h-[35px] h-[6vh] ml-0 md:ml-[6vw] flex items-center justify-between text-white px-2.5 pt-[5px] pb-[3px] z-0"
+        "fixed bottom-0 left-0 w-full md:w-[94vw] bg-testnav-100 min-h-[35px] h-[6vh] ml-0 md:ml-[6vw] flex items-center justify-between text-white px-2.5 pt-[5px] pb-[3px] z-0"
       )}
     >
       <div className="flex gap-2">
