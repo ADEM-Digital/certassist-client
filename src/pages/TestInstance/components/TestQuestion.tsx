@@ -42,7 +42,7 @@ const TestQuestion = () => {
         selectedColor === "main"
           ? "bg-testbg-100"
           : "bg-testbg-200 text-inverted-100",
-        "flex flex-col my-[6vh] ml-0 md:ml-[6vw] w-full md:w-[94vw] h-[88vh]  border-l border-border-300 pt-5 px-8 pb-4 font-sans overflow-y-auto"
+        "flex flex-col my-[6vh] ml-0 md:ml-[6vw] w-full md:w-[94vw] h-full  border-l border-border-300 pt-5 px-8 pb-4 font-sans overflow-y-auto"
       )}
     >
       <div

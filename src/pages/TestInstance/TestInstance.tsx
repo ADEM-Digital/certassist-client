@@ -31,7 +31,7 @@ const TestInstance = () => {
           contextProps.selectedColor === "main"
             ? "bg-testbg-100"
             : "bg-testbg-200",
-            "overflow-clip"
+            "overflow-clip h-full"
         )}
       >
         {/* Support Sidebar */}
