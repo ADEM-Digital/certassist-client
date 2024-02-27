@@ -30,7 +30,8 @@ const TestInstance = () => {
         className={classNames(
           contextProps.selectedColor === "main"
             ? "bg-testbg-100"
-            : "bg-testbg-200"
+            : "bg-testbg-200",
+            "overflow-clip"
         )}
       >
         {/* Support Sidebar */}
