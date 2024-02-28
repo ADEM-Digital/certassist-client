@@ -50,7 +50,7 @@ const TestWizardNav = ({ steps, setWizardSteps }: TestWizardNavProps) => {
               >
                 {step.stepNumber }
               </span>
-              <span className="font-tables text-lg font-extrabold">
+              <span className="hidden md:block font-tables text-lg font-extrabold">
                 {step.stepText}
               </span>
             </button>

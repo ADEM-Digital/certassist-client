@@ -170,7 +170,7 @@ const Layout = ({}) => {
         navigation={sidebarMenu}
       />
       {/* Sidebar */}
-      <div className="desktop-sidebar hidden md:flex flex-col items-center w-[70px] h-[calc(100vh-7vh)] border-r border-border-100 absolute top-0 left-0 mt-[7vh] py-2">
+      <div className="desktop-sidebar hidden md:flex flex-col items-center w-[70px] h-[calc(100vh-60px)] border-r border-border-100 absolute top-0 left-0 mt-[60px] py-2">
         {/* <Logo classes="w-3/4"/> */}
 
         {sidebarMenu &&
@@ -198,7 +198,7 @@ const Layout = ({}) => {
       </div>
 
       {/* Navbar */}
-      <div className="flex items-center justify-between w-full min-h-[50px] h-[7vh] border-b border-border-100 absolute top-0 bg-white z-50">
+      <div className="flex items-center justify-between w-full min-h-[60px] h-[60px] border-b border-border-100 absolute top-0 bg-white z-50">
         <button
           className="md:hidden p-2 z-50"
           onClick={() => setIsMobileSidebarOpen(true)}
@@ -279,7 +279,7 @@ const Layout = ({}) => {
         </div>
       </div>
       {/* Main Content */}
-      <main className="bg-mainbg-100 mt-[7vh] ml-0 md:ml-[70px] h-[calc(100vh-7vh)] md:w-[calc(100vw-70px)]">
+      <main className="bg-mainbg-100 mt-[60px] ml-0 md:ml-[70px] h-[calc(100vh-60px)] md:w-[calc(100vw-70px)]">
         <Outlet />
       </main>
       <GeneralSupportSidebarForm isGeneralSupportSidebarOpen={isGeneralSupportSidebarOpen} setIsGeneralSupportSidebarOpen={setIsGeneralSupportSidebarOpen}/>

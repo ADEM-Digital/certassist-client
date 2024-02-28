@@ -17,12 +17,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios, { AxiosResponse } from "axios";
 import { UserDataType } from "./types/UserDataType";
 import HOCTourComponent from "./components/tour/HOCTourComponent";
+import { useLanguageContext, LanguageContext } from "./context/LanguageContext";
 
 const queryClient = new QueryClient();
 
 function App() {
   const { user } = useAuth0();
   const location = useLocation();
+  const languageContextValue = useLanguageContext()
 
 
   return (
@@ -99,6 +101,7 @@ function App() {
           }
         }}
       >
+        <LanguageContext.Provider value={languageContextValue}>
         <QueryClientProvider client={queryClient}>
           <Routes>
             <>
@@ -120,6 +123,7 @@ function App() {
           </Routes>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
+        </LanguageContext.Provider>
       </TourProvider>
     </>
   );

@@ -5,6 +5,7 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 type TestQuestionOptionProps = {
   optionLetter: string;
   optionText: string;
+  value: string;
   answerState: {
     selectedAnswer: string | undefined;
     setSelectedAnswer: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -14,6 +15,7 @@ type TestQuestionOptionProps = {
 const TestQuestionOption = ({
   optionLetter,
   optionText,
+  value,
   answerState,
 }: TestQuestionOptionProps) => {
   const { questionQuery, testQuery, selectedAnswer } = useContext(
@@ -26,8 +28,8 @@ const TestQuestionOption = ({
         type="radio"
         name="answer"
         id={`answer-${optionText}`}
-        value={optionText}
-        checked={optionText === answerState.selectedAnswer}
+        value={value}
+        checked={value === answerState.selectedAnswer}
         disabled={testQuery.data?.testStatus === "completed"}
       />
       <label
@@ -35,14 +37,14 @@ const TestQuestionOption = ({
         htmlFor={`answer-${optionText}`}
       >
         {`${optionLetter} ${optionText}`}{" "}
-        {optionText === questionQuery.data?.correct_answer &&
+        {value === questionQuery.data?.correct_answer &&
         testQuery.data?.testStatus === "completed" ? (
           <CheckIcon className="h-6 w-6 stroke-2 text-grades-good" />
         ) : (
           ""
         )}
-        {optionText !== questionQuery.data?.correct_answer &&
-        optionText === selectedAnswer  && testQuery.data?.testStatus === "completed" && <XMarkIcon className="w-6 h-6 text-grades-low"/>}
+        {value !== questionQuery.data?.correct_answer &&
+        value === selectedAnswer  && testQuery.data?.testStatus === "completed" && <XMarkIcon className="w-6 h-6 text-grades-low"/>}
       </label>
     </div>
   );

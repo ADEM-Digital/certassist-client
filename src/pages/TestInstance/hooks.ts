@@ -6,10 +6,11 @@ import {
   useQuery,
 } from "react-query";
 import { TestDataType } from "../tests/hooks";
-import { createContext, useEffect, useState } from "react";
+import { Context, createContext, useContext, useEffect, useState } from "react";
 import { QuestionDataType } from "../../types/QuestionTypes";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { LanguageContext, LanguageContextType } from "../../context/LanguageContext";
 
 export type TestInstanceContextType = {
   testQuery: UseQueryResult<TestDataType | undefined, unknown>;
@@ -37,6 +38,8 @@ export type TestInstanceContextType = {
   setIsMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isSupportSidebarOpen: boolean;
   setIsSupportSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isLanguageSidebarOpen: boolean;
+  setIsLanguageSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const TestInstanceContext = createContext<
@@ -45,7 +48,7 @@ export const TestInstanceContext = createContext<
 
 export const useTestInstance = (testId: string | undefined) => {
   const navigate = useNavigate();
-
+  const {selectedLanguage} = useContext(LanguageContext as Context<LanguageContextType>)
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
     useState<boolean>(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -53,6 +56,7 @@ export const useTestInstance = (testId: string | undefined) => {
   const [testEndTime, setTestEndTime] = useState<number>();
   const [testLabValuesOpen, setTestLabValuesOpen] = useState(false);
   const [isSupportSidebarOpen, setIsSupportSidebarOpen] = useState(false);
+  const [isLanguageSidebarOpen, setIsLanguageSidebarOpen] = useState(false);
   const [selectedZoom, setSelectedZoom] = useState<"zoom1" | "zoom2" | "zoom3">(
     "zoom1"
   );
@@ -85,6 +89,7 @@ export const useTestInstance = (testId: string | undefined) => {
           {
             params: {
               testStatus: testQuery.data.testStatus,
+              selectedLanguage
             },
           }
         );
@@ -242,6 +247,11 @@ export const useTestInstance = (testId: string | undefined) => {
     return () => testQuery.remove();
   }, [])
 
+  useEffect(() => {
+    questionQuery.remove()
+    questionQuery.refetch()
+  }, [selectedLanguage])
+
   return {
     testQuery,
     questionQuery,
@@ -266,6 +276,8 @@ export const useTestInstance = (testId: string | undefined) => {
     setIsMobileSidebarOpen,
     isSupportSidebarOpen,
     setIsSupportSidebarOpen,
+    isLanguageSidebarOpen,
+    setIsLanguageSidebarOpen
   };
 };
 

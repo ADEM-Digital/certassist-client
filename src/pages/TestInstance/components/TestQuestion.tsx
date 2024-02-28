@@ -5,6 +5,10 @@ import TestLabValuesSlideOver from "./TestLabValuesSlideOver";
 import { classNames } from "../../../utils/utils";
 import TestQuestionExplanation from "./TestQuestionExplanation";
 import { ScaleLoader } from "react-spinners";
+import {
+  LanguageContext,
+  LanguageContextType,
+} from "../../../context/LanguageContext";
 
 const TestQuestion = () => {
   const {
@@ -16,6 +20,10 @@ const TestQuestion = () => {
     selectedZoom,
     selectedColor,
   } = useContext(TestInstanceContext as Context<TestInstanceContextType>);
+
+  const { selectedLanguage } = useContext(
+    LanguageContext as Context<LanguageContextType>
+  );
 
   useEffect(() => {
     if (
@@ -69,7 +77,7 @@ const TestQuestion = () => {
               )}
             >
               {/* Question text */}
-              <p>{questionQuery.data?.question}</p>
+              <p>{selectedLanguage === "en" ? questionQuery.data?.question : questionQuery.data?.internationalization[selectedLanguage].question}</p>
 
               {/* Mobile image media */}
               {questionQuery.data?.imageUrl && (
@@ -109,7 +117,8 @@ const TestQuestion = () => {
                         answerState={{ selectedAnswer, setSelectedAnswer }}
                         key={`question-option-${index}`}
                         optionLetter={optionLetters[index]}
-                        optionText={option}
+                        value={option}
+                        optionText={selectedLanguage === "en" ? option : questionQuery.data.internationalization[selectedLanguage].options[index]}
                       />
                     );
                   })}

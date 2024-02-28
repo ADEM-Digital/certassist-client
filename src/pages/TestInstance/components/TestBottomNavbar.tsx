@@ -8,12 +8,14 @@ import TestButton from "./TestButton";
 import EndTestModal from "../../../components/modals/EndTestModal";
 import TestBottomNavbarQuestionId from "./TestBottomNavbarQuestionId";
 import ColoredSupportIcon from "../../../components/icons/ColoredSupportIcon";
+import LanguageIcon from "../../../components/icons/LanguageIcon";
 
 const TestBottomNavbar = () => {
   const {
     selectedColor,
     testQuery,
     setIsSupportSidebarOpen,
+    setIsLanguageSidebarOpen,
     setEndTestModalOpen,
     endTestModalOpen,
     selectedAnswer,
@@ -37,11 +39,17 @@ const TestBottomNavbar = () => {
 
       {/* Lock */}
       {testQuery.data?.testStatus !== "completed" && (
-        <TestButton icon={<LockIcon />} buttonText="Lock" classes="opacity-0"/>
+        <TestButton icon={<LockIcon />} buttonText="Lock" classes="opacity-0" />
       )}
 
       {/* Right section */}
       <div className="flex">
+        {/* Language */}
+        <TestButton
+          onClick={() => setIsLanguageSidebarOpen(true)}
+          icon={<LanguageIcon width={28} height={28} />}
+          buttonText="Language"
+        />
         {/* Support */}
         {testQuery.data?.testStatus === "completed" && (
           <TestButton
@@ -71,8 +79,16 @@ const TestBottomNavbar = () => {
       <EndTestModal
         open={endTestModalOpen}
         setOpen={setEndTestModalOpen}
-        title={testQuery.data?.testStatus !== "completed" ? "Are you sure you want to end the test?" : "Are you sure you want to end the review?"}
-        text={testQuery.data?.testStatus !== "completed" ? "You won't be able to modify the test after clicking 'End Block'." : "The test review interface will close and redirect you to the test results summary."}
+        title={
+          testQuery.data?.testStatus !== "completed"
+            ? "Are you sure you want to end the test?"
+            : "Are you sure you want to end the review?"
+        }
+        text={
+          testQuery.data?.testStatus !== "completed"
+            ? "You won't be able to modify the test after clicking 'End Block'."
+            : "The test review interface will close and redirect you to the test results summary."
+        }
       />
     </div>
   );
