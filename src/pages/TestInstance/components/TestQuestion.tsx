@@ -50,7 +50,7 @@ const TestQuestion = () => {
         selectedColor === "main"
           ? "bg-testbg-100"
           : "bg-testbg-200 text-inverted-100",
-        "flex flex-col my-[6vh] ml-0 md:ml-[6vw] w-full md:w-[94vw] h-full  border-l border-border-300 pt-5 px-8 pb-4 font-sans overflow-y-auto"
+        "flex flex-col my-[6vh] ml-0 md:ml-[6vw] w-full md:w-[94vw] h-full  border-l border-border-300 pt-5 px-8 pb-[15vh] font-sans overflow-y-scroll"
       )}
     >
       <div
@@ -84,7 +84,7 @@ const TestQuestion = () => {
                 <div
                   className={classNames(
                     selectedZoom === "zoom3" ? "w-full " : "flex-1 ",
-                    "flex md:hidden justify-center my-6"
+                    "flex md:hidden justify-center my-6 image-container"
                   )}
                 >
                   <img
@@ -129,7 +129,7 @@ const TestQuestion = () => {
               className={classNames(
                 selectedZoom === "zoom3"
                   ? "w-full"
-                  : "hidden md:flex-1  md:flex justify-center items-start"
+                  : "hidden md:flex-1  md:flex justify-center items-start overflow-hidden"
               )}
             >
               <img
