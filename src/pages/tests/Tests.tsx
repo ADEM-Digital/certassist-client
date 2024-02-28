@@ -64,10 +64,10 @@ const Tests = () => {
           </div>
 
           {/* Table to display test */}
-          <table className="shadow-md">
+          <table className="table-fixed shadow-md w-full">
             <thead className=" bg-white">
               <tr className="border-b border-border-100">
-                <th className="">Name</th>
+                <th className="w-1/2 md:w-[25%] truncate">Name</th>
                 <th className="">Mode</th>
                 <th className="hidden md:table-cell">Date Created</th>
                 <th className="hidden md:table-cell">Questions</th>
@@ -85,7 +85,7 @@ const Tests = () => {
                     key={`test-row-${test._id}`}
                     className="border-b border-border-100 text-gray-900 text-lg font-light"
                   >
-                    <td className="font-tables text-button-100 font-extrabold">
+                    <td className="font-tables text-button-100 font-extrabold truncate">
                       <Link
                         to={
                           test.testStatus === "pending"

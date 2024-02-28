@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 import SupportSidebarForm from "./components/SupportSidebarForm";
+import LanguageSidebar from "./components/LanguageSidebar";
 
 const TestInstance = () => {
   const { id } = useParams();
@@ -34,6 +35,8 @@ const TestInstance = () => {
             "overflow-clip h-full"
         )}
       >
+        {/* Language Sidebar */}
+        <LanguageSidebar />
         {/* Support Sidebar */}
         <SupportSidebarForm />
         {/* Sidebar */}

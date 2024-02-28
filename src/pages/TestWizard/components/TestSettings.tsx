@@ -51,7 +51,7 @@ const TestSettings = ({ userDataQuery }: TestSettingsProps) => {
           <Select
             name="selectedDifficulties"
             classNames={{
-              container: () => "w-[20vw]",
+              container: () => "w-full md:w-[20vw]",
               placeholder: () => " text-sm font-tables",
               menuList: () => "text-sm font-tables",
             }}

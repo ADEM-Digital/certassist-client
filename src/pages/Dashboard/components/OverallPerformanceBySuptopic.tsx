@@ -49,11 +49,11 @@ const OverallPerformanceBySuptopic = ({
       )}
       <div>
         {subtopicsPerformance && (
-          <table className="w-full">
+          <table className="table-fixed w-full">
             <thead>
               <tr>
-                <th className="w-[12.5%]">Topic</th>
-                <th className="w-[12.5%] text-center">Percentage</th>
+                <th className="w-1/2 md:w-[12.5%] truncate">Topic</th>
+                <th className="w-1/2 md:w-[12.5%] text-center">Percentage</th>
                 <th className="hidden lg:table-cell text-left">Performance</th>
               </tr>
             </thead>
@@ -61,7 +61,7 @@ const OverallPerformanceBySuptopic = ({
               {subtopicsPerformance &&
                 subtopicsPerformance.map((subtopic) => (
                   <tr key={`performance-topic-${subtopic?.subtopic}`}>
-                    <td className="font-tables text-button-100 font-extrabold">
+                    <td className="font-tables text-button-100 font-extrabold truncate">
                       {subtopic && (
                         <span>{sentenceToCaps(subtopic?.subtopic)}</span>
                       )}

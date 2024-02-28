@@ -110,7 +110,7 @@ const TestModeSetttings = ({
         <input
           type="text"
           placeholder="Enter a name for the test"
-          className="bg-transparent border-0 border-b border-border-300  w-[30vw] focus:ring-0"
+          className="bg-transparent border-0 border-b border-border-300 w-full md:w-[30vw] focus:ring-0"
           value={formik.values.testName}
           onChange={(e) =>
             formik.setFieldValue("testName", e.currentTarget.value)
@@ -155,7 +155,7 @@ const TestModeSetttings = ({
             defaultValue={questionOptions[0]}
             placeholder={"Select an amount"}
             classNames={{
-              container: () => "w-[10vw]",
+              container: () => "w-full md:w-[10vw]",
               placeholder: () => " text-sm font-tables",
               menuList: () => "text-sm font-tables h-[20vh]",
             }}
