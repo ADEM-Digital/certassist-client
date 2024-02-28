@@ -9,6 +9,9 @@
   }
 }
 
+html, body, #root {
+  height: 100%;
+}
 table {
   border-collapse: collapse;
   border-radius: 10px;
@@ -109,3 +112,4 @@ progress[value]::-webkit-progress-value {
 .progress-green::-webkit-progress-value {
   background-color: #00a670;
 }
+

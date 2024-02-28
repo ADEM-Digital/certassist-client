@@ -32,7 +32,7 @@ const TestInstance = () => {
           contextProps.selectedColor === "main"
             ? "bg-testbg-100"
             : "bg-testbg-200",
-            "overflow-clip h-full"
+            "overflow-hidden h-full"
         )}
       >
         {/* Language Sidebar */}
