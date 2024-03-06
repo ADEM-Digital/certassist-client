@@ -14,7 +14,7 @@ const links = [
   },
   {
     name: "Unauthorized actions",
-    href: "#",
+    href: "https://certassist.app/unauthorized-actions/",
     description:
       "A list of unauthorized actions that will get the test UI blocked when attempted.",
     icon: QueueListIcon,
