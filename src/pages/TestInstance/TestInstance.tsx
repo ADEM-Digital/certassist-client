@@ -10,6 +10,7 @@ import { useQueryClient } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 import SupportSidebarForm from "./components/SupportSidebarForm";
 import LanguageSidebar from "./components/LanguageSidebar";
+import BlockedActionOverlay from "./components/BlockedActionOverlay";
 
 const TestInstance = () => {
   const { id } = useParams();
@@ -32,9 +33,15 @@ const TestInstance = () => {
           contextProps.selectedColor === "main"
             ? "bg-testbg-100"
             : "bg-testbg-200",
-            "overflow-hidden h-full"
+          "overflow-hidden h-full"
         )}
       >
+        {/* Overlay div */}
+        {!contextProps.isScreenActive && (
+          <div className="absolute top-0 left-0 right-0 bottom-0 bg-testbg-100 bg-opacity-100 flex justify-center items-center z-40">
+            <BlockedActionOverlay />
+          </div>
+        )}
         {/* Language Sidebar */}
         <LanguageSidebar />
         {/* Support Sidebar */}
@@ -47,7 +54,6 @@ const TestInstance = () => {
         <TestQuestion />
         {/* Bottom Test Navbar */}
         <TestBottomNavbar />
-        
       </div>
     </TestInstanceContext.Provider>
   );

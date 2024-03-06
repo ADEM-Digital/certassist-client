@@ -10,6 +10,7 @@ import {
   LanguageContextType,
 } from "../../../context/LanguageContext";
 
+
 const TestQuestion = () => {
   const {
     testQuery,
@@ -18,7 +19,7 @@ const TestQuestion = () => {
     selectedAnswer,
     setSelectedAnswer,
     selectedZoom,
-    selectedColor,
+    selectedColor
   } = useContext(TestInstanceContext as Context<TestInstanceContextType>);
 
   const { selectedLanguage } = useContext(
@@ -38,9 +39,7 @@ const TestQuestion = () => {
     }
   }, [testQuery]);
 
-  useEffect(() => {
-    console.log(questionQuery.isFetching);
-  }, [questionQuery.isFetching]);
+  
   return (
     <div
       className={classNames(
@@ -76,8 +75,14 @@ const TestQuestion = () => {
                 selectedZoom === "zoom3" ? "w-full" : "w-full md:w-1/2"
               )}
             >
+              
               {/* Question text */}
-              <p>{selectedLanguage === "en" ? questionQuery.data?.question : questionQuery.data?.internationalization[selectedLanguage].question}</p>
+              <p>
+                {selectedLanguage === "en"
+                  ? questionQuery.data?.question
+                  : questionQuery.data?.internationalization[selectedLanguage]
+                      .question}
+              </p>
 
               {/* Mobile image media */}
               {questionQuery.data?.imageUrl && (
@@ -118,7 +123,13 @@ const TestQuestion = () => {
                         key={`question-option-${index}`}
                         optionLetter={optionLetters[index]}
                         value={option}
-                        optionText={selectedLanguage === "en" ? option : questionQuery.data.internationalization[selectedLanguage].options[index]}
+                        optionText={
+                          selectedLanguage === "en"
+                            ? option
+                            : questionQuery.data.internationalization[
+                                selectedLanguage
+                              ].options[index]
+                        }
                       />
                     );
                   })}

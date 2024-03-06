@@ -10,7 +10,10 @@ import { Context, createContext, useContext, useEffect, useState } from "react";
 import { QuestionDataType } from "../../types/QuestionTypes";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { LanguageContext, LanguageContextType } from "../../context/LanguageContext";
+import {
+  LanguageContext,
+  LanguageContextType,
+} from "../../context/LanguageContext";
 
 export type TestInstanceContextType = {
   testQuery: UseQueryResult<TestDataType | undefined, unknown>;
@@ -40,6 +43,8 @@ export type TestInstanceContextType = {
   setIsSupportSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isLanguageSidebarOpen: boolean;
   setIsLanguageSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isScreenActive: boolean;
+  setIsScreenActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const TestInstanceContext = createContext<
@@ -48,7 +53,9 @@ export const TestInstanceContext = createContext<
 
 export const useTestInstance = (testId: string | undefined) => {
   const navigate = useNavigate();
-  const {selectedLanguage} = useContext(LanguageContext as Context<LanguageContextType>)
+  const { selectedLanguage } = useContext(
+    LanguageContext as Context<LanguageContextType>
+  );
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
     useState<boolean>(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -64,6 +71,7 @@ export const useTestInstance = (testId: string | undefined) => {
     "main"
   );
   const [endTestModalOpen, setEndTestModalOpen] = useState<boolean>(false);
+  const [isScreenActive, setIsScreenActive] = useState(true);
 
   const getTest = async () => {
     try {
@@ -89,7 +97,7 @@ export const useTestInstance = (testId: string | undefined) => {
           {
             params: {
               testStatus: testQuery.data.testStatus,
-              selectedLanguage
+              selectedLanguage,
             },
           }
         );
@@ -205,6 +213,39 @@ export const useTestInstance = (testId: string | undefined) => {
   }, []);
 
   useEffect(() => {
+    const onFocus = () => setIsScreenActive(true);
+    const onBlur = () => setIsScreenActive(false);
+    const onMacScreenshot = (event: KeyboardEvent) => {
+      console.log(event)
+      if ((event.metaKey && event.shiftKey) || event.keyCode == 44 || (event.keyCode == 44)) {
+        console.log("Cmd+Shift+4 pressed");
+
+        // Attempt to close the window
+        // Note: This will most likely not work in tabs/windows not opened via script
+        setIsScreenActive(false);
+        const timer = setTimeout(() => {
+          setIsScreenActive(true);
+        }, 30000);
+
+        return () => clearTimeout(timer)
+
+      }
+    };
+
+    window.addEventListener("focus", onFocus);
+    window.addEventListener("blur", onBlur);
+
+    document.addEventListener("keydown", onMacScreenshot);
+
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      window.removeEventListener("blur", onBlur);
+      document.removeEventListener("keydown", onMacScreenshot);
+      
+    };
+  }, []);
+
+  useEffect(() => {
     questionQuery.refetch();
   }, [currentQuestionIndex]);
 
@@ -245,12 +286,12 @@ export const useTestInstance = (testId: string | undefined) => {
 
   useEffect(() => {
     return () => testQuery.remove();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    questionQuery.remove()
-    questionQuery.refetch()
-  }, [selectedLanguage])
+    questionQuery.remove();
+    questionQuery.refetch();
+  }, [selectedLanguage]);
 
   return {
     testQuery,
@@ -277,7 +318,9 @@ export const useTestInstance = (testId: string | undefined) => {
     isSupportSidebarOpen,
     setIsSupportSidebarOpen,
     isLanguageSidebarOpen,
-    setIsLanguageSidebarOpen
+    setIsLanguageSidebarOpen,
+    isScreenActive,
+    setIsScreenActive,
   };
 };
 
@@ -290,5 +333,11 @@ export const useSupportForm = () => {
     image: null,
   };
 
-  return { initialFormValues, isFileSelected, setIsFileSelected, selectedFilename, setSelectedFilename };
+  return {
+    initialFormValues,
+    isFileSelected,
+    setIsFileSelected,
+    selectedFilename,
+    setSelectedFilename,
+  };
 };
