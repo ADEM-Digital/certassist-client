@@ -42,6 +42,7 @@ const TestQuestion = () => {
   
   return (
     <div
+      onContextMenu={(e) => e.preventDefault()}
       className={classNames(
         selectedZoom === "zoom1" ? "text-[16px]" : "",
         selectedZoom === "zoom2" ? "text-[24px]" : "",
@@ -77,7 +78,7 @@ const TestQuestion = () => {
             >
               
               {/* Question text */}
-              <p>
+              <p className="select-none">
                 {selectedLanguage === "en"
                   ? questionQuery.data?.question
                   : questionQuery.data?.internationalization[selectedLanguage]
@@ -145,7 +146,7 @@ const TestQuestion = () => {
             >
               <img
                 src={questionQuery.data?.imageUrl}
-                className="w-auto h-auto max-h-full max-w-full object-contain"
+                className="w-auto h-auto max-h-full max-w-full object-contain pointer-events-none"
                 alt=""
               />
             </div>
