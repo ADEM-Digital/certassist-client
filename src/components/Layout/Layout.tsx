@@ -61,6 +61,7 @@ const Layout = ({}) => {
             `${import.meta.env.VITE_API_URL}/usersData`,
             {
               userId: user.sub,
+              email: user.email,
               usedQuestions: [],
               markedQuestions: [],
               correctQuestions: [],
@@ -72,6 +73,7 @@ const Layout = ({}) => {
           console.log(response.data);
           return {
             userId: user.sub,
+            email: user.email,
             usedQuestions: [],
             markedQuestions: [],
             correctQuestions: [],
@@ -98,7 +100,10 @@ const Layout = ({}) => {
 
       if (response.data && response.data.length < 1) {
         navigate("/pricing");
+      } else {
+        console.log("Billing", response.data)
       }
+      
     } catch (error) {
       console.log(error);
     }
