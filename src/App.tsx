@@ -18,6 +18,7 @@ import axios, { AxiosResponse } from "axios";
 import { UserDataType } from "./types/UserDataType";
 import HOCTourComponent from "./components/tour/HOCTourComponent";
 import { useLanguageContext, LanguageContext } from "./context/LanguageContext";
+import { TrialContext, useTrialContext } from "./context/TrialContext";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function App() {
   const { user } = useAuth0();
   const location = useLocation();
   const languageContextValue = useLanguageContext()
+  const trialContextValue = useTrialContext();
 
 
   return (
@@ -73,15 +75,13 @@ function App() {
                 };
 
                 if (location.pathname === "/") {
-                  requestPath = `${
-                    import.meta.env.VITE_API_URL
-                  }/usersData/dashboardTutorial`;
+                  requestPath = `${import.meta.env.VITE_API_URL
+                    }/usersData/dashboardTutorial`;
 
                   requestOptions.dashboardTutorial = true;
                 } else if (location.pathname === "/tests") {
-                  requestPath = `${
-                    import.meta.env.VITE_API_URL
-                  }/usersData/testsTutorial`;
+                  requestPath = `${import.meta.env.VITE_API_URL
+                    }/usersData/testsTutorial`;
                   requestOptions.testsTutorial = true;
                 }
                 if (requestPath.length > 0) {
@@ -92,7 +92,7 @@ function App() {
                   setIsOpen(false);
                   queryClient.invalidateQueries("userData");
                   queryClient.refetchQueries("userData");
-                  
+
                 }
               }
             }
@@ -101,29 +101,31 @@ function App() {
           }
         }}
       >
-        <LanguageContext.Provider value={languageContextValue}>
-        <QueryClientProvider client={queryClient}>
-          <Routes>
-            <>
-              <Route path="/" element={<Layout />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/tests" element={<Tests />} />
-                <Route path="/tests/new" element={<TestWizard />} />
-                <Route
-                  path="/tests/analysis/:id"
-                  element={<TestInstanceAnalysis />}
-                />
-                <Route path="/settings" element={<Settings />} />
-              </Route>
-              <Route path="/test/:id" element={<TestInstance />} />
-              <Route path="/pricing" element={<PricingSelection />} />
-            </>
+        <TrialContext.Provider value={trialContextValue}>
+          <LanguageContext.Provider value={languageContextValue}>
+            <QueryClientProvider client={queryClient}>
+              <Routes>
+                <>
+                  <Route path="/" element={<Layout />}>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/tests" element={<Tests />} />
+                    <Route path="/tests/new" element={<TestWizard />} />
+                    <Route
+                      path="/tests/analysis/:id"
+                      element={<TestInstanceAnalysis />}
+                    />
+                    <Route path="/settings" element={<Settings />} />
+                  </Route>
+                  <Route path="/test/:id" element={<TestInstance />} />
+                  <Route path="/pricing" element={<PricingSelection />} />
+                </>
 
-            <Route path="/login" element={<Login />} />
-          </Routes>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-        </LanguageContext.Provider>
+                <Route path="/login" element={<Login />} />
+              </Routes>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </LanguageContext.Provider>
+        </TrialContext.Provider>
       </TourProvider>
     </>
   );

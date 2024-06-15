@@ -33,7 +33,7 @@ const TestQuestionOption = ({
         disabled={testQuery.data?.testStatus === "completed"}
       />
       <label
-        className="flex items-center gap-2 justify-between"
+        className="flex items-center gap-2 justify-between select-none"
         htmlFor={`answer-${optionText}`}
       >
         {`${optionLetter} ${optionText}`}{" "}

@@ -10,6 +10,7 @@ import {
   LanguageContextType,
 } from "../../../context/LanguageContext";
 
+
 const TestQuestion = () => {
   const {
     testQuery,
@@ -18,7 +19,7 @@ const TestQuestion = () => {
     selectedAnswer,
     setSelectedAnswer,
     selectedZoom,
-    selectedColor,
+    selectedColor
   } = useContext(TestInstanceContext as Context<TestInstanceContextType>);
 
   const { selectedLanguage } = useContext(
@@ -38,11 +39,10 @@ const TestQuestion = () => {
     }
   }, [testQuery]);
 
-  useEffect(() => {
-    console.log(questionQuery.isFetching);
-  }, [questionQuery.isFetching]);
+  
   return (
     <div
+      onContextMenu={(e) => e.preventDefault()}
       className={classNames(
         selectedZoom === "zoom1" ? "text-[16px]" : "",
         selectedZoom === "zoom2" ? "text-[24px]" : "",
@@ -76,8 +76,14 @@ const TestQuestion = () => {
                 selectedZoom === "zoom3" ? "w-full" : "w-full md:w-1/2"
               )}
             >
+              
               {/* Question text */}
-              <p>{selectedLanguage === "en" ? questionQuery.data?.question : questionQuery.data?.internationalization[selectedLanguage].question}</p>
+              <p className="select-none">
+                {selectedLanguage === "en"
+                  ? questionQuery.data?.question
+                  : questionQuery.data?.internationalization[selectedLanguage]
+                      .question}
+              </p>
 
               {/* Mobile image media */}
               {questionQuery.data?.imageUrl && (
@@ -118,7 +124,13 @@ const TestQuestion = () => {
                         key={`question-option-${index}`}
                         optionLetter={optionLetters[index]}
                         value={option}
-                        optionText={selectedLanguage === "en" ? option : questionQuery.data.internationalization[selectedLanguage].options[index]}
+                        optionText={
+                          selectedLanguage === "en"
+                            ? option
+                            : questionQuery.data.internationalization[
+                                selectedLanguage
+                              ].options[index]
+                        }
                       />
                     );
                   })}
@@ -134,7 +146,7 @@ const TestQuestion = () => {
             >
               <img
                 src={questionQuery.data?.imageUrl}
-                className="w-auto h-auto max-h-full max-w-full object-contain"
+                className="w-auto h-auto max-h-full max-w-full object-contain pointer-events-none"
                 alt=""
               />
             </div>

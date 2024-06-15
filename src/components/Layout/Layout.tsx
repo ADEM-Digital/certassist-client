@@ -61,6 +61,7 @@ const Layout = ({}) => {
             `${import.meta.env.VITE_API_URL}/usersData`,
             {
               userId: user.sub,
+              email: user.email,
               usedQuestions: [],
               markedQuestions: [],
               correctQuestions: [],
@@ -72,6 +73,7 @@ const Layout = ({}) => {
           console.log(response.data);
           return {
             userId: user.sub,
+            email: user.email,
             usedQuestions: [],
             markedQuestions: [],
             correctQuestions: [],
@@ -98,7 +100,10 @@ const Layout = ({}) => {
 
       if (response.data && response.data.length < 1) {
         navigate("/pricing");
+      } else {
+        console.log("Billing", response.data)
       }
+      
     } catch (error) {
       console.log(error);
     }
@@ -135,13 +140,13 @@ const Layout = ({}) => {
         setIsOpen(false);
       } else {
         if (location.pathname === "/") {
-          if (userData.data && !userData.data.dashboardTutorial) {
+          if (userData.data && (userData.data as UserDataType).dashboardTutorial) {
             setIsOpen(true);
           } else {
             setIsOpen(false);
           }
         } else if (location.pathname === "/tests") {
-          if (userData.data && !userData.data.testsTutorial) {
+          if (userData.data && (userData.data as UserDataType).testsTutorial) {
             setIsOpen(true);
           } else {
             setIsOpen(false);

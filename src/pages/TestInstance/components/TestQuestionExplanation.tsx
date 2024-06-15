@@ -57,7 +57,7 @@ const TestQuestionExplanation = () => {
   }, [selectedLanguage]);
 
   return (
-    <div className="flex flex-col gap-2 mt-2">
+    <div className="flex flex-col gap-2 mt-2 select-none">
       <h1>
         {!!questionQuery.data
           ? selectedAnswer === questionQuery.data?.correct_answer
