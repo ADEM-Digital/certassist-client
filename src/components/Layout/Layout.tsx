@@ -140,13 +140,13 @@ const Layout = ({}) => {
         setIsOpen(false);
       } else {
         if (location.pathname === "/") {
-          if (userData.data && (userData.data as UserDataType).dashboardTutorial) {
+          if (userData.data && !(userData.data as UserDataType).dashboardTutorial) {
             setIsOpen(true);
           } else {
             setIsOpen(false);
           }
         } else if (location.pathname === "/tests") {
-          if (userData.data && (userData.data as UserDataType).testsTutorial) {
+          if (userData.data && !(userData.data as UserDataType).testsTutorial) {
             setIsOpen(true);
           } else {
             setIsOpen(false);
@@ -163,9 +163,6 @@ const Layout = ({}) => {
     setIsOpen,
   ]);
 
-  useEffect(() => {
-    console.log(userData);
-  }, [userData.data]);
   return (
     <div>
       {/* Mobile sidebar */}
