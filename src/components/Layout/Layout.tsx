@@ -1,13 +1,17 @@
 import TestIcon from "../icons/TestIcon";
-import { classNames } from "../../utils/utils";
+import { classNames, getDaysToDateString } from "../../utils/utils";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import DashboardIcon from "../icons/DashboardIcon";
-import { Bars3Icon, ChevronUpDownIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  ChevronUpDownIcon,
+  QuestionMarkCircleIcon,
+} from "@heroicons/react/24/outline";
 import MobileSideBar from "./MobileSideBar";
 import CogIcon from "../icons/CogIcon";
 import { useTour } from "@reactour/tour";
@@ -15,6 +19,8 @@ import { dashboardTourSteps, testsTourSteps } from "../../tourSteps";
 import { UserDataType } from "../../types/UserDataType";
 import { useQuery } from "react-query";
 import GeneralSupportSidebarForm from "./components/GeneralSupportSidebarForm";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import { TrialContext, TrialContextType } from "../../context/TrialContext";
 
 const sidebarMenu = [
   {
@@ -38,9 +44,11 @@ const sidebarMenu = [
 ];
 
 const Layout = ({}) => {
+  const [dasyToTrialEnd, setDaysToTrialEnd] = useState<string>("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] =
     useState<boolean>(false);
-  const [isGeneralSupportSidebarOpen, setIsGeneralSupportSidebarOpen] = useState<boolean>(false)
+  const [isGeneralSupportSidebarOpen, setIsGeneralSupportSidebarOpen] =
+    useState<boolean>(false);
 
   const { user, logout } = useAuth0();
 
@@ -101,9 +109,15 @@ const Layout = ({}) => {
       if (response.data && response.data.length < 1) {
         navigate("/pricing");
       } else {
-        console.log("Billing", response.data)
+        console.log("Billing", response.data);
+        let billing = response.data[0];
+        if (billing.isTrial && billing.isTrial === true) {
+          setIsTrial(true);
+          setDaysToTrialEnd(getDaysToDateString(billing.expiresAt));
+        } else {
+          setIsTrial(false);
+        }
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -127,6 +141,9 @@ const Layout = ({}) => {
 
   const { setIsOpen, setSteps, setCurrentStep } = useTour();
 
+  const { isTrial, setIsTrial } = useContext(TrialContext) as TrialContextType;
+  const [isTrialBannerOpen, setIsTrialBannerOpen] = useState<boolean>(true);
+
   useEffect(() => {
     if (user) {
       setCurrentStep(0);
@@ -140,7 +157,10 @@ const Layout = ({}) => {
         setIsOpen(false);
       } else {
         if (location.pathname === "/") {
-          if (userData.data && !(userData.data as UserDataType).dashboardTutorial) {
+          if (
+            userData.data &&
+            !(userData.data as UserDataType).dashboardTutorial
+          ) {
             setIsOpen(true);
           } else {
             setIsOpen(false);
@@ -284,7 +304,37 @@ const Layout = ({}) => {
       <main className="bg-mainbg-100 mt-[60px] ml-0 md:ml-[70px] h-[calc(100vh-60px)] md:w-[calc(100vw-70px)]">
         <Outlet />
       </main>
-      <GeneralSupportSidebarForm isGeneralSupportSidebarOpen={isGeneralSupportSidebarOpen} setIsGeneralSupportSidebarOpen={setIsGeneralSupportSidebarOpen}/>
+      <GeneralSupportSidebarForm
+        isGeneralSupportSidebarOpen={isGeneralSupportSidebarOpen}
+        setIsGeneralSupportSidebarOpen={setIsGeneralSupportSidebarOpen}
+      />
+      {isTrial && isTrialBannerOpen && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-0 sm:flex sm:justify-center sm:px-6 sm:pb-5 lg:px-8">
+          <div className="pointer-events-auto flex items-center justify-between gap-x-6 bg-button-100 px-6 py-2.5 sm:rounded-xl sm:py-3 sm:pl-4 sm:pr-3.5">
+            <p className="text-sm leading-6 text-white">
+              <a href="#">
+                <strong className="font-semibold">Trial Period</strong>
+                <svg
+                  viewBox="0 0 2 2"
+                  aria-hidden="true"
+                  className="mx-2 inline h-0.5 w-0.5 fill-current"
+                >
+                  <circle r={1} cx={1} cy={1} />
+                </svg>
+                Your trial period ends in <strong>{dasyToTrialEnd} days</strong>.
+              </a>
+            </p>
+            <button
+              onClick={() => setIsTrialBannerOpen(false)}
+              type="button"
+              className="-m-1.5 flex-none p-1.5"
+            >
+              <span className="sr-only">Dismiss</span>
+              <XMarkIcon aria-hidden="true" className="h-5 w-5 text-white" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

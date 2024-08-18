@@ -1,3 +1,4 @@
+import moment from "moment";
 import { TestDataType } from "../pages/tests/hooks";
 import { OptionType } from "../types/FormTypes";
 import { QuestionDataType } from "../types/QuestionTypes";
@@ -60,7 +61,9 @@ export function availableQuestionOnSelectedTopicsSubtopic(
   let newAvailableQuestions = availableQuestions;
   // Filter by topics
   if (!selectedTopics.includes(0)) {
-    newAvailableQuestions = newAvailableQuestions.filter((question) => question.topic ? selectedTopics.includes(question.topic) : false);
+    newAvailableQuestions = newAvailableQuestions.filter((question) =>
+      question.topic ? selectedTopics.includes(question.topic) : false
+    );
   }
 
   // Filter only by subtopics. Available subtopics are already filtered by selected topics so theres no need to filter by topic again.
@@ -113,4 +116,14 @@ export function availableQuestionsOnSelectedTopic(
       question.topic ? selectedTopics.includes(question.topic) : false
     ).length;
   }
+}
+
+export function getDaysToDateString(dateString: string) {
+  const targetDate = moment(dateString);
+  const currentDate = moment();
+  const daysDifference = targetDate.diff(currentDate, "days");
+
+  const daysDifferenceString = daysDifference.toString();
+
+  return daysDifferenceString;
 }
