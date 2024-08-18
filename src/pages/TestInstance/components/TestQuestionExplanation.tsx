@@ -83,7 +83,7 @@ const TestQuestionExplanation = () => {
         {selectedLanguage === "en"
           ? questionQuery.data?.explanation
           : questionQuery.data?.internationalization[selectedLanguage]
-              .explanation}
+              ?.explanation}
       </div>
       {selectedLanguage === "en" &&
         questionQuery.data?.incorrect_explanations &&
@@ -94,8 +94,8 @@ const TestQuestionExplanation = () => {
         ))}
 
       {selectedLanguage !== "en" &&
-        questionQuery.data?.internationalization[selectedLanguage].incorrect_explanations &&
-        questionQuery.data?.internationalization[selectedLanguage].incorrect_explanations?.map((explanation) => (
+        questionQuery.data?.internationalization[selectedLanguage]?.incorrect_explanations &&
+        questionQuery.data?.internationalization[selectedLanguage]?.incorrect_explanations?.map((explanation) => (
           <div className={classNames(" border-grades-low", "pl-2 border-l-4")}>
             <span dangerouslySetInnerHTML={{ __html: explanation }}></span>
           </div>

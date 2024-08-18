@@ -82,7 +82,7 @@ const TestQuestion = () => {
                 {selectedLanguage === "en"
                   ? questionQuery.data?.question
                   : questionQuery.data?.internationalization[selectedLanguage]
-                      .question}
+                      ?.question}
               </p>
 
               {/* Mobile image media */}
@@ -129,7 +129,7 @@ const TestQuestion = () => {
                             ? option
                             : questionQuery.data.internationalization[
                                 selectedLanguage
-                              ].options[index]
+                              ]?.options[index]
                         }
                       />
                     );
