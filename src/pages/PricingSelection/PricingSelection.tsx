@@ -69,7 +69,8 @@ const handleBuyPlan = async (priceId: string, isTrial?: boolean, email?: string)
       {
         priceId,
         isTrial,
-        email
+        email,
+        backUrl: window.location.href
       }
     );
 

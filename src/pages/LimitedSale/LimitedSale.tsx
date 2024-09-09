@@ -75,6 +75,7 @@ const handleBuyPlan = async (
         priceId,
         isTrial,
         email,
+        backUrl: window.location.href
       }
     );
 
