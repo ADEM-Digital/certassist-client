@@ -5,20 +5,19 @@ import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import {
-  ArrowRightOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useAuth0 } from "@auth0/auth0-react";
-
 
 const tiers = [
   {
     name: "Monthly",
     id: "monthly",
     months: 1,
-    priceId: `${import.meta.env.VITE_USMLE_MONTHLY}`,
-    priceMonthly: "$29.99",
+    priceId: `${import.meta.env.VITE_USMLE_MONTHLY_SALE}`,
+    originalPrice: "$29.99",
+    priceMonthly: "$14.99",
     description: "Basic one moth access",
     features: [
       "Qbank",
@@ -32,8 +31,9 @@ const tiers = [
     name: "3-Month",
     id: "quarterly",
     months: 3,
-    priceId: `${import.meta.env.VITE_USMLE_QUARTERLY}`,
-    priceMonthly: "$79.99",
+    priceId: `${import.meta.env.VITE_USMLE_QUARTERLY_SALE}`,
+    originalPrice: "$79.99",
+    priceMonthly: "$39.99",
     description: "Basic three month access",
     features: [
       "Qbank access",
@@ -48,8 +48,9 @@ const tiers = [
     name: "6-Month",
     id: "halfyear",
     months: 6,
-    priceId: `${import.meta.env.VITE_USMLE_HALFYEAR}`,
-    priceMonthly: "$149.99",
+    priceId: `${import.meta.env.VITE_USMLE_HALFYEAR_SALE}`,
+    originalPrice: "$149.99",
+    priceMonthly: "$74.99",
     description: "Basic six month access",
     features: [
       "Qbank access",
@@ -62,14 +63,18 @@ const tiers = [
   },
 ];
 
-const handleBuyPlan = async (priceId: string, isTrial?: boolean, email?: string) => {
+const handleBuyPlan = async (
+  priceId: string,
+  isTrial?: boolean,
+  email?: string
+) => {
   try {
     let response: AxiosResponse<any> = await axios.post(
       `${import.meta.env.VITE_API_URL}/create-subscription-checkout-session`,
       {
         priceId,
         isTrial,
-        email
+        email,
       }
     );
 
@@ -81,7 +86,7 @@ const handleBuyPlan = async (priceId: string, isTrial?: boolean, email?: string)
   }
 };
 
-export default function PricingSelection() {
+export default function LimitedSale() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logout } = useAuth0();
   return (
@@ -111,17 +116,7 @@ export default function PricingSelection() {
               </a>
             ))}
           </div> */}
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <button
-              onClick={() =>
-                logout({ logoutParams: { returnTo: window.location.origin } })
-              }
-              className="flex items-center gap-1 text-sm font-semibold leading-6 text-gray-900"
-            >
-              <span>Log out</span>{" "}
-              <ArrowRightOnRectangleIcon className="w-4 h-4 stroke-2" />
-            </button>
-          </div>
+         
         </nav>
         <Dialog
           as="div"
@@ -132,7 +127,6 @@ export default function PricingSelection() {
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-             
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -181,20 +175,9 @@ export default function PricingSelection() {
             </p>
           </div>
           <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Pricing plans
+            Limited time sale plans
           </p>
-          <button
-            onClick={() => handleBuyPlan(tiers[0].priceId, true, user?.email)}
-            aria-describedby={tiers[0].id}
-            className={classNames(
-              true
-                ? "bg-button-100 text-white shadow-sm hover:bg-button-100/80"
-                : "text-button-100 ring-1 ring-inset ring-button-100/50 hover:ring-button-100",
-              "mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-button-100"
-            )}
-          >
-            Start a 7-day trial
-          </button>
+
         </div>
         {/* <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
           Distinctio et nulla eum soluta et neque labore quibusdam. Saepe et quasi iusto modi velit ut non voluptas in.
@@ -231,12 +214,35 @@ export default function PricingSelection() {
                 <p className="mt-4 text-sm leading-6 text-gray-600">
                   {tier.description}
                 </p>
+                <div className="relative border border-gray-400 rounded-md mt-6">
+                  <div className="border border-gray-400 flex w-fit rounded-md py-1 px-2 absolute -top-2 -left-2 gap-1 bg-white items-center">
+                    <p className="text-xs">Was</p>
+                    <p className="flex items-baseline gap-x-1">
+                      <span className="text-lg font-bold tracking-tight text-gray-900 line-through">
+                        {tier.originalPrice}
+                      </span>
+                      <span className="text-xs font-semibold leading-6 text-gray-600">
+                        /{tier.months > 1 ? `${tier.months}-months`: "month"}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="px-2 py-1">
+                    <p className="flex items-baseline gap-x-1 justify-center">
+                    <p className="text-2xl font-extrabold text-gray-600">Now:</p>
+                      <span className="mt-8 mb-5 text-5xl font-bold tracking-tight text-gray-900">
+                        {tier.priceMonthly}
+                      </span>
+                      <span className="text-sm font-semibold leading-6 text-gray-600">
+                        /{tier.months > 1 ? `${tier.months}-months`: "month"}
+                      </span>
+                    </p>
+                  </div>
+                  
+                </div>
+
                 <p className="mt-6 flex items-baseline gap-x-1">
-                  <span className="text-4xl font-bold tracking-tight text-gray-900">
-                    {tier.priceMonthly}
-                  </span>
                   <span className="text-sm font-semibold leading-6 text-gray-600">
-                    /{tier.months > 1 ? `${tier.months}-months`: "month"}
+                    /month
                   </span>
                 </p>
                 <ul

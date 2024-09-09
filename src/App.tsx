@@ -19,6 +19,7 @@ import { UserDataType } from "./types/UserDataType";
 import HOCTourComponent from "./components/tour/HOCTourComponent";
 import { useLanguageContext, LanguageContext } from "./context/LanguageContext";
 import { TrialContext, useTrialContext } from "./context/TrialContext";
+import LimitedSale from "./pages/LimitedSale/LimitedSale";
 
 const queryClient = new QueryClient();
 
@@ -118,6 +119,7 @@ function App() {
                   </Route>
                   <Route path="/test/:id" element={<TestInstance />} />
                   <Route path="/pricing" element={<PricingSelection />} />
+                  <Route path="/limited-sale" element={<LimitedSale />} />
                 </>
 
                 <Route path="/login" element={<Login />} />
